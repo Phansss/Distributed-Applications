@@ -22,6 +22,7 @@ public class MyHelloServlet extends HttpServlet {
         writer.println("<!DOCTYPE html>");
         writer.println("<html><head><title> DA demo </title><head>\n<body>");
         writer.println("<h1>Hello</h1>");
+        // Test
         writer.println("<p>The result of 15 + 32 = " + bean.doSomethingReallyDifficult(15,32) + ".</p>");
         writer.println("</body>\n</html>");
     }

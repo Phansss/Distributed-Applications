@@ -1,6 +1,7 @@
 package servlets;
 
 import ejb.MySessionBeanBean;
+import entities.PersonEntity;
 import jakarta.ejb.EJB;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -26,6 +27,14 @@ public class MyHelloServlet extends HttpServlet {
         writer.println("Test");
         writer.println("Test 2");
         writer.println("<p>The result of 15 + 32 = " + bean.doSomethingReallyDifficult(15,32) + ".</p>");
+
+
+
+        writer.println("<ul>");
+        for (PersonEntity p: bean.findPersonByName("Pieter")) {
+            writer.println("<li>" + p.getEmail() + "</li>");
+        }
+        writer.println("</ul>");
         writer.println("</body>\n</html>");
 
     }

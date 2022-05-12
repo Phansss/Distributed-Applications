@@ -2,22 +2,40 @@ package entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+import java.util.Objects;
+
 @Entity
-@Table(name = "Person", schema = "hellodemo", catalog = "")
+@Table(name = "Person", schema = "hellodemo")
 public class PersonEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name")
     private String name;
     @Basic
-    @Column(name = "column_3", nullable = true)
-    private Integer column3;
-    @Basic
-    @Column(name = "email", nullable = false, length = 200)
+    @Column(name = "email")
     private String email;
+    @Basic
+    @Column(name = "lastName")
+    private String lastName;
+    @Basic
+    @Column(name = "password")
+    private String password;
+    @ManyToMany(mappedBy = "studentsInClass")
+    private List<CourseEntity> followingCourses;
+    @OneToMany(mappedBy = "madeBy")
+    private List<CommentEntity> madeComments;
+
+    public List<CourseEntity> getFollowingCourses() {
+        return followingCourses;
+    }
+
+    public void setFollowingCourses(List<CourseEntity> followingCourses) {
+        this.followingCourses = followingCourses;
+    }
 
     public int getId() {
         return id;
@@ -35,14 +53,6 @@ public class PersonEntity {
         this.name = name;
     }
 
-    public Integer getColumn3() {
-        return column3;
-    }
-
-    public void setColumn3(Integer column3) {
-        this.column3 = column3;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -51,27 +61,40 @@ public class PersonEntity {
         this.email = email;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<CommentEntity> getMadeComments() {
+        return madeComments;
+    }
+
+    public void setMadeComments(List<CommentEntity> madeComments) {
+        this.madeComments = madeComments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         PersonEntity that = (PersonEntity) o;
-
-        if (id != that.id) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (column3 != null ? !column3.equals(that.column3) : that.column3 != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-
-        return true;
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(lastName, that.lastName) && Objects.equals(password, that.password) && Objects.equals(followingCourses, that.followingCourses) && Objects.equals(madeComments, that.madeComments);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (column3 != null ? column3.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        return result;
+        return Objects.hash(id, name, email, lastName, password, followingCourses, madeComments);
     }
 }

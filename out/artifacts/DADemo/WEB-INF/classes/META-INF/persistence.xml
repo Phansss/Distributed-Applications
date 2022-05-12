@@ -3,18 +3,9 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
-
     <persistence-unit name="DADemoPU">
         <jta-data-source>jdbc/mysqlres</jta-data-source>
         <class>entities.CourseEntity</class>
         <class>entities.PersonEntity</class>
-        <class>entities.CommentEntity</class>
-        <class>entities.ProfessorEntity</class>
-        <class>entities.ratingComment</class>
-        <class>entities.ratingTextComment</class>
-        <class>entities.textComment</class>
-        <properties>
-            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
-        </properties>
     </persistence-unit>
 </persistence>

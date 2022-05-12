@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
-<h:head>
-    <title>JSF hello world example using ajax.</title>
-</h:head>
-<h:body>
-    <h2>index.xhtml</h2>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <h:form>
-        <h:inputText id="name" value="#{helloWorld.userName}"/>
-        <br/> <br/>
-        <h:commandButton value="Say Hello">
-            <f:ajax execute="name" render="sayHello" />
-        </h:commandButton>
+<f:view>
 
-        <h2>
-            <h:outputText id="sayHello"
-                          value="#{helloWorld.helloMessage}"/>
-        </h2>
-    </h:form>
+   <!-- <h:outputStylesheet library = "i" name = "styles.css" /> -->
 
-</h:body>
+   <h:head>
+      <title>Jakarta EE 9 Faces</title>
+   </h:head>
 
+   <h:body>
+      <h:outputText value = "Helloooo"/> faces <br/>
+
+   </h:body>
+    <h:outputLabel value="Hello, world"/>
+   <h:form>
+      <h3>Using JSF outcome</h3>
+
+      <!--
+      implicit navigation provided by JSF 2.0: put the view name in the action attribute, JSF
+      searches for the correct view page.
+           -->
+      <h:commandButton action = "navigation" value = "how to implement navigation" />
+   </h:form>
+
+
+
+</f:view>
 </html>

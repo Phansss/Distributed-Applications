@@ -5,7 +5,7 @@
              version="3.0">
 
     <persistence-unit name="DADemoPU">
-        <jta-data-source>jdbc/mysqlres</jta-data-source>
+        <jta-data-source>jdbc/mysql/res</jta-data-source>
         <class>entities.CourseEntity</class>
         <class>entities.PersonEntity</class>
         <class>entities.CommentEntity</class>
@@ -13,6 +13,7 @@
         <class>entities.ratingComment</class>
         <class>entities.ratingTextComment</class>
         <class>entities.textComment</class>
+        <!-- <exclude-unlisted-classes>false</exclude-unlisted-classes> -->
         <properties>
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
         </properties>

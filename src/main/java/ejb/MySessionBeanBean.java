@@ -5,10 +5,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 
+import java.io.Serializable;
 import java.util.List;
 
 @jakarta.ejb.Stateless(name = "MySessionBeanEJB")
-public class MySessionBeanBean {
+public class MySessionBeanBean implements Serializable {
 
 @PersistenceContext(unitName = "DADemoPU")
     EntityManager em;
@@ -25,4 +26,6 @@ public class MySessionBeanBean {
         query.setParameter("searchname", "%" + name + "%");
         return query.getResultList();
     }
+
+
 }

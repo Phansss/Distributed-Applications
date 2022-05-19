@@ -12,7 +12,7 @@ enum Year {
 }
 
 @Entity
-@Table(name = "Course", schema = "hellodemo", catalog = "")
+@Table(name = "Course", schema = "hellodemo")
 public class CourseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -76,6 +76,21 @@ public class CourseEntity {
 
     public void setYearOfCourse(Year yearOfCourse) {
         this.yearOfCourse = yearOfCourse;
+    }
+
+    public int getEnumAsInt(){
+        switch (yearOfCourse){
+
+            case FIRST_YEAR:
+                return 1;
+            case SECOND_YEAR:
+                return 2;
+            case THIRD_YEAR:
+                return 3;
+            case MASTER:
+                return 4;
+        }
+        return 1;
     }
 
     @Override

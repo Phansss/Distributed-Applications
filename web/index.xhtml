@@ -1,40 +1,62 @@
-<!DOCTYPE html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+<f:view>
+
    <h:head>
-
+      <title>Login</title>
+      <h:outputStylesheet library = "css" name = "styles.css"  />
    </h:head>
-   <h:body>
-      <p:textEditor />
 
-      <style type="text/css">
-         .ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell {
-            text-align: center;
-         }
+   <h:body class="background">
 
-         .customPanelGrid .ui-panelgrid-content {
-            align-items: center;
-         }
-      </style>
 
-      <div class="card">
-         <p:panelGrid columns="1" layout="grid" styleClass="showcase-text-align-center">
-            <div class="card">
-               <h:form>
-                  <p:commandButton value="View" icon="pi pi-home" action="#{dfView.viewProducts}" styleClass="p-mr-2" />
-                  <p:commandButton value="Options" icon="pi pi-cog" action="#{dfView.viewProductsCustomized}" styleClass="ui-button-outlined"/>
-               </h:form>
-            </div>
-         </p:panelGrid>
+      <div class=" LoginColumn leftLoginColumn vertical-center">
+         <h:form class="loginForm">
+            <h1>Login</h1><br/>
+
+            <h4>Email</h4>
+            <h:inputText id="loginEmail" value = "#{loginBean.email}" required="true" requiredMessage="Email field can not be empty"/>
+            <h:message for="loginEmail" style="color:red" /><br/><br/>
+            <h4>Password</h4>
+            <p:password id="loginPassword" value = "#{loginBean.password}" required="true" requiredMessage="Password field can not be empty"/>
+            <h:message for="loginPassword" style="color:red" /><br/><br/>
+
+            <h:commandButton action = "#{loginBean.login()}" value = "LOGIN" style="margin-bottom: 10px" /><br/>
+         </h:form>
       </div>
 
-   </h:body>
-</f:view>
 
+      <div class="LoginColumn rightLoginColumn vertical-center">
+         <h:form class="loginForm">
+            <h1>Sign Up</h1><br/>
+
+            <h4>Name</h4>
+            <h:inputText id="signUpName" value = "#{loginBean.firstName}" required="true" requiredMessage="Name field can not be empty">
+               <f:validateLength minimum="2"/></h:inputText>
+            <h:message for="signUpName" style="color:red" /><br/><br/>
+            <h4>Last Name</h4>
+            <h:inputText id="signUpLastName" value = "#{loginBean.lastName}" required="true" requiredMessage="Last name field can not be empty"/>
+            <h:message for="signUpLastName" style="color:red" /><br/><br/>
+            <h4>Email</h4>
+            <h:inputText id="signUpEmail" value = "#{loginBean.email}" required="true" requiredMessage="Email field can not be empty">
+               <f:validateRegex pattern="/^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"/>
+            </h:inputText>
+            <h:message for="signUpEmail" style="color:red" /><br/><br/>
+            <h4>Password</h4>
+            <p:password id="signUpPassword" value = "#{loginBean.password}" required="true" requiredMessage="Password field can not be empty" feedback="true"/>
+            <h:message for="signUpPassword" style="color:red" /><br/><br/>
+
+            <h:commandButton action = "#{loginBean.add()}" value = "SIGN UP" style="margin-bottom: 10px" /><br/>
+         </h:form>
+      </div>
+   </h:body>
+
+</f:view>
 </html>

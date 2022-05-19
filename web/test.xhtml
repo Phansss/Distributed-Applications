@@ -1,18 +1,133 @@
-<!DOCTYPE html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" xmlns:jsp="http://java.sun.com/jsf/composite">
 
-<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
-   <h:head>
+<h:head>
+   <title>Main Page</title>
+   <h:outputStylesheet library = "css" name = "styles.css"  />
+</h:head>
 
-   </h:head>
-   <h:body>
-      <p:textEditor />
-   </h:body>
-</f:view>
+<h:body style="margin: 0">
+
+   <div class="header">
+      Rate Your Professor
+   </div>
+
+   <div class="row">
+      <div class="left">
+         <div class="margin-10-left">
+
+            <h1>Your Courses</h1>
+
+            <h:form> <!-- A menu has to be inside a form tag because it has implementations for action selection -->
+            <p:menu model="#{homeScreenBean.menumodel}"/>
+            </h:form>
+
+            <h1>Add a course</h1>
+
+            <p:selectCheckboxMenu id="grouped" value="#{homeScreenBean.selectedCoursesAsString}" label="Countries" style="width: 90%"
+                                  multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width: auto" scrollHeight="250">
+               <f:selectItems value="#{homeScreenBean.courses}"/>
+            </p:selectCheckboxMenu>
+
+         </div>
+      </div>
+      <div class="middle margin-10-left">
+         <h1>Latest Comments</h1>
+
+         <h:form>
+            <p:repeat value="#{homeScreenBean.commentsToShow}" var="comment">
+               <div class="comment">
+                  <div class="commentBox">
+                     <br/>
+                     <b>Name Poster</b>
+                     <br/><br/>
+                     <b>Name Professor</b>
+                     <br/><br/>
+                     <b>Rating</b>
+                     <br/><br/>
+                     <p>Koen is prachtig</p>
+                     <br/>
+                  </div>
+               </div>
+            </p:repeat>
+         </h:form>
+
+         <div class="commentBox">
+            <br/>
+            <b>Name Poster</b>
+            <br/><br/>
+            <b>Name Professor</b>
+            <br/><br/>
+            <b>Rating</b>
+            <br/><br/>
+            <p>KOEN PELSMAEKERS IS MIJN HELD EN KAN MIJN KINDEREN KRIJGEN!</p>
+            <br/>
+         </div>
+
+         <br/>
+
+         <div class="commentBox">
+            <br/>
+            <b>Name Poster</b>
+            <br/><br/>
+            <b>Name Professor</b>
+            <br/><br/>
+            <b>Rating</b>
+            <br/><br/>
+            <p>Jeroen Vanaeken is de reden dat ik wakker word in de ochtend!</p>
+            <br/>
+         </div>
+      </div>
+      <div class="right" >
+         <div class="margin-10-left" style="margin-right: 10px">
+            <h1>Make a new comment</h1>
+
+            <h3>Text</h3>
+            <h:inputTextarea></h:inputTextarea>
+
+            <br/>
+            <br/>
+
+            <h3>Rating</h3>
+            <div class="rate">
+               <input type="radio" id="star5" name="rate" value="5" />
+               <label for="star5" title="text">5 stars</label>
+               <input type="radio" id="star4" name="rate" value="4" />
+               <label for="star4" title="text">4 stars</label>
+               <input type="radio" id="star3" name="rate" value="3" />
+               <label for="star3" title="text">3 stars</label>
+               <input type="radio" id="star2" name="rate" value="2" />
+               <label for="star2" title="text">2 stars</label>
+               <input type="radio" id="star1" name="rate" value="1" />
+               <label for="star1" title="text">1 star</label>
+            </div>
+
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+
+            <h3>About Professor</h3>
+            <p:selectOneMenu id="professorsDropdown">
+               <f:selectItems value="#{homeScreenBean.allProfessorNames}"/>
+            </p:selectOneMenu>
+
+            <br/>
+            <br/>
+            <br/>
+
+            <h:commandButton action = "home" value = "ADD"/><br/>
+
+         </div>
+      </div>
+   </div>
+
+</h:body>
 
 </html>

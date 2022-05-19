@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:view>
+
+   <!-- <h:outputStylesheet library = "i" name = "styles.css" /> -->
+
+   <h:head>
+      <title>Login</title>
+      <h:outputStylesheet library = "css" name = "styles.css"  />
+   </h:head>
+
+   <h:body style="background-color: whitesmoke">
+
+
+      <div class="Column" style="float: left; width: 30%; margin-top: 20%; margin-bottom: 20%; border: 5px solid cornflowerblue; border-radius: 4px; margin-left: 10%; background-color: lightsteelblue">
+         <h:form style = "margin: auto; width: 50%;">
+            <h1 style="">Login</h1>
+
+            Input Email<br/>
+            <h:inputText value = "Email"/><br/><br/>
+            Input Password<br/>
+            <h:inputText value = "Password"/><br/><br/>
+
+            <h:commandButton action = "hello" value = "Login" style="margin-bottom: 10px" /><br/>
+         </h:form>
+      </div>
+
+
+      <div style="float: right; width: 30%; margin-right: 10%; margin-top: 20%; margin-bottom: 20%; background-color: cornflowerblue; border-radius: 4px; color: white">
+         <h:form style = "margin: auto; width: 50%;">
+            <h1>Sign Up</h1>
+
+            Input Name AAAAAAAAAH<br/>
+            <h:inputText value = "Name"/><br/><br/>
+            Input Lastname<br/>
+            <h:inputText value = "Lastname"/><br/><br/>
+            Input Email<br/>
+            <h:inputText value = "Email"/><br/><br/>
+            Input Password<br/>
+            <h:inputText value = "Password"/><br/><br/>
+
+            <h:commandButton action = "home" value = "Sign Up" style="margin-bottom: 10px" /><br/>
+         </h:form>
+      </div>
+   </h:body>
+
+</f:view>
+</html>

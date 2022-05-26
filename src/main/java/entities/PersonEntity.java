@@ -88,13 +88,13 @@ public class PersonEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof PersonEntity)) return false;
         PersonEntity that = (PersonEntity) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(lastName, that.lastName) && Objects.equals(password, that.password) && Objects.equals(followingCourses, that.followingCourses) && Objects.equals(madeComments, that.madeComments);
+        return getId() == that.getId() && Objects.equals(getName(), that.getName()) && Objects.equals(getEmail(), that.getEmail()) && Objects.equals(getLastName(), that.getLastName()) && Objects.equals(getPassword(), that.getPassword());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, lastName, password, followingCourses, madeComments);
+        return Objects.hash(getId(), getName(), getEmail(), getLastName(), getPassword());
     }
 }

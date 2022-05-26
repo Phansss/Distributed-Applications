@@ -1,15 +1,31 @@
 .background {
     background: rgb(100,149,237);
     background: linear-gradient(90deg, rgba(100,149,237,1) 0%, rgba(0,212,255,1) 100%);
+}
 
-    display: flex;
+* {
+    font-family: "Arial", sans-serif;
+}
+
+.timeText{
+    float: right;
+    font-size: small;
+    color: darkgrey
+}
+
+html, body{
+    height:100%
+}
+
+body{
+    min-height: 100%;
 }
 
 h1, h2{
     font-family: "Montserrat", serif;
 }
 
-h3, h4, p, a {
+h3, h4, p, a, b {
     font-family: "Arial", sans-serif;
     margin: 0;
 }
@@ -28,6 +44,18 @@ h3, h4, p, a {
     background-color: white;
     border-radius: 4px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+}
+
+.white-background {
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+    margin: 4px;
+}
+
+.text-on-background{
+    color: white;
+    text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
 }
 
 .vertical-center {
@@ -58,18 +86,19 @@ h3, h4, p, a {
 
 .left{
     width: 25%;
-    border: rgba(100,149,237,1) 5px;
-    border-style: none solid none none;
     float: left;
-    height: 92vh;
+    height: 200vh;
 }
 
 .right{
     width: 25%;
-    border: rgba(100,149,237,1) 5px;
-    border-style: none none none solid;
     float: right;
-    height: 92vh;
+    height: 200vh;
+}
+
+.sticky{
+    position: sticky;
+    top: 0;
 }
 
 .middle {
@@ -81,9 +110,9 @@ h3, h4, p, a {
 .header {
     margin: 0;
     padding: 15px;
-    text-align: center;
-    background: rgba(100,149,237,1) 0;
-    color: white;
+    background: white;
+
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.6), 0 0 20px 0 rgba(0, 0, 0, 0.4);
 }
 
 input[type=text], input[type=password], select {
@@ -124,13 +153,18 @@ input[type=submit]:hover {
 
 .margin-10-left{
     margin-left: 10px;
+    padding: 1px 10px 10px 10px;
+}
+
+.margin-10-right{
+    margin-right: 10px;
+    padding: 1px 10px 10px 10px;
 }
 
 .commentBox{
     width: 100%;
     height: auto;
-    border: 5px solid cornflowerblue;
-    border-radius: 10px;
+    padding: 0 5px 0 5px;
 }
 
 .ui-menu{

@@ -16,6 +16,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.UserTransaction;
 
 @ManagedBean(name = "loginBean")
@@ -31,6 +32,9 @@ public class loginBean implements Serializable {
     EntityManager em;
     @Inject
     UserTransaction ut;
+
+    int dbId;
+
     public loginBean() {
         // SETUP DB CONNECTION
     }
@@ -89,6 +93,8 @@ public class loginBean implements Serializable {
             }
         }
         if (success) {
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            session.setAttribute("user", dbId); // TODO: MAKE SURE THE USER ID SET WHEN SIGNING UP
             return "success";
         } else
             return "no success";
@@ -103,9 +109,12 @@ public class loginBean implements Serializable {
         for (PersonEntity p: resultList) {
             dbName = p.getEmail();
             dbPassword = p.getPassword();
+            dbId = p.getId();
         }
 
         if (email.equals(dbName) && password.equals(dbPassword)) {
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            session.setAttribute("user", dbId);
             return "success";
         } else
             return "no success";
@@ -117,6 +126,38 @@ public class loginBean implements Serializable {
                 .invalidateSession();
         FacesContext.getCurrentInstance()
                 .getApplication().getNavigationHandler()
-                .handleNavigation(FacesContext.getCurrentInstance(), null, "/login.xhtml");
+                .handleNavigation(FacesContext.getCurrentInstance(), null, "/index.xhtml");
+    }
+
+    public void setDbPassword(String dbPassword) {
+        this.dbPassword = dbPassword;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
+
+    public EntityManager getEm() {
+        return em;
+    }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
+    public UserTransaction getUt() {
+        return ut;
+    }
+
+    public void setUt(UserTransaction ut) {
+        this.ut = ut;
+    }
+
+    public int getDbId() {
+        return dbId;
+    }
+
+    public void setDbId(int dbId) {
+        this.dbId = dbId;
     }
 }

@@ -1,6 +1,14 @@
 package entities;
 
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.FacesConverter;
+import jakarta.faces.convert.Converter;
 import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +21,8 @@ enum Year {
 
 @Entity
 @Table(name = "Course", schema = "hellodemo")
-public class CourseEntity {
+@FacesConverter("CourseConverter")
+public class CourseEntity implements Serializable, Converter, Comparable<CourseEntity> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -94,15 +103,37 @@ public class CourseEntity {
     }
 
     @Override
+    public int compareTo(CourseEntity o) {
+        return 0;
+    }
+
+    @Override
+    public Object getAsObject(FacesContext context, UIComponent component, String value) {
+        return value;
+    }
+
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, Object value) {
+        return "CourseEntity{" +
+                "courseId=" + courseId +
+                ", name='" + name + '\'' +
+                ", studentsInClass=" + studentsInClass +
+                ", courseGivenBy=" + courseGivenBy +
+                ", yearOfCourse=" + yearOfCourse +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CourseEntity)) return false;
         CourseEntity that = (CourseEntity) o;
-        return courseId == that.courseId && Objects.equals(name, that.name) && Objects.equals(studentsInClass, that.studentsInClass) && Objects.equals(courseGivenBy, that.courseGivenBy) && yearOfCourse == that.yearOfCourse;
+        return getCourseId() == that.getCourseId() && Objects.equals(getName(), that.getName()) && getYearOfCourse() == that.getYearOfCourse();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseId, name, studentsInClass, courseGivenBy, yearOfCourse);
+        return Objects.hash(getCourseId(), getName(), getYearOfCourse());
     }
 }
+

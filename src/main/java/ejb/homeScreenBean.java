@@ -2,14 +2,19 @@ package ejb;
 
 import entities.*;
 import jakarta.annotation.PostConstruct;
+import jakarta.ejb.PostActivate;
 import jakarta.ejb.Stateful;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.context.FacesContext;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.*;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.*;
+import jakarta.transaction.RollbackException;
 import org.primefaces.event.RateEvent;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
@@ -17,26 +22,18 @@ import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Logger;
 
 // TODO: MAKE QUERYING ALL COURSES INTO A STATELESS BEAN
 
-@ManagedBean(name = "homeScreenBean")
+@Named
 @SessionScoped
 public class homeScreenBean implements Serializable {
 
-    public Integer handleRate(RateEvent rateEvent) {
-        Integer rating = (Integer) rateEvent.getRating();
-        return rating;
-        //Add facesmessage
-    }
-    public void handleCancel() {
-        //Add facesmessage
-    }
-
-    @PersistenceContext(name = "DADemoPU")
-    EntityManager new_em;
+    @Inject
+    UserTransaction ut;
 
     ArrayList<ratingComment> RCommentsToShow;
     ArrayList<textComment> TCommentsToShow;
@@ -69,22 +66,93 @@ public class homeScreenBean implements Serializable {
 
     private String chosenProfessor;
 
+    private String[] selectedCoursesAsStringArray;
+
+    public void printRating()  {
+        System.out.println("Print Rating: " + rating + ". Text1: " + text1 + ". Professor: " + chosenProfessor);
+
+        String commentType;
+        Integer chosenProfId = 0;
+
+        if(rating == null){
+            commentType = "T";
+        }
+        else if (Objects.equals(text1, "")) {
+            commentType = "R";
+        } else {
+            commentType = "RT";
+        }
+
+        for (ProfessorEntity p: allProfessors
+        ) {
+            if(p.getName().equals(chosenProfessor)){
+                chosenProfId = p.getId();
+            }
+        }
+
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("DADemoPU");
+        EntityManager new_em = factory.createEntityManager();
+
+        try {
+            ut.begin();
+
+            new_em.joinTransaction();
+            new_em.createNativeQuery("INSERT INTO Comments (Comment_Type, Name, isAboutId, MadeById) VALUES (?,?,?,?)")
+                    .setParameter(1, commentType)
+                    .setParameter(2, LocalDateTime.now())
+                    .setParameter(3, chosenProfId)
+                    .setParameter(4, userId)
+                    .executeUpdate();
+
+            new_em.createNativeQuery("INSERT INTO Professor_Comments (ProfessorEntity_id, commentsAbout_commentId) VALUES (?, (SELECT MAX(commentId) FROM Comments))")
+                    .setParameter(1, chosenProfId)
+                    .executeUpdate();
+
+            String query;
+            switch (commentType){
+                case "RT":
+                    new_em.createNativeQuery("INSERT INTO ratingTextComment(commentId, Comment_Rating, Comment_Text) VALUES ((SELECT MAX(commentId) FROM Comments),?,?)")
+                            .setParameter(1, rating)
+                            .setParameter(2, text1)
+                            .executeUpdate();
+                    break;
+                case "T":
+                    new_em.createNativeQuery("INSERT INTO textComment(commentId, Comment_Text) VALUES ((SELECT MAX(commentId) FROM Comments),?)")
+                            .setParameter(1, text1)
+                            .executeUpdate();
+                    break;
+                case "R":
+                    new_em.createNativeQuery("INSERT INTO ratingComment(commentId, Comment_Rating) VALUES ((SELECT MAX(commentId) FROM Comments),?)")
+                            .setParameter(1, rating)
+                            .executeUpdate();
+                    break;
+            }
+            ut.commit();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        startup();
+    }
 
     public homeScreenBean() {
+        System.out.println("Print Creating a homeScreenBean");
+
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         userId = (int) session.getAttribute("user");
+
+        startup();
     }
 
-    public void updateRating() {
-        rating = 5;
-    }
-
-    @PostConstruct
-    public void setNecessaryCourses() {
+    public void startup() {
         coursesAsString = new ArrayList<String>();
         coursesAsCourses = new ArrayList<CourseEntity>();
         selectedCoursesAsCourses = new ArrayList<CourseEntity>();
         selectedCoursesAsString = new ArrayList<String>();
+
+
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("DADemoPU");
+        EntityManager new_em = factory.createEntityManager();
 
         Query query = new_em.createQuery("SELECT c FROM CourseEntity c", CourseEntity.class);
         List<CourseEntity> courseEntityList = (List<CourseEntity>) query.getResultList();
@@ -92,24 +160,40 @@ public class homeScreenBean implements Serializable {
             coursesAsString.add(c.getName());
             coursesAsCourses.add(c);
         }
+        System.out.print("Print CoursesAsString after query: " + coursesAsString);
 
         query = new_em.createQuery("SELECT P FROM PersonEntity P WHERE P.id = :userId", PersonEntity.class); // TODO: FILTER THIS ON THE LOGGED IN USER
         query.setParameter("userId", userId);
         List<PersonEntity> selectedCoursesEntityList = (List<PersonEntity>) query.getResultList();
         loggedInUser = selectedCoursesEntityList.get(0);
 
+        query = new_em.createQuery("Select P from ProfessorEntity P", ProfessorEntity.class);
+        allProfessors = (List<ProfessorEntity>) query.getResultList();
+
         for (CourseEntity c : loggedInUser.getFollowingCourses()) {
             selectedCoursesAsString.add(c.getName());
             selectedCoursesAsCourses.add(c);
         }
-        makeCourseMenu();
+        System.out.print("Print selectedCoursesAsString after query: " + selectedCoursesAsString + ". SelectedCoursesAsCourses: " + selectedCoursesAsCourses);
+
+        functionOnChange();
+    }
+
+    public void functionOnChange(){
+        selectedCoursesAsCourses.clear();
+        for (CourseEntity c : coursesAsCourses
+        ) {
+            if(selectedCoursesAsString.contains(c.getName())) {
+                selectedCoursesAsCourses.add(c);
+            }
+        }
+
         gatherProfessors();
+        makeCourseMenu();
     }
 
     public void gatherProfessors() {
         allProfessorNames = new ArrayList<String>();
-        commentsToShow = new ArrayList<CommentEntity>();
-
         RCommentsToShow = new ArrayList<ratingComment>();
         TCommentsToShow = new ArrayList<textComment>();
         RTCommentsToShow = new ArrayList<ratingTextComment>();
@@ -118,6 +202,7 @@ public class homeScreenBean implements Serializable {
         ) {
             for (ProfessorEntity p : c.getCourseGivenBy()
             ) {
+                System.out.println("¨Print Courses given by prof: " + p.getName());
                 if (!allProfessorNames.contains(p.getName())) // TODO: Dit zorgt ervoor dat proffen met dezelfde naam er maar 1 keer inkomen. Misschien oplossen?
                 {
                     if (p.getCommentsAbout().size() > 0) {
@@ -140,15 +225,16 @@ public class homeScreenBean implements Serializable {
                 }
             }
         }
+        System.out.println("Print allProfessorNames: " + allProfessorNames);
+    }
+
+    public void printStatement(){
+        System.out.println("Print Statement");
     }
 
     public void makeCourseMenu () {
 
-        selectedCoursesAsString.clear();
-        for (CourseEntity c : selectedCoursesAsCourses
-        ) {
-            selectedCoursesAsString.add(c.getName());
-        }
+        System.out.println("Print selectedCoursesAsString while making menu: " + selectedCoursesAsString);
 
         MenuModel menu = new DefaultMenuModel();
 
@@ -170,28 +256,28 @@ public class homeScreenBean implements Serializable {
 
         DefaultMenuItem item;
 
-        for (CourseEntity c : selectedCoursesAsCourses
+        for (CourseEntity c : coursesAsCourses
         ) {
-            //if(selectedCoursesAsString.contains(c.getName())) {
-            item = DefaultMenuItem.builder()
-                    .value(c.getName())
-                    .build();
+            if(selectedCoursesAsString.contains(c.getName())) {
+                item = DefaultMenuItem.builder()
+                        .value(c.getName())
+                        .build();
 
-            switch (c.getEnumAsInt()) {
-                case 1:
-                    firstSubmenu.getElements().add(item);
-                    break;
-                case 2:
-                    secondSubmenu.getElements().add(item);
-                    break;
-                case 3:
-                    thirdSubmenu.getElements().add(item);
-                    break;
-                case 4:
-                    fourthSubmenu.getElements().add(item);
-                    break;
+                switch (c.getEnumAsInt()) {
+                    case 1:
+                        firstSubmenu.getElements().add(item);
+                        break;
+                    case 2:
+                        secondSubmenu.getElements().add(item);
+                        break;
+                    case 3:
+                        thirdSubmenu.getElements().add(item);
+                        break;
+                    case 4:
+                        fourthSubmenu.getElements().add(item);
+                        break;
+                }
             }
-            //}
         }
 
         if (firstSubmenu.getElements().size() > 0) {
@@ -255,17 +341,19 @@ public class homeScreenBean implements Serializable {
         this.coursesAsString = courses;
     }
 
+    /*
     public EntityManager getNew_em () {
         return new_em;
-    }
+    }*/
 
     public int getUserId () {
         return userId;
     }
 
+    /*
     public void setNew_em (EntityManager new_em){
         this.new_em = new_em;
-    }
+    }*/
 
     public ArrayList<String> getSelectedCoursesAsString () {
         return selectedCoursesAsString;
@@ -398,5 +486,13 @@ public class homeScreenBean implements Serializable {
 
     public void setRTCommentsToShow (ArrayList < ratingTextComment > RTCommentsToShow) {
         this.RTCommentsToShow = RTCommentsToShow;
+    }
+
+    public String[] getSelectedCoursesAsStringArray() {
+        return selectedCoursesAsStringArray;
+    }
+
+    public void setSelectedCoursesAsStringArray(String[] selectedCoursesAsStringArray) {
+        this.selectedCoursesAsStringArray = selectedCoursesAsStringArray;
     }
 }

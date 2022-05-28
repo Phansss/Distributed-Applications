@@ -32,39 +32,38 @@
                   <p:menu id="courseMenuModel" model="#{homeScreenBean.menumodel}">
                      <p:autoUpdate/>
                   </p:menu>
+               <!--
+            <h:form>
 
-                  <h1>Add a course</h1>
-                  <p:selectManyMenu id="courseMenu" value="#{homeScreenBean.selectedCoursesAsCourses}" converter="CourseConverter" var="c" filter="true" filterMatchMode="contains" showCheckbox="true" >
-                     <f:selectItems  value="#{homeScreenBean.coursesAsCourses}" var="course" itemLabel="#{course.name}" itemValue="#{course}"/>
-                     <!-- <p:ajax process="@this" event="click" listener="#{homeScreenBean.makeCourseMenuFake()}" update="courseMenuModel"/>
-                     <p:ajax process="@this" event="change" listener="#{homeScreenBean.makeCourseMenuFake()}" update="courseMenuModel"/>
-                     <p:ajax process="@this" event="dblclick" listener="#{homeScreenBean.makeCourseMenuFake()}" update="courseMenuModel"/>
-                     <p:ajax process="@this" event="input" listener="#{homeScreenBean.makeCourseMenuFake()}" update="courseMenuModel"/>
-                     <p:ajax process="@this" event="mouseup" listener="#{homeScreenBean.makeCourseMenuFake()}" update="courseMenuModel"/>-->
+
+                  <p:selectManyMenu id="courseMenu" value="#{homeScreenBean.selectedCoursesAsStringArray}" label="Courses" style="width: 15rem"
+                                        filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250"
+                                        dynamic="true">
+                     <f:selectItems value="#{homeScreenBean.coursesAsString}"/>
                   </p:selectManyMenu>
+            </h:form>
+               -->
+               <h1>Add a course</h1>
+                  <p:selectCheckboxMenu id="multiple" value="#{homeScreenBean.selectedCoursesAsString}" filter="true" filterMatchMode="contains" label="Courses" style="min-width: 15rem" panelStyle="width: 30rem" scrollHeight="250" multiple="true">
+                     <p:ajax event="change" update="textfield" listener="#{homeScreenBean.functionOnChange()}"/>
+                     <f:selectItems value="#{homeScreenBean.coursesAsString}"/>
+                     <p:column>
+                        <h:outputText value="#{c.name}"/>
+                     </p:column>
+                  </p:selectCheckboxMenu>
 
-
-                  <h:outputText id="textfield" value="#{homeScreenBean.selectedCoursesAsString.size()} + #{homeScreenBean.coursesAsString.size()}">
-                     <p:autoUpdate/>
-                  </h:outputText>
-
-                  <h:commandButton action = "#{homeScreenBean.makeCourseMenuFake()}" value = "ADD">
-                     <p:ajax event="click" update="textfield"/>
-                     <p:autoUpdate/>
-                  </h:commandButton><br/>
+                  <h:outputText id="textfield" value="#{homeScreenBean.selectedCoursesAsCourses.size()}"/>
                </h:form>
-
-
-
             </div>
          </div>
       </div>
       <div class="middle margin-10-left">
          <h1 class="text-on-background">Latest Comments</h1>
 
-         <h:form>
-
+         <h:form id="repeatform">
+            <p:autoUpdate/>
             <p:repeat value="#{homeScreenBean.RTCommentsToShow}" var="comment">
+
              <div class="commentBox white-background">
                <br/>
                   <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.madeBy.name} #{comment.madeBy.lastName}"/>
@@ -122,46 +121,25 @@
 
                <h3>Text</h3>
                <h:form>
-                  <h:inputTextarea value="#{homeScreenBean.text1}">
-                     <p:ajax event="keyup" update="textField" process="@this"/>
-                  </h:inputTextarea>
-                  <h:outputText id="textField" value="#{homeScreenBean.text1}"/>
+                  <h:inputTextarea value="#{homeScreenBean.text1}"/>
+
+                  <br/><br/>
+
+                  <h3>Rating</h3>
+                  <p:rating value="#{homeScreenBean.rating}"/>
+
+                  <br/><br/><br/><br/>
+
+                  <h3>About Professor</h3>
+                  <p:selectOneMenu id="professorsDropdown" value="#{homeScreenBean.chosenProfessor}">
+                     <p:autoUpdate/>
+                     <f:selectItems value="#{homeScreenBean.allProfessorNames}"/>
+                  </p:selectOneMenu>
+
+                  <br/><br/><br/>
+
+                  <h:commandButton action = "homeScreenBean" value = "ADD" actionListener="#{homeScreenBean.printRating()}"/><br/>
                </h:form>
-               <br/>
-               <br/>
-
-               <h3>Rating</h3>
-               <p:rating value="#{homeScreenBean.rating}" onRate="alert('You rated: ' + value)">
-                  <p:ajax event="rate" listener="#{homeScreenBean.handleRate}" update="msgs" />
-                  <p:ajax event="cancel" listener="#{homeScreenBean.handleCancel}" update="msgs" />
-               </p:rating>
-               <p:messages id="msgs"/>
-               <h:outputText id="ratingText" value="#{homeScreenBean.rating}">
-                  <p:autoUpdate/>
-               </h:outputText>
-               <h:commandButton value = "UPDATE">
-                  <p:ajax event="click" update="ratingText" listener="#{homeScreenBean.updateRating()}"/>
-               </h:commandButton><br/>
-
-               <br/>
-               <br/>
-               <br/>
-               <br/>
-
-               <h3>About Professor</h3>
-               <p:selectOneMenu id="professorsDropdown" value="#{homeScreenBean.chosenProfessor}">
-                  <f:selectItems value="#{homeScreenBean.allProfessorNames}"/>
-                  <p:ajax event="change" update="chosenprofoutput"/>
-               </p:selectOneMenu>
-
-               <h:outputText id="chosenprofoutput" value="#{homeScreenBean.chosenProfessor}"/>
-
-               <br/>
-               <br/>
-               <br/>
-
-               <h:commandButton action = "home" value = "ADD"/><br/>
-
             </div>
          </div>
       </div>

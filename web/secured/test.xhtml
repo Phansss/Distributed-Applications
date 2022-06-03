@@ -45,14 +45,9 @@
                -->
                <h1>Add a course</h1>
                   <p:selectCheckboxMenu id="multiple" value="#{homeScreenBean.selectedCoursesAsString}" filter="true" filterMatchMode="contains" label="Courses" style="min-width: 15rem" panelStyle="width: 30rem" scrollHeight="250" multiple="true">
-                     <p:ajax event="change" update="textfield" listener="#{homeScreenBean.functionOnChange()}"/>
+                     <p:ajax event="change" listener="#{homeScreenBean.functionOnChange()}"/>
                      <f:selectItems value="#{homeScreenBean.coursesAsString}"/>
-                     <p:column>
-                        <h:outputText value="#{c.name}"/>
-                     </p:column>
                   </p:selectCheckboxMenu>
-
-                  <h:outputText id="textfield" value="#{homeScreenBean.selectedCoursesAsCourses.size()}"/>
                </h:form>
             </div>
          </div>

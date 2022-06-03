@@ -16,10 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.*;
 import jakarta.transaction.RollbackException;
 import org.primefaces.event.RateEvent;
-import org.primefaces.model.menu.DefaultMenuItem;
-import org.primefaces.model.menu.DefaultMenuModel;
-import org.primefaces.model.menu.DefaultSubMenu;
-import org.primefaces.model.menu.MenuModel;
+import org.primefaces.model.menu.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -131,8 +128,6 @@ public class homeScreenBean implements Serializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        startup();
     }
 
     public homeScreenBean() {
@@ -154,42 +149,90 @@ public class homeScreenBean implements Serializable {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("DADemoPU");
         EntityManager new_em = factory.createEntityManager();
 
-        Query query = new_em.createQuery("SELECT c FROM CourseEntity c", CourseEntity.class);
-        List<CourseEntity> courseEntityList = (List<CourseEntity>) query.getResultList();
-        for (CourseEntity c : courseEntityList) {
+        // Retrieve all professors
+        allProfessors = new_em.createQuery("Select P from ProfessorEntity P", ProfessorEntity.class).getResultList();
+
+        // Retrieve all courses and put them in lists as CourseEntity and their names as Strings (this has to do with the PrimeFaces library)
+        for (CourseEntity c : new_em.createQuery("SELECT c FROM CourseEntity c", CourseEntity.class).getResultList()) {
             coursesAsString.add(c.getName());
             coursesAsCourses.add(c);
         }
-        System.out.print("Print CoursesAsString after query: " + coursesAsString);
+        //System.out.print("Print CoursesAsString after query: " + coursesAsString);
 
-        query = new_em.createQuery("SELECT P FROM PersonEntity P WHERE P.id = :userId", PersonEntity.class); // TODO: FILTER THIS ON THE LOGGED IN USER
-        query.setParameter("userId", userId);
-        List<PersonEntity> selectedCoursesEntityList = (List<PersonEntity>) query.getResultList();
-        loggedInUser = selectedCoursesEntityList.get(0);
+        // Have the EntityManager find the loggedin user
+        loggedInUser = new_em.find(PersonEntity.class, userId);
 
-        query = new_em.createQuery("Select P from ProfessorEntity P", ProfessorEntity.class);
-        allProfessors = (List<ProfessorEntity>) query.getResultList();
-
+        // For this user, select all the courses that they are following and again store them as CourseEntities and their names as Strings
         for (CourseEntity c : loggedInUser.getFollowingCourses()) {
             selectedCoursesAsString.add(c.getName());
             selectedCoursesAsCourses.add(c);
         }
-        System.out.print("Print selectedCoursesAsString after query: " + selectedCoursesAsString + ". SelectedCoursesAsCourses: " + selectedCoursesAsCourses);
+        //System.out.print("Print selectedCoursesAsString after query: " + selectedCoursesAsString + ". SelectedCoursesAsCourses: " + selectedCoursesAsCourses);
 
+        // Call the other functions that change on the followed courses changing
         functionOnChange();
     }
 
     public void functionOnChange(){
-        selectedCoursesAsCourses.clear();
-        for (CourseEntity c : coursesAsCourses
-        ) {
-            if(selectedCoursesAsString.contains(c.getName())) {
-                selectedCoursesAsCourses.add(c);
-            }
-        }
+        // TODO: Check of we dit niet kunnen verbeteren, eventueel door iets efficienter te schrijven om te checken of door primefaces toch met een List<CourseEntity> te doen werken
+        // PrimeFaces library seems to sometimes only work with either List<String> or sometimes List<Entity> so we have to write weird checks such as this
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("DADemoPU");
+        EntityManager new_em = factory.createEntityManager();
+        try {
+            List<CourseEntity> oldCourses = new ArrayList<>(selectedCoursesAsCourses);
+            System.out.println("Print oldCourses 1" + oldCourses);
+            CourseEntity changedCourse;
+            boolean trueforaddfalseforremove;
+            selectedCoursesAsCourses.clear();
+            System.out.println("Print oldCourses 2" + oldCourses);
+            System.out.println("Print selectedCourses" + selectedCoursesAsString);
+            for (CourseEntity c : coursesAsCourses
+            ) {
+                if(selectedCoursesAsString.contains(c.getName())) {
+                    selectedCoursesAsCourses.add(c);
+                    if(!oldCourses.contains(c)){
 
-        gatherProfessors();
-        makeCourseMenu();
+                        changedCourse = c;
+
+                        System.out.println("Print Created Relation between: " + changedCourse.getCourseId() + " and " + userId);
+
+                        ut.begin();
+                        new_em.joinTransaction();
+                        new_em.createNativeQuery("INSERT INTO jnd_course_person (course_fk, person_fk) VALUES (?,?)")
+                                .setParameter(1, changedCourse.getCourseId())
+                                .setParameter(2, userId)
+                                .executeUpdate();
+                        ut.commit();
+                    }
+                } else if (oldCourses.contains(c)) {
+                    changedCourse = c;
+
+                    System.out.println("Print Deleted Relation between: " + changedCourse.getCourseId() + " and " + userId);
+
+                    ut.begin();
+                    new_em.joinTransaction();
+                    new_em.createNativeQuery("DELETE FROM jnd_course_person WHERE (course_fk = ?) AND (person_fk = ?)")
+                            .setParameter(1, changedCourse.getCourseId())
+                            .setParameter(2, userId)
+                            .executeUpdate();
+                    ut.commit();
+                }
+            }
+            System.out.println("Print Selectedcourses as courses: " + selectedCoursesAsCourses);
+
+            gatherProfessors();
+            makeCourseMenu();
+        } catch (NotSupportedException e) {
+            throw new RuntimeException(e);
+        } catch (SystemException e) {
+            throw new RuntimeException(e);
+        } catch (HeuristicRollbackException e) {
+            throw new RuntimeException(e);
+        } catch (HeuristicMixedException e) {
+            throw new RuntimeException(e);
+        } catch (RollbackException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void gatherProfessors() {
@@ -198,11 +241,15 @@ public class homeScreenBean implements Serializable {
         TCommentsToShow = new ArrayList<textComment>();
         RTCommentsToShow = new ArrayList<ratingTextComment>();
 
+        // TODO: Zie of dit niet efficienter kan dan gelijk 20 ifs and for loops?
+        // For each selected course, look at which professors teach that course.
+        // For each professor, if they haven't been checked already, get all the comments that are about them
+        // For each comment, check which type of comment it is, and store it appropriately
         for (CourseEntity c : selectedCoursesAsCourses
         ) {
             for (ProfessorEntity p : c.getCourseGivenBy()
             ) {
-                System.out.println("¨Print Courses given by prof: " + p.getName());
+                //System.out.println("¨Print Courses given by prof: " + p.getName());
                 if (!allProfessorNames.contains(p.getName())) // TODO: Dit zorgt ervoor dat proffen met dezelfde naam er maar 1 keer inkomen. Misschien oplossen?
                 {
                     if (p.getCommentsAbout().size() > 0) {
@@ -225,19 +272,16 @@ public class homeScreenBean implements Serializable {
                 }
             }
         }
-        System.out.println("Print allProfessorNames: " + allProfessorNames);
-    }
-
-    public void printStatement(){
-        System.out.println("Print Statement");
+        //System.out.println("Print allProfessorNames: " + allProfessorNames);
     }
 
     public void makeCourseMenu () {
 
-        System.out.println("Print selectedCoursesAsString while making menu: " + selectedCoursesAsString);
+        //System.out.println("Print selectedCoursesAsString while making menu: " + selectedCoursesAsString);
 
         MenuModel menu = new DefaultMenuModel();
 
+        // Create labels for each different type of course in the submenu
         DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()
                 .label("1st Year")
                 .build();
@@ -256,30 +300,31 @@ public class homeScreenBean implements Serializable {
 
         DefaultMenuItem item;
 
-        for (CourseEntity c : coursesAsCourses
+        // For each selected course, make a new menu element and bind it to the proper submenu based on its enum value
+        for (CourseEntity c : selectedCoursesAsCourses
         ) {
-            if(selectedCoursesAsString.contains(c.getName())) {
-                item = DefaultMenuItem.builder()
-                        .value(c.getName())
-                        .build();
+            item = DefaultMenuItem.builder()
+                    .value(c.getName())
+                    .build();
 
-                switch (c.getEnumAsInt()) {
-                    case 1:
-                        firstSubmenu.getElements().add(item);
-                        break;
-                    case 2:
-                        secondSubmenu.getElements().add(item);
-                        break;
-                    case 3:
-                        thirdSubmenu.getElements().add(item);
-                        break;
-                    case 4:
-                        fourthSubmenu.getElements().add(item);
-                        break;
-                }
+            switch (c.getEnumAsInt()) {
+                case 1:
+                    firstSubmenu.getElements().add(item);
+                    break;
+                case 2:
+                    secondSubmenu.getElements().add(item);
+                    break;
+                case 3:
+                    thirdSubmenu.getElements().add(item);
+                    break;
+                case 4:
+                    fourthSubmenu.getElements().add(item);
+                    break;
+
             }
         }
 
+        // If an item is bound to a submenu element, show it on the menu
         if (firstSubmenu.getElements().size() > 0) {
             menu.getElements().add(firstSubmenu);
         }
@@ -292,11 +337,14 @@ public class homeScreenBean implements Serializable {
         if (fourthSubmenu.getElements().size() > 0) {
             menu.getElements().add(fourthSubmenu);
         }
+
+        // Set the new menumodel
         menumodel = menu;
     }
 
     public void makeCourseMenuFake () {
 
+        // TODO: DELETE
         MenuModel menu = new DefaultMenuModel();
 
         DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()
@@ -325,12 +373,9 @@ public class homeScreenBean implements Serializable {
     }
 
     public int testCounterFunc () {
+        // TODO: DELETE
         ++count;
         return count;
-    }
-
-    public void createTimeline () {
-        textComment comment;
     }
 
     public List<String> getCoursesAsString () {

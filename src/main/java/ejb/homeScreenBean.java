@@ -27,9 +27,13 @@ import java.util.logging.Logger;
 
 @Named
 @SessionScoped
-public class homeScreenBean implements Serializable {
+public class  homeScreenBean implements Serializable {
 
     @Inject
+
+    /*Returns the javax.transaction.UserTransaction interface to demarcate transactions.
+    Only session beans with bean-managed transaction (BMT) can use this method.
+    ALTERNATIE = CMT*/
     UserTransaction ut;
 
     ArrayList<ratingComment> RCommentsToShow;
@@ -37,35 +41,36 @@ public class homeScreenBean implements Serializable {
     ArrayList<ratingTextComment> RTCommentsToShow;
 
     private ArrayList<String> selectedCoursesAsString;
-
     private List<String> allProfessorNames;
-
     private List<ProfessorEntity> allProfessors;
-
     private List<CourseEntity> selectedCoursesAsCourses;
     private List<String> coursesAsString;
-
     private List<CourseEntity> coursesAsCourses;
-
     private MenuModel menumodel;
-
     private List<CommentEntity> commentsToShow;
-
     private PersonEntity loggedInUser;
-
     private int userId;
-
     int count = 0; // PLEASE DELETE
-
     private String text1;
-
     private Integer rating;
-
     private String chosenProfessor;
-
     private String[] selectedCoursesAsStringArray;
 
+    private Integer test = 1;
+
+    public homeScreenBean() {
+        System.out.println("Print Creating a homeScreenBean");
+
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        userId = (int) session.getAttribute("user");
+
+        startup();
+    }
+
+    //Opgeroepen van zodra op de add knop wordt gedrukt. Rating = 1_5, text is comment
     public void printRating()  {
+
+
         System.out.println("Print Rating: " + rating + ". Text1: " + text1 + ". Professor: " + chosenProfessor);
 
         String commentType;
@@ -130,15 +135,6 @@ public class homeScreenBean implements Serializable {
         }
     }
 
-    public homeScreenBean() {
-        System.out.println("Print Creating a homeScreenBean");
-
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        userId = (int) session.getAttribute("user");
-
-        startup();
-    }
-
     public void startup() {
         coursesAsString = new ArrayList<String>();
         coursesAsCourses = new ArrayList<CourseEntity>();
@@ -173,6 +169,17 @@ public class homeScreenBean implements Serializable {
         functionOnChange();
     }
 
+    public String testFunction() {
+        if (test == 1) {
+            test = 0;
+            return "even";
+        }
+        else {
+            test = 1;
+            return "odd";
+        }
+    }
+
     public void functionOnChange(){
         // TODO: Check of we dit niet kunnen verbeteren, eventueel door iets efficienter te schrijven om te checken of door primefaces toch met een List<CourseEntity> te doen werken
         // PrimeFaces library seems to sometimes only work with either List<String> or sometimes List<Entity> so we have to write weird checks such as this
@@ -190,12 +197,10 @@ public class homeScreenBean implements Serializable {
             ) {
                 if(selectedCoursesAsString.contains(c.getName())) {
                     selectedCoursesAsCourses.add(c);
+
                     if(!oldCourses.contains(c)){
-
                         changedCourse = c;
-
                         System.out.println("Print Created Relation between: " + changedCourse.getCourseId() + " and " + userId);
-
                         ut.begin();
                         new_em.joinTransaction();
                         new_em.createNativeQuery("INSERT INTO jnd_course_person (course_fk, person_fk) VALUES (?,?)")
@@ -204,11 +209,13 @@ public class homeScreenBean implements Serializable {
                                 .executeUpdate();
                         ut.commit();
                     }
-                } else if (oldCourses.contains(c)) {
+
+                }
+
+                //stel courses weggegaan. Courses niet in huidige selectie (Primefaces) maar wel in vorige selectie (query uit databank).
+                else if (oldCourses.contains(c)) {
                     changedCourse = c;
-
                     System.out.println("Print Deleted Relation between: " + changedCourse.getCourseId() + " and " + userId);
-
                     ut.begin();
                     new_em.joinTransaction();
                     new_em.createNativeQuery("DELETE FROM jnd_course_person WHERE (course_fk = ?) AND (person_fk = ?)")
@@ -236,7 +243,7 @@ public class homeScreenBean implements Serializable {
     }
 
     public void gatherProfessors() {
-        allProfessorNames = new ArrayList<String>();
+        allProfessorNames = new ArrayList<String>(); //wie geeft dit vak, welke professoren zijn dit?)
         RCommentsToShow = new ArrayList<ratingComment>();
         TCommentsToShow = new ArrayList<textComment>();
         RTCommentsToShow = new ArrayList<ratingTextComment>();
@@ -340,42 +347,6 @@ public class homeScreenBean implements Serializable {
 
         // Set the new menumodel
         menumodel = menu;
-    }
-
-    public void makeCourseMenuFake () {
-
-        // TODO: DELETE
-        MenuModel menu = new DefaultMenuModel();
-
-        DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()
-                .label("1st Year")
-                .build();
-
-        DefaultMenuItem item = DefaultMenuItem.builder()
-                .value("Bonjour")
-                .build();
-
-        firstSubmenu.getElements().add(item);
-        menu.getElements().add(firstSubmenu);
-        menumodel = menu;
-    }
-
-    public void addComment () {
-
-    }
-
-    public void addCourseFromMenu () {
-
-    }
-
-    public void removeCourseFromMenu () {
-
-    }
-
-    public int testCounterFunc () {
-        // TODO: DELETE
-        ++count;
-        return count;
     }
 
     public List<String> getCoursesAsString () {

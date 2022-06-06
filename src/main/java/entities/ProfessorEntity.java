@@ -15,10 +15,14 @@ public class ProfessorEntity {
     @Basic
     @Column(name = "name")
     private String name;
+
     @Basic
+    @Column(name = "surname")
+    private String surname;
+    @Transient
     @Column(name = "rating")
     private int rating;
-    @Basic
+    @Transient
     @Column(name = "amountOfRatings")
     private int amountOfRatings;
     @ManyToMany(mappedBy = "courseGivenBy")
@@ -26,6 +30,7 @@ public class ProfessorEntity {
 
     @OneToMany
     private List<CommentEntity> commentsAbout;
+
 
 
     public int getId() {

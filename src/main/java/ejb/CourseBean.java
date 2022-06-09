@@ -17,7 +17,4 @@ public class CourseBean {
     public CourseBean() {
     }
 
-    public List<CourseEntity> getAllCourses() {
-
-    }
 }

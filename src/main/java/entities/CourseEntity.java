@@ -7,8 +7,6 @@ import jakarta.faces.convert.Converter;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +30,7 @@ public class CourseEntity implements Serializable, Converter, Comparable<CourseE
     private String name;
     @ManyToMany
     @JoinTable(name = "jnd_course_person", joinColumns = @JoinColumn(name = "course_fk"), inverseJoinColumns = @JoinColumn(name = "person_fk"))
-    private List<PersonEntity> studentsInClass;
+    private List<PersonEntity> personsInCourse;
     @ManyToMany
     @JoinTable(name = "jnd_course_professor", joinColumns = @JoinColumn(name = "course_fk"), inverseJoinColumns = @JoinColumn(name = "professor_fk"))
     private List<ProfessorEntity> courseGivenBy;
@@ -63,12 +61,8 @@ public class CourseEntity implements Serializable, Converter, Comparable<CourseE
         this.courseId = courseId;
     }
 
-    public List<PersonEntity> getStudentsInClass() {
-        return studentsInClass;
-    }
-
-    public void setStudentsInClass(List<PersonEntity> studentsInClass) {
-        this.studentsInClass = studentsInClass;
+    public List<PersonEntity> getPersonsInCourse() {
+        return personsInCourse;
     }
 
     public List<ProfessorEntity> getCourseGivenBy() {
@@ -117,7 +111,7 @@ public class CourseEntity implements Serializable, Converter, Comparable<CourseE
         return "CourseEntity{" +
                 "courseId=" + courseId +
                 ", name='" + name + '\'' +
-                ", studentsInClass=" + studentsInClass +
+                ", personsInCourse=" + personsInCourse +
                 ", courseGivenBy=" + courseGivenBy +
                 ", yearOfCourse=" + yearOfCourse +
                 '}';

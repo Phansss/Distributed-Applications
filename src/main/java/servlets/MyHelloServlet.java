@@ -1,11 +1,17 @@
 package servlets;
 
-import ejb.MySessionBeanBean;
+import ejb.CourseServiceBean;
+import ejb.MySessionBean;
+import ejb.MySessionBean;
+import entities.CourseEntity;
 import entities.PersonEntity;
 import jakarta.ejb.EJB;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import java.util.List;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,10 +20,23 @@ import java.io.PrintWriter;
 public class MyHelloServlet extends HttpServlet {
 
     @EJB
-    MySessionBeanBean bean;
+    MySessionBean bean;
+
+    @EJB
+    CourseServiceBean courseServiceBean;
+    @PersistenceContext(unitName = "DADemoPU")
+    EntityManager em;
+
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("PRINT MSG: HTML");
+
+        courseServiceBean.getAllCourses().forEach(courseEntity -> {
+            System.out.println(courseEntity.getName());
+        });
+
         response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
         writer.println("<!DOCTYPE html>");

@@ -32,7 +32,8 @@ public class loginBean implements Serializable {
     EntityManager em;
     @Inject
     UserTransaction ut;
-
+    @Inject
+    AccountServiceBean accountServiceBean;
     int dbId;
 
     public loginBean() {
@@ -71,7 +72,19 @@ public class loginBean implements Serializable {
 
     // Try to add a user based on information they have entered. Return Success or No Success based on the outcome to control navigation
     public String add() {
-        boolean success = false;
+        System.out.println("entering add function");
+        try{
+
+            accountServiceBean.createAccount(getEmail(), getLastName(), getFirstName(), getPassword());
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            session.setAttribute("user", dbId);
+            return "success";
+        } catch (Exception e) {
+            System.out.println(e);
+            return "no success";
+        }
+        // TODO: MAKE SURE THE USER ID SET WHEN SIGNING UP
+        /*boolean success = false;
         if (firstName != null && lastName != null && email != null && password != null) {
             try {
 
@@ -93,11 +106,9 @@ public class loginBean implements Serializable {
             }
         }
         if (success) {
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            session.setAttribute("user", dbId); // TODO: MAKE SURE THE USER ID SET WHEN SIGNING UP
             return "success";
         } else
-            return "no success";
+            return "no success";*/
     }
 
     public String login() {

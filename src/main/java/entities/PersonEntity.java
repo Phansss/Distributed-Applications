@@ -24,7 +24,7 @@ public class PersonEntity {
     @Basic
     @Column(name = "password")
     private String password;
-    @ManyToMany(mappedBy = "studentsInClass")
+    @ManyToMany(mappedBy = "personsInCourse")
     private List<CourseEntity> followingCourses;
     @OneToMany(mappedBy = "madeBy")
     private List<CommentEntity> madeComments;

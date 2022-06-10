@@ -19,10 +19,13 @@ public class ProfessorEntity {
     @Basic
     @Column(name = "surname")
     private String surname;
-    @Transient
+
     @Column(name = "rating")
     private int rating;
-    @Transient
+
+    @Column(name = "test")
+    private int test;
+
     @Column(name = "amountOfRatings")
     private int amountOfRatings;
     @ManyToMany(mappedBy = "courseGivenBy")

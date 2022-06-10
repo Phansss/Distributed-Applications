@@ -2,12 +2,7 @@ package ejb;
 
 import entities.*;
 import jakarta.annotation.PostConstruct;
-import jakarta.ejb.PostActivate;
-import jakarta.ejb.Stateful;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -15,13 +10,12 @@ import jakarta.persistence.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.*;
 import jakarta.transaction.RollbackException;
-import org.primefaces.event.RateEvent;
 import org.primefaces.model.menu.*;
+
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.logging.Logger;
 
 // TODO: MAKE QUERYING ALL COURSES INTO A STATELESS BEAN
 
@@ -30,11 +24,12 @@ import java.util.logging.Logger;
 public class  homeScreenBean implements Serializable {
 
     @Inject
-
     /*Returns the javax.transaction.UserTransaction interface to demarcate transactions.
     Only session beans with bean-managed transaction (BMT) can use this method.
     ALTERNATIE = CMT*/
     UserTransaction ut;
+
+
 
     ArrayList<ratingComment> RCommentsToShow;
     ArrayList<textComment> TCommentsToShow;
@@ -48,7 +43,7 @@ public class  homeScreenBean implements Serializable {
     private List<CourseEntity> coursesAsCourses;
     private MenuModel menumodel;
     private List<CommentEntity> commentsToShow;
-    private PersonEntity loggedInUser;
+    private PersonEntity person;
     private int userId;
     int count = 0; // PLEASE DELETE
     private String text1;
@@ -58,24 +53,59 @@ public class  homeScreenBean implements Serializable {
 
     private Integer test = 1;
 
-    public homeScreenBean() {
-        System.out.println("Print Creating a homeScreenBean");
 
+    @PersistenceContext(unitName = "DADemoPU")
+    private EntityManager em;
+    @Inject
+    CourseServiceBean courseServiceBean;
+    @Inject
+    PersonServiceBean personServiceBean;
+
+    public homeScreenBean() {
+        System.out.println("PRINT MSG: Creating a homeScreenBean");
+        //System.out.println(courseServiceBean);
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         userId = (int) session.getAttribute("user");
+        System.out.println(userId);
+    }
 
-        startup();
+    @PostConstruct
+    public void initialize() {
+        System.out.println("PRINT MSG: Postconstruct");
+        coursesAsString = new ArrayList<String>();
+        coursesAsCourses = new ArrayList<CourseEntity>();
+        //All Courses
+        courseServiceBean.getAllCourses().forEach((course) -> {
+            coursesAsString.add(course.getName());
+            coursesAsCourses.add(course);
+        });
+        //Person-followed courses
+        for (CourseEntity c : personServiceBean.getPersonCourses(userId)) {
+            selectedCoursesAsString.add(c.getName());
+            selectedCoursesAsCourses.add(c);
+        }
+
+        // Call the other functions that change on the followed courses changing
+        functionOnChange();
+    }
+
+
+    public String testFunction() {
+        if (test == 1) {
+            test = 0;
+            return "even";
+        }
+        else {
+            test = 1;
+            return "odd";
+        }
     }
 
     //Opgeroepen van zodra op de add knop wordt gedrukt. Rating = 1_5, text is comment
     public void printRating()  {
-
-
         System.out.println("Print Rating: " + rating + ". Text1: " + text1 + ". Professor: " + chosenProfessor);
-
         String commentType;
         Integer chosenProfId = 0;
-
         if(rating == null){
             commentType = "T";
         }
@@ -84,14 +114,12 @@ public class  homeScreenBean implements Serializable {
         } else {
             commentType = "RT";
         }
-
         for (ProfessorEntity p: allProfessors
         ) {
             if(p.getName().equals(chosenProfessor)){
                 chosenProfId = p.getId();
             }
         }
-
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("DADemoPU");
         EntityManager new_em = factory.createEntityManager();
 
@@ -135,56 +163,9 @@ public class  homeScreenBean implements Serializable {
         }
     }
 
-    public void startup() {
-        coursesAsString = new ArrayList<String>();
-        coursesAsCourses = new ArrayList<CourseEntity>();
-        selectedCoursesAsCourses = new ArrayList<CourseEntity>();
-        selectedCoursesAsString = new ArrayList<String>();
-
-
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("DADemoPU");
-        EntityManager new_em = factory.createEntityManager();
-
-        // Retrieve all professors
-        allProfessors = new_em.createQuery("Select P from ProfessorEntity P", ProfessorEntity.class).getResultList();
-
-        // Retrieve all courses and put them in lists as CourseEntity and their names as Strings (this has to do with the PrimeFaces library)
-        for (CourseEntity c : new_em.createQuery("SELECT c FROM CourseEntity c", CourseEntity.class).getResultList()) {
-            coursesAsString.add(c.getName());
-            coursesAsCourses.add(c);
-        }
-        //System.out.print("Print CoursesAsString after query: " + coursesAsString);
-
-        // Have the EntityManager find the loggedin user
-        loggedInUser = new_em.find(PersonEntity.class, userId);
-
-        // For this user, select all the courses that they are following and again store them as CourseEntities and their names as Strings
-        for (CourseEntity c : loggedInUser.getFollowingCourses()) {
-            selectedCoursesAsString.add(c.getName());
-            selectedCoursesAsCourses.add(c);
-        }
-        //System.out.print("Print selectedCoursesAsString after query: " + selectedCoursesAsString + ". SelectedCoursesAsCourses: " + selectedCoursesAsCourses);
-
-        // Call the other functions that change on the followed courses changing
-        functionOnChange();
-    }
-
-    public String testFunction() {
-        if (test == 1) {
-            test = 0;
-            return "even";
-        }
-        else {
-            test = 1;
-            return "odd";
-        }
-    }
-
     public void functionOnChange(){
         // TODO: Check of we dit niet kunnen verbeteren, eventueel door iets efficienter te schrijven om te checken of door primefaces toch met een List<CourseEntity> te doen werken
         // PrimeFaces library seems to sometimes only work with either List<String> or sometimes List<Entity> so we have to write weird checks such as this
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("DADemoPU");
-        EntityManager new_em = factory.createEntityManager();
         try {
             List<CourseEntity> oldCourses = new ArrayList<>(selectedCoursesAsCourses);
             System.out.println("Print oldCourses 1" + oldCourses);
@@ -202,8 +183,8 @@ public class  homeScreenBean implements Serializable {
                         changedCourse = c;
                         System.out.println("Print Created Relation between: " + changedCourse.getCourseId() + " and " + userId);
                         ut.begin();
-                        new_em.joinTransaction();
-                        new_em.createNativeQuery("INSERT INTO jnd_course_person (course_fk, person_fk) VALUES (?,?)")
+                        em.joinTransaction();
+                        em.createNativeQuery("INSERT INTO jnd_course_person (course_fk, person_fk) VALUES (?,?)")
                                 .setParameter(1, changedCourse.getCourseId())
                                 .setParameter(2, userId)
                                 .executeUpdate();
@@ -217,8 +198,8 @@ public class  homeScreenBean implements Serializable {
                     changedCourse = c;
                     System.out.println("Print Deleted Relation between: " + changedCourse.getCourseId() + " and " + userId);
                     ut.begin();
-                    new_em.joinTransaction();
-                    new_em.createNativeQuery("DELETE FROM jnd_course_person WHERE (course_fk = ?) AND (person_fk = ?)")
+                    em.joinTransaction();
+                    em.createNativeQuery("DELETE FROM jnd_course_person WHERE (course_fk = ?) AND (person_fk = ?)")
                             .setParameter(1, changedCourse.getCourseId())
                             .setParameter(2, userId)
                             .executeUpdate();
@@ -349,6 +330,7 @@ public class  homeScreenBean implements Serializable {
         menumodel = menu;
     }
 
+
     public List<String> getCoursesAsString () {
         return coursesAsString;
     }
@@ -357,19 +339,9 @@ public class  homeScreenBean implements Serializable {
         this.coursesAsString = courses;
     }
 
-    /*
-    public EntityManager getNew_em () {
-        return new_em;
-    }*/
-
     public int getUserId () {
         return userId;
     }
-
-    /*
-    public void setNew_em (EntityManager new_em){
-        this.new_em = new_em;
-    }*/
 
     public ArrayList<String> getSelectedCoursesAsString () {
         return selectedCoursesAsString;
@@ -412,7 +384,7 @@ public class  homeScreenBean implements Serializable {
     }
 
     public String getUserFullName () {
-        return loggedInUser.getName() + " " + loggedInUser.getLastName();
+        return person.getName() + " " + person.getLastName();
     }
 
     public List<ProfessorEntity> getAllProfessors () {
@@ -423,12 +395,12 @@ public class  homeScreenBean implements Serializable {
         this.allProfessors = allProfessors;
     }
 
-    public PersonEntity getLoggedInUser () {
-        return loggedInUser;
+    public PersonEntity getPerson() {
+        return person;
     }
 
-    public void setLoggedInUser (PersonEntity loggedInUser){
-        this.loggedInUser = loggedInUser;
+    public void setPerson(PersonEntity person){
+        this.person = person;
     }
 
     public void setUserId ( int userId){

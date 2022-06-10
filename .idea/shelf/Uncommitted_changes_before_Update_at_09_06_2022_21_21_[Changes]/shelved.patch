@@ -1,0 +1,262 @@
+Index: src/main/java/ejb/homeScreenBean.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ejb;\r\n\r\nimport entities.*;\r\nimport jakarta.annotation.PostConstruct;\r\nimport jakarta.ejb.PostActivate;\r\nimport jakarta.ejb.Stateful;\r\nimport jakarta.enterprise.context.ApplicationScoped;\r\nimport jakarta.enterprise.context.RequestScoped;\r\nimport jakarta.enterprise.context.SessionScoped;\r\nimport jakarta.faces.bean.ManagedBean;\r\nimport jakarta.faces.context.FacesContext;\r\nimport jakarta.inject.Inject;\r\nimport jakarta.inject.Named;\r\nimport jakarta.persistence.*;\r\nimport jakarta.servlet.http.HttpSession;\r\nimport jakarta.transaction.*;\r\nimport jakarta.transaction.RollbackException;\r\nimport org.primefaces.event.RateEvent;\r\nimport org.primefaces.model.menu.*;\r\n\r\nimport java.io.Serializable;\r\nimport java.time.LocalDateTime;\r\nimport java.util.*;\r\nimport java.util.logging.Logger;\r\n\r\n// TODO: MAKE QUERYING ALL COURSES INTO A STATELESS BEAN\r\n\r\n@Named\r\n@SessionScoped\r\npublic class homeScreenBean implements Serializable {\r\n\r\n    @Inject\r\n    UserTransaction ut;\r\n\r\n    ArrayList<ratingComment> RCommentsToShow;\r\n    ArrayList<textComment> TCommentsToShow;\r\n    ArrayList<ratingTextComment> RTCommentsToShow;\r\n\r\n    private ArrayList<String> selectedCoursesAsString;\r\n\r\n    private List<String> allProfessorNames;\r\n\r\n    private List<ProfessorEntity> allProfessors;\r\n\r\n    private List<CourseEntity> selectedCoursesAsCourses;\r\n    private List<String> coursesAsString;\r\n\r\n    private List<CourseEntity> coursesAsCourses;\r\n\r\n    private MenuModel menumodel;\r\n\r\n    private List<CommentEntity> commentsToShow;\r\n\r\n    private PersonEntity loggedInUser;\r\n\r\n    private int userId;\r\n\r\n    int count = 0; // PLEASE DELETE\r\n\r\n    private String text1;\r\n\r\n    private Integer rating;\r\n\r\n    private String chosenProfessor;\r\n\r\n    private String[] selectedCoursesAsStringArray;\r\n\r\n    public void printRating()  {\r\n        System.out.println(\"Print Rating: \" + rating + \". Text1: \" + text1 + \". Professor: \" + chosenProfessor);\r\n\r\n        String commentType;\r\n        Integer chosenProfId = 0;\r\n\r\n        if(rating == null){\r\n            commentType = \"T\";\r\n        }\r\n        else if (Objects.equals(text1, \"\")) {\r\n            commentType = \"R\";\r\n        } else {\r\n            commentType = \"RT\";\r\n        }\r\n\r\n        for (ProfessorEntity p: allProfessors\r\n        ) {\r\n            if(p.getName().equals(chosenProfessor)){\r\n                chosenProfId = p.getId();\r\n            }\r\n        }\r\n\r\n        EntityManagerFactory factory = Persistence.createEntityManagerFactory(\"DADemoPU\");\r\n        EntityManager new_em = factory.createEntityManager();\r\n\r\n        try {\r\n            ut.begin();\r\n\r\n            new_em.joinTransaction();\r\n            new_em.createNativeQuery(\"INSERT INTO Comments (Comment_Type, Name, isAboutId, MadeById) VALUES (?,?,?,?)\")\r\n                    .setParameter(1, commentType)\r\n                    .setParameter(2, LocalDateTime.now())\r\n                    .setParameter(3, chosenProfId)\r\n                    .setParameter(4, userId)\r\n                    .executeUpdate();\r\n\r\n            new_em.createNativeQuery(\"INSERT INTO Professor_Comments (ProfessorEntity_id, commentsAbout_commentId) VALUES (?, (SELECT MAX(commentId) FROM Comments))\")\r\n                    .setParameter(1, chosenProfId)\r\n                    .executeUpdate();\r\n\r\n            String query;\r\n            switch (commentType){\r\n                case \"RT\":\r\n                    new_em.createNativeQuery(\"INSERT INTO ratingTextComment(commentId, Comment_Rating, Comment_Text) VALUES ((SELECT MAX(commentId) FROM Comments),?,?)\")\r\n                            .setParameter(1, rating)\r\n                            .setParameter(2, text1)\r\n                            .executeUpdate();\r\n                    break;\r\n                case \"T\":\r\n                    new_em.createNativeQuery(\"INSERT INTO textComment(commentId, Comment_Text) VALUES ((SELECT MAX(commentId) FROM Comments),?)\")\r\n                            .setParameter(1, text1)\r\n                            .executeUpdate();\r\n                    break;\r\n                case \"R\":\r\n                    new_em.createNativeQuery(\"INSERT INTO ratingComment(commentId, Comment_Rating) VALUES ((SELECT MAX(commentId) FROM Comments),?)\")\r\n                            .setParameter(1, rating)\r\n                            .executeUpdate();\r\n                    break;\r\n            }\r\n            ut.commit();\r\n        } catch (Exception e) {\r\n            throw new RuntimeException(e);\r\n        }\r\n    }\r\n\r\n    public homeScreenBean() {\r\n        System.out.println(\"Print Creating a homeScreenBean\");\r\n\r\n        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);\r\n        userId = (int) session.getAttribute(\"user\");\r\n\r\n        startup();\r\n    }\r\n\r\n    public void startup() {\r\n        coursesAsString = new ArrayList<String>();\r\n        coursesAsCourses = new ArrayList<CourseEntity>();\r\n        selectedCoursesAsCourses = new ArrayList<CourseEntity>();\r\n        selectedCoursesAsString = new ArrayList<String>();\r\n\r\n\r\n        EntityManagerFactory factory = Persistence.createEntityManagerFactory(\"DADemoPU\");\r\n        EntityManager new_em = factory.createEntityManager();\r\n\r\n        // Retrieve all professors\r\n        allProfessors = new_em.createQuery(\"Select P from ProfessorEntity P\", ProfessorEntity.class).getResultList();\r\n\r\n        // Retrieve all courses and put them in lists as CourseEntity and their names as Strings (this has to do with the PrimeFaces library)\r\n        for (CourseEntity c : new_em.createQuery(\"SELECT c FROM CourseEntity c\", CourseEntity.class).getResultList()) {\r\n            coursesAsString.add(c.getName());\r\n            coursesAsCourses.add(c);\r\n        }\r\n        //System.out.print(\"Print CoursesAsString after query: \" + coursesAsString);\r\n\r\n        // Have the EntityManager find the loggedin user\r\n        loggedInUser = new_em.find(PersonEntity.class, userId);\r\n\r\n        // For this user, select all the courses that they are following and again store them as CourseEntities and their names as Strings\r\n        for (CourseEntity c : loggedInUser.getFollowingCourses()) {\r\n            selectedCoursesAsString.add(c.getName());\r\n            selectedCoursesAsCourses.add(c);\r\n        }\r\n        //System.out.print(\"Print selectedCoursesAsString after query: \" + selectedCoursesAsString + \". SelectedCoursesAsCourses: \" + selectedCoursesAsCourses);\r\n\r\n        // Call the other functions that change on the followed courses changing\r\n        functionOnChange();\r\n    }\r\n\r\n    public void functionOnChange(){\r\n        // TODO: Check of we dit niet kunnen verbeteren, eventueel door iets efficienter te schrijven om te checken of door primefaces toch met een List<CourseEntity> te doen werken\r\n        // PrimeFaces library seems to sometimes only work with either List<String> or sometimes List<Entity> so we have to write weird checks such as this\r\n        EntityManagerFactory factory = Persistence.createEntityManagerFactory(\"DADemoPU\");\r\n        EntityManager new_em = factory.createEntityManager();\r\n        try {\r\n            List<CourseEntity> oldCourses = new ArrayList<>(selectedCoursesAsCourses);\r\n            System.out.println(\"Print oldCourses 1\" + oldCourses);\r\n            CourseEntity changedCourse;\r\n            boolean trueforaddfalseforremove;\r\n            selectedCoursesAsCourses.clear();\r\n            System.out.println(\"Print oldCourses 2\" + oldCourses);\r\n            System.out.println(\"Print selectedCourses\" + selectedCoursesAsString);\r\n            for (CourseEntity c : coursesAsCourses\r\n            ) {\r\n                if(selectedCoursesAsString.contains(c.getName())) {\r\n                    selectedCoursesAsCourses.add(c);\r\n                    if(!oldCourses.contains(c)){\r\n\r\n                        changedCourse = c;\r\n\r\n                        System.out.println(\"Print Created Relation between: \" + changedCourse.getCourseId() + \" and \" + userId);\r\n\r\n                        ut.begin();\r\n                        new_em.joinTransaction();\r\n                        new_em.createNativeQuery(\"INSERT INTO jnd_course_person (course_fk, person_fk) VALUES (?,?)\")\r\n                                .setParameter(1, changedCourse.getCourseId())\r\n                                .setParameter(2, userId)\r\n                                .executeUpdate();\r\n                        ut.commit();\r\n                    }\r\n                } else if (oldCourses.contains(c)) {\r\n                    changedCourse = c;\r\n\r\n                    System.out.println(\"Print Deleted Relation between: \" + changedCourse.getCourseId() + \" and \" + userId);\r\n\r\n                    ut.begin();\r\n                    new_em.joinTransaction();\r\n                    new_em.createNativeQuery(\"DELETE FROM jnd_course_person WHERE (course_fk = ?) AND (person_fk = ?)\")\r\n                            .setParameter(1, changedCourse.getCourseId())\r\n                            .setParameter(2, userId)\r\n                            .executeUpdate();\r\n                    ut.commit();\r\n                }\r\n            }\r\n            System.out.println(\"Print Selectedcourses as courses: \" + selectedCoursesAsCourses);\r\n\r\n            gatherProfessors();\r\n            makeCourseMenu();\r\n        } catch (NotSupportedException e) {\r\n            throw new RuntimeException(e);\r\n        } catch (SystemException e) {\r\n            throw new RuntimeException(e);\r\n        } catch (HeuristicRollbackException e) {\r\n            throw new RuntimeException(e);\r\n        } catch (HeuristicMixedException e) {\r\n            throw new RuntimeException(e);\r\n        } catch (RollbackException e) {\r\n            throw new RuntimeException(e);\r\n        }\r\n    }\r\n\r\n    public void gatherProfessors() {\r\n        allProfessorNames = new ArrayList<String>();\r\n        RCommentsToShow = new ArrayList<ratingComment>();\r\n        TCommentsToShow = new ArrayList<textComment>();\r\n        RTCommentsToShow = new ArrayList<ratingTextComment>();\r\n\r\n        // TODO: Zie of dit niet efficienter kan dan gelijk 20 ifs and for loops?\r\n        // For each selected course, look at which professors teach that course.\r\n        // For each professor, if they haven't been checked already, get all the comments that are about them\r\n        // For each comment, check which type of comment it is, and store it appropriately\r\n        for (CourseEntity c : selectedCoursesAsCourses\r\n        ) {\r\n            for (ProfessorEntity p : c.getCourseGivenBy()\r\n            ) {\r\n                //System.out.println(\"¨Print Courses given by prof: \" + p.getName());\r\n                if (!allProfessorNames.contains(p.getName())) // TODO: Dit zorgt ervoor dat proffen met dezelfde naam er maar 1 keer inkomen. Misschien oplossen?\r\n                {\r\n                    if (p.getCommentsAbout().size() > 0) {\r\n                        for (CommentEntity d : p.getCommentsAbout()\r\n                        ) {\r\n                            switch (d.getClass().getSimpleName()) {\r\n                                case \"ratingComment\":\r\n                                    RCommentsToShow.add((ratingComment) d);\r\n                                    break;\r\n                                case \"textComment\":\r\n                                    TCommentsToShow.add((textComment) d);\r\n                                    break;\r\n                                case \"ratingTextComment\":\r\n                                    RTCommentsToShow.add((ratingTextComment) d);\r\n                                    break;\r\n                            }\r\n                        }\r\n                    }\r\n                    allProfessorNames.add(p.getName());\r\n                }\r\n            }\r\n        }\r\n        //System.out.println(\"Print allProfessorNames: \" + allProfessorNames);\r\n    }\r\n\r\n    public void makeCourseMenu () {\r\n\r\n        //System.out.println(\"Print selectedCoursesAsString while making menu: \" + selectedCoursesAsString);\r\n\r\n        MenuModel menu = new DefaultMenuModel();\r\n\r\n        // Create labels for each different type of course in the submenu\r\n        DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()\r\n                .label(\"1st Year\")\r\n                .build();\r\n\r\n        DefaultSubMenu secondSubmenu = DefaultSubMenu.builder()\r\n                .label(\"2nd Year\")\r\n                .build();\r\n\r\n        DefaultSubMenu thirdSubmenu = DefaultSubMenu.builder()\r\n                .label(\"3rd Year\")\r\n                .build();\r\n\r\n        DefaultSubMenu fourthSubmenu = DefaultSubMenu.builder()\r\n                .label(\"Master\")\r\n                .build();\r\n\r\n        DefaultMenuItem item;\r\n\r\n        // For each selected course, make a new menu element and bind it to the proper submenu based on its enum value\r\n        for (CourseEntity c : selectedCoursesAsCourses\r\n        ) {\r\n            item = DefaultMenuItem.builder()\r\n                    .value(c.getName())\r\n                    .build();\r\n\r\n            switch (c.getEnumAsInt()) {\r\n                case 1:\r\n                    firstSubmenu.getElements().add(item);\r\n                    break;\r\n                case 2:\r\n                    secondSubmenu.getElements().add(item);\r\n                    break;\r\n                case 3:\r\n                    thirdSubmenu.getElements().add(item);\r\n                    break;\r\n                case 4:\r\n                    fourthSubmenu.getElements().add(item);\r\n                    break;\r\n\r\n            }\r\n        }\r\n\r\n        // If an item is bound to a submenu element, show it on the menu\r\n        if (firstSubmenu.getElements().size() > 0) {\r\n            menu.getElements().add(firstSubmenu);\r\n        }\r\n        if (secondSubmenu.getElements().size() > 0) {\r\n            menu.getElements().add(secondSubmenu);\r\n        }\r\n        if (thirdSubmenu.getElements().size() > 0) {\r\n            menu.getElements().add(thirdSubmenu);\r\n        }\r\n        if (fourthSubmenu.getElements().size() > 0) {\r\n            menu.getElements().add(fourthSubmenu);\r\n        }\r\n\r\n        // Set the new menumodel\r\n        menumodel = menu;\r\n    }\r\n\r\n    public void makeCourseMenuFake () {\r\n\r\n        // TODO: DELETE\r\n        MenuModel menu = new DefaultMenuModel();\r\n\r\n        DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()\r\n                .label(\"1st Year\")\r\n                .build();\r\n\r\n        DefaultMenuItem item = DefaultMenuItem.builder()\r\n                .value(\"Bonjour\")\r\n                .build();\r\n\r\n        firstSubmenu.getElements().add(item);\r\n        menu.getElements().add(firstSubmenu);\r\n        menumodel = menu;\r\n    }\r\n\r\n    public void addComment () {\r\n\r\n    }\r\n\r\n    public void addCourseFromMenu () {\r\n\r\n    }\r\n\r\n    public void removeCourseFromMenu () {\r\n\r\n    }\r\n\r\n    public int testCounterFunc () {\r\n        // TODO: DELETE\r\n        ++count;\r\n        return count;\r\n    }\r\n\r\n    public List<String> getCoursesAsString () {\r\n        return coursesAsString;\r\n    }\r\n\r\n    public void setCoursesAsString (List < String > courses) {\r\n        this.coursesAsString = courses;\r\n    }\r\n\r\n    /*\r\n    public EntityManager getNew_em () {\r\n        return new_em;\r\n    }*/\r\n\r\n    public int getUserId () {\r\n        return userId;\r\n    }\r\n\r\n    /*\r\n    public void setNew_em (EntityManager new_em){\r\n        this.new_em = new_em;\r\n    }*/\r\n\r\n    public ArrayList<String> getSelectedCoursesAsString () {\r\n        return selectedCoursesAsString;\r\n    }\r\n\r\n    public void setSelectedCoursesAsString (ArrayList < String > selectedCoursesAsString) {\r\n        this.selectedCoursesAsString = selectedCoursesAsString;\r\n    }\r\n\r\n    public List<CourseEntity> getSelectedCoursesAsCourses () {\r\n        return selectedCoursesAsCourses;\r\n    }\r\n\r\n    public void setSelectedCoursesAsCourses (List < CourseEntity > selectedCoursesAsCourses) {\r\n        this.selectedCoursesAsCourses = selectedCoursesAsCourses;\r\n    }\r\n\r\n    public MenuModel getMenumodel () {\r\n        return menumodel;\r\n    }\r\n\r\n    public void setMenumodel (MenuModel menumodel){\r\n        this.menumodel = menumodel;\r\n    }\r\n\r\n    public List<CommentEntity> getCommentsToShow () {\r\n        return commentsToShow;\r\n    }\r\n\r\n    public void setCommentsToShow (List < CommentEntity > commentsToShow) {\r\n        this.commentsToShow = commentsToShow;\r\n    }\r\n\r\n    public List<String> getAllProfessorNames () {\r\n        return allProfessorNames;\r\n    }\r\n\r\n    public void setAllProfessorNames (List < String > allProfessorNames) {\r\n        this.allProfessorNames = allProfessorNames;\r\n    }\r\n\r\n    public String getUserFullName () {\r\n        return loggedInUser.getName() + \" \" + loggedInUser.getLastName();\r\n    }\r\n\r\n    public List<ProfessorEntity> getAllProfessors () {\r\n        return allProfessors;\r\n    }\r\n\r\n    public void setAllProfessors (List < ProfessorEntity > allProfessors) {\r\n        this.allProfessors = allProfessors;\r\n    }\r\n\r\n    public PersonEntity getLoggedInUser () {\r\n        return loggedInUser;\r\n    }\r\n\r\n    public void setLoggedInUser (PersonEntity loggedInUser){\r\n        this.loggedInUser = loggedInUser;\r\n    }\r\n\r\n    public void setUserId ( int userId){\r\n        this.userId = userId;\r\n    }\r\n\r\n    public int getCount () {\r\n        return count;\r\n    }\r\n\r\n    public void setCount ( int count){\r\n        this.count = count;\r\n    }\r\n\r\n    public List<CourseEntity> getCoursesAsCourses () {\r\n        return coursesAsCourses;\r\n    }\r\n\r\n    public void setCoursesAsCourses (List < CourseEntity > coursesAsCourses) {\r\n        this.coursesAsCourses = coursesAsCourses;\r\n    }\r\n\r\n    public String getText1 () {\r\n        return text1;\r\n    }\r\n\r\n    public void setText1 (String text1){\r\n        this.text1 = text1;\r\n    }\r\n\r\n    public Integer getRating () {\r\n        return rating;\r\n    }\r\n\r\n    public void setRating (Integer rating){\r\n        this.rating = rating;\r\n    }\r\n\r\n    /*public void onrate(RateEvent rateEvent){\r\n        this.rating = 3 + ((Integer) rateEvent.getRating());\r\n    }*/\r\n\r\n    public String getChosenProfessor () {\r\n        return chosenProfessor;\r\n    }\r\n\r\n    public void setChosenProfessor (String chosenProfessor){\r\n        this.chosenProfessor = chosenProfessor;\r\n    }\r\n\r\n\r\n    public ArrayList<ratingComment> getRCommentsToShow () {\r\n        return RCommentsToShow;\r\n    }\r\n\r\n    public void setRCommentsToShow (ArrayList < ratingComment > RCommentsToShow) {\r\n        this.RCommentsToShow = RCommentsToShow;\r\n    }\r\n\r\n    public ArrayList<textComment> getTCommentsToShow () {\r\n        return TCommentsToShow;\r\n    }\r\n\r\n    public void setTCommentsToShow (ArrayList < textComment > TCommentsToShow) {\r\n        this.TCommentsToShow = TCommentsToShow;\r\n    }\r\n\r\n    public ArrayList<ratingTextComment> getRTCommentsToShow () {\r\n        return RTCommentsToShow;\r\n    }\r\n\r\n    public void setRTCommentsToShow (ArrayList < ratingTextComment > RTCommentsToShow) {\r\n        this.RTCommentsToShow = RTCommentsToShow;\r\n    }\r\n\r\n    public String[] getSelectedCoursesAsStringArray() {\r\n        return selectedCoursesAsStringArray;\r\n    }\r\n\r\n    public void setSelectedCoursesAsStringArray(String[] selectedCoursesAsStringArray) {\r\n        this.selectedCoursesAsStringArray = selectedCoursesAsStringArray;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ejb/homeScreenBean.java b/src/main/java/ejb/homeScreenBean.java
+--- a/src/main/java/ejb/homeScreenBean.java	
++++ b/src/main/java/ejb/homeScreenBean.java	
+@@ -3,6 +3,7 @@
+ import entities.*;
+ import jakarta.annotation.PostConstruct;
+ import jakarta.ejb.PostActivate;
++import jakarta.ejb.Schedule;
+ import jakarta.ejb.Stateful;
+ import jakarta.enterprise.context.ApplicationScoped;
+ import jakarta.enterprise.context.RequestScoped;
+@@ -63,6 +64,8 @@
+ 
+     private String chosenProfessor;
+ 
++    private LocalDateTime currentTime;
++
+     private String[] selectedCoursesAsStringArray;
+ 
+     public void printRating()  {
+@@ -71,6 +74,7 @@
+         String commentType;
+         Integer chosenProfId = 0;
+ 
++        // TODO: make sure it is any kind of comment (rating not null AND text 1 is empty)
+         if(rating == null){
+             commentType = "T";
+         }
+@@ -105,7 +109,6 @@
+                     .setParameter(1, chosenProfId)
+                     .executeUpdate();
+ 
+-            String query;
+             switch (commentType){
+                 case "RT":
+                     new_em.createNativeQuery("INSERT INTO ratingTextComment(commentId, Comment_Rating, Comment_Text) VALUES ((SELECT MAX(commentId) FROM Comments),?,?)")
+@@ -146,7 +149,7 @@
+         selectedCoursesAsString = new ArrayList<String>();
+ 
+ 
+-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("DADemoPU");
++        EntityManagerFactory factory = Persistence.createEntityManagerFactory("DADemoPU"); // TODO: DELETE
+         EntityManager new_em = factory.createEntityManager();
+ 
+         // Retrieve all professors
+@@ -167,7 +170,6 @@
+             selectedCoursesAsString.add(c.getName());
+             selectedCoursesAsCourses.add(c);
+         }
+-        //System.out.print("Print selectedCoursesAsString after query: " + selectedCoursesAsString + ". SelectedCoursesAsCourses: " + selectedCoursesAsCourses);
+ 
+         // Call the other functions that change on the followed courses changing
+         functionOnChange();
+@@ -177,42 +179,30 @@
+         // TODO: Check of we dit niet kunnen verbeteren, eventueel door iets efficienter te schrijven om te checken of door primefaces toch met een List<CourseEntity> te doen werken
+         // PrimeFaces library seems to sometimes only work with either List<String> or sometimes List<Entity> so we have to write weird checks such as this
+         EntityManagerFactory factory = Persistence.createEntityManagerFactory("DADemoPU");
+-        EntityManager new_em = factory.createEntityManager();
++        EntityManager new_em = factory.createEntityManager(); // TODO/ DELETE
++
+         try {
+             List<CourseEntity> oldCourses = new ArrayList<>(selectedCoursesAsCourses);
+-            System.out.println("Print oldCourses 1" + oldCourses);
+-            CourseEntity changedCourse;
+-            boolean trueforaddfalseforremove;
+             selectedCoursesAsCourses.clear();
+-            System.out.println("Print oldCourses 2" + oldCourses);
+             System.out.println("Print selectedCourses" + selectedCoursesAsString);
+             for (CourseEntity c : coursesAsCourses
+             ) {
+                 if(selectedCoursesAsString.contains(c.getName())) {
+                     selectedCoursesAsCourses.add(c);
+                     if(!oldCourses.contains(c)){
+-
+-                        changedCourse = c;
+-
+-                        System.out.println("Print Created Relation between: " + changedCourse.getCourseId() + " and " + userId);
+-
+                         ut.begin();
+                         new_em.joinTransaction();
+                         new_em.createNativeQuery("INSERT INTO jnd_course_person (course_fk, person_fk) VALUES (?,?)")
+-                                .setParameter(1, changedCourse.getCourseId())
++                                .setParameter(1, c.getCourseId())
+                                 .setParameter(2, userId)
+                                 .executeUpdate();
+                         ut.commit();
+                     }
+                 } else if (oldCourses.contains(c)) {
+-                    changedCourse = c;
+-
+-                    System.out.println("Print Deleted Relation between: " + changedCourse.getCourseId() + " and " + userId);
+-
+                     ut.begin();
+                     new_em.joinTransaction();
+                     new_em.createNativeQuery("DELETE FROM jnd_course_person WHERE (course_fk = ?) AND (person_fk = ?)")
+-                            .setParameter(1, changedCourse.getCourseId())
++                            .setParameter(1, c.getCourseId())
+                             .setParameter(2, userId)
+                             .executeUpdate();
+                     ut.commit();
+@@ -222,16 +212,8 @@
+ 
+             gatherProfessors();
+             makeCourseMenu();
+-        } catch (NotSupportedException e) {
+-            throw new RuntimeException(e);
+-        } catch (SystemException e) {
+-            throw new RuntimeException(e);
+-        } catch (HeuristicRollbackException e) {
+-            throw new RuntimeException(e);
+-        } catch (HeuristicMixedException e) {
+-            throw new RuntimeException(e);
+-        } catch (RollbackException e) {
+-            throw new RuntimeException(e);
++        } catch (Exception e) {
++            System.out.println(e);
+         }
+     }
+ 
+@@ -342,42 +324,6 @@
+         menumodel = menu;
+     }
+ 
+-    public void makeCourseMenuFake () {
+-
+-        // TODO: DELETE
+-        MenuModel menu = new DefaultMenuModel();
+-
+-        DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()
+-                .label("1st Year")
+-                .build();
+-
+-        DefaultMenuItem item = DefaultMenuItem.builder()
+-                .value("Bonjour")
+-                .build();
+-
+-        firstSubmenu.getElements().add(item);
+-        menu.getElements().add(firstSubmenu);
+-        menumodel = menu;
+-    }
+-
+-    public void addComment () {
+-
+-    }
+-
+-    public void addCourseFromMenu () {
+-
+-    }
+-
+-    public void removeCourseFromMenu () {
+-
+-    }
+-
+-    public int testCounterFunc () {
+-        // TODO: DELETE
+-        ++count;
+-        return count;
+-    }
+-
+     public List<String> getCoursesAsString () {
+         return coursesAsString;
+     }
+@@ -386,20 +332,10 @@
+         this.coursesAsString = courses;
+     }
+ 
+-    /*
+-    public EntityManager getNew_em () {
+-        return new_em;
+-    }*/
+-
+     public int getUserId () {
+         return userId;
+     }
+ 
+-    /*
+-    public void setNew_em (EntityManager new_em){
+-        this.new_em = new_em;
+-    }*/
+-
+     public ArrayList<String> getSelectedCoursesAsString () {
+         return selectedCoursesAsString;
+     }
+@@ -408,7 +344,7 @@
+         this.selectedCoursesAsString = selectedCoursesAsString;
+     }
+ 
+-    public List<CourseEntity> getSelectedCoursesAsCourses () {
++    public List<CourseEntity> getSelectedCoursesAsCourses() {
+         return selectedCoursesAsCourses;
+     }
+ 
+@@ -496,10 +432,6 @@
+         this.rating = rating;
+     }
+ 
+-    /*public void onrate(RateEvent rateEvent){
+-        this.rating = 3 + ((Integer) rateEvent.getRating());
+-    }*/
+-
+     public String getChosenProfessor () {
+         return chosenProfessor;
+     }
+@@ -540,4 +472,12 @@
+     public void setSelectedCoursesAsStringArray(String[] selectedCoursesAsStringArray) {
+         this.selectedCoursesAsStringArray = selectedCoursesAsStringArray;
+     }
++
++    public LocalDateTime getCurrentTime() {
++        return currentTime;
++    }
++
++    public void setCurrentTime(LocalDateTime currentTime) {
++        this.currentTime = currentTime;
++    }
+ }
+Index: src/main/java/interceptors/loggingInterceptor.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/interceptors/loggingInterceptor.java b/src/main/java/interceptors/loggingInterceptor.java
+new file mode 100644
+--- /dev/null	
++++ b/src/main/java/interceptors/loggingInterceptor.java	
+@@ -0,0 +1,10 @@
++package interceptors;
++
++import javax.interceptor.AroundInvoke;
++
++public class loggingInterceptor {
++
++    @AroundInvoke
++    public
++
++}
+Index: web/resources/css/styles.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>.background {\r\n    background: rgb(100,149,237);\r\n    background: linear-gradient(90deg, rgba(100,149,237,1) 0%, rgba(0,212,255,1) 100%);\r\n}\r\n\r\n* {\r\n    font-family: \"Arial\", sans-serif;\r\n}\r\n\r\n.timeText{\r\n    float: right;\r\n    font-size: small;\r\n    color: darkgrey\r\n}\r\n\r\nhtml, body{\r\n    height:100%\r\n}\r\n\r\nbody{\r\n    min-height: 100%;\r\n}\r\n\r\nh1, h2{\r\n    font-family: \"Montserrat\", serif;\r\n}\r\n\r\nh3, h4, p, a, b {\r\n    font-family: \"Arial\", sans-serif;\r\n    margin: 0;\r\n}\r\n\r\n.leftLoginColumn{\r\n    left: 15%;\r\n}\r\n\r\n.rightLoginColumn{\r\n    right: 15%;\r\n}\r\n\r\n.LoginColumn{\r\n    min-height: 90%;\r\n    width: 30%;\r\n    background-color: white;\r\n    border-radius: 4px;\r\n    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.4);\r\n}\r\n\r\n.white-background {\r\n    background-color: white;\r\n    border-radius: 4px;\r\n    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.4);\r\n    margin: 4px;\r\n}\r\n\r\n.text-on-background{\r\n    color: white;\r\n    text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.4);\r\n}\r\n\r\n.vertical-center {\r\n    margin: 0;\r\n    position: absolute;\r\n    top: 50%;\r\n    -ms-transform: translateY(-50%);\r\n    transform: translateY(-50%);\r\n}\r\n\r\n.loginForm {\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 15%;\r\n    width: 70%;\r\n    -ms-transform: translateY(-50%);\r\n    transform: translateY(-50%);\r\n    margin: auto;\r\n}\r\n\r\n\r\n/* Clear floats after the columns */\r\n.row:after {\r\n    content: \"\";\r\n    display: table;\r\n    clear: both;\r\n}\r\n\r\n.left{\r\n    width: 25%;\r\n    float: left;\r\n    height: 200vh;\r\n}\r\n\r\n.right{\r\n    width: 25%;\r\n    float: right;\r\n    height: 200vh;\r\n}\r\n\r\n.sticky{\r\n    position: sticky;\r\n    top: 0;\r\n}\r\n\r\n.middle {\r\n    width: 48%;\r\n    float: left;\r\n    height: 92vh;\r\n}\r\n\r\n.header {\r\n    margin: 0;\r\n    padding: 15px;\r\n    background: white;\r\n\r\n    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.6), 0 0 20px 0 rgba(0, 0, 0, 0.4);\r\n}\r\n\r\ninput[type=text], input[type=password], select {\r\n    width: 100%;\r\n    padding: 12px 20px;\r\n    margin: 8px 0;\r\n    display: inline-block;\r\n    border: 1px solid #ccc;\r\n    border-radius: 4px;\r\n    box-sizing: border-box;\r\n}\r\n\r\ntextarea {\r\n    width: 80%;\r\n    padding: 12px 20px;\r\n    margin: 8px 0;\r\n    display: inline-block;\r\n    border: 1px solid #ccc;\r\n    border-radius: 4px;\r\n    box-sizing: border-box;\r\n}\r\n\r\ninput[type=submit] {\r\n    width: 100%;\r\n    background-color: #EDBC64;\r\n    color: black;\r\n    padding: 14px 20px;\r\n    margin: 8px 0;\r\n    border: none;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n    font-weight: bold;\r\n}\r\n\r\ninput[type=submit]:hover {\r\n    background-color: #bd9546;\r\n}\r\n\r\n.margin-10-left{\r\n    margin-left: 10px;\r\n    padding: 1px 10px 10px 10px;\r\n}\r\n\r\n.margin-10-right{\r\n    margin-right: 10px;\r\n    padding: 1px 10px 10px 10px;\r\n}\r\n\r\n.commentBox{\r\n    width: 100%;\r\n    height: auto;\r\n    padding: 0 5px 0 5px;\r\n}\r\n\r\n.ui-menu{\r\n    width: 90%;\r\n    border: none;\r\n    border-radius: 0;\r\n}\r\n\r\n\r\n\r\n/*\r\n\r\nFOR THE STAR RATING SYSTEM\r\n\r\n*/\r\n\r\n.rate {\r\n    float: left;\r\n    height: 46px;\r\n    padding: 0 10px;\r\n}\r\n.rate:not(:checked) > input {\r\n    position:absolute;\r\n    top:-9999px;\r\n}\r\n.rate:not(:checked) > label {\r\n    float:right;\r\n    width:1em;\r\n    overflow:hidden;\r\n    white-space:nowrap;\r\n    cursor:pointer;\r\n    font-size:30px;\r\n    color:#ccc;\r\n}\r\n.rate:not(:checked) > label:before {\r\n    content: '★ ';\r\n}\r\n.rate > input:checked ~ label {\r\n    color: #ffc700;\r\n}\r\n.rate:not(:checked) > label:hover,\r\n.rate:not(:checked) > label:hover ~ label {\r\n    color: #deb217;\r\n}\r\n.rate > input:checked + label:hover,\r\n.rate > input:checked + label:hover ~ label,\r\n.rate > input:checked ~ label:hover,\r\n.rate > input:checked ~ label:hover ~ label,\r\n.rate > label:hover ~ input:checked ~ label {\r\n    color: #c59b08;\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/web/resources/css/styles.css b/web/resources/css/styles.css
+--- a/web/resources/css/styles.css	
++++ b/web/resources/css/styles.css	
+@@ -22,7 +22,7 @@
+ }
+ 
+ h1, h2{
+-    font-family: "Montserrat", serif;
++    font-family: "Lato", serif;
+ }
+ 
+ h3, h4, p, a, b {

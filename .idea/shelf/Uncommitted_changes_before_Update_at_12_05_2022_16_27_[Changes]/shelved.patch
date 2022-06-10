@@ -1,0 +1,125 @@
+Index: src/main/java/servlets/MyHelloServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package servlets;\r\n\r\nimport ejb.MySessionBeanBean;\r\nimport jakarta.ejb.EJB;\r\nimport jakarta.servlet.*;\r\nimport jakarta.servlet.http.*;\r\nimport jakarta.servlet.annotation.*;\r\n\r\nimport java.io.IOException;\r\nimport java.io.PrintWriter;\r\n\r\n@WebServlet(name = \"MyHelloServlet\", urlPatterns = \"/hello\")\r\npublic class MyHelloServlet extends HttpServlet {\r\n\r\n    @EJB\r\n    MySessionBeanBean bean;\r\n\r\n    @Override\r\n    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {\r\n        response.setContentType(\"text/html\");\r\n        PrintWriter writer = response.getWriter();\r\n        writer.println(\"<!DOCTYPE html>\");\r\n        writer.println(\"<html><head><title> DA demo </title><head>\\n<body>\");\r\n        writer.println(\"<h1>Hello</h1>\");\r\n        // Test\r\n        writer.println(\"Test\");\r\n        writer.println(\"Test 2\");\r\n        writer.println(\"<p>The result of 15 + 32 = \" + bean.doSomethingReallyDifficult(15,32) + \".</p>\");\r\n        writer.println(\"</body>\\n</html>\");\r\n\r\n    }\r\n\r\n    @Override\r\n    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/servlets/MyHelloServlet.java b/src/main/java/servlets/MyHelloServlet.java
+--- a/src/main/java/servlets/MyHelloServlet.java	(revision 7288dcb817b4fdb29f6cb934f78255e91e97c2e7)
++++ b/src/main/java/servlets/MyHelloServlet.java	(date 1652364011691)
+@@ -2,6 +2,7 @@
+ 
+ import ejb.MySessionBeanBean;
+ import jakarta.ejb.EJB;
++import jakarta.ejb.Schedule;
+ import jakarta.servlet.*;
+ import jakarta.servlet.http.*;
+ import jakarta.servlet.annotation.*;
+Index: .idea/dataSources.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DataSourceManagerImpl\" format=\"xml\" multifile-model=\"true\">\r\n    <data-source source=\"LOCAL\" name=\"docker@localhost\" uuid=\"03711afd-7c99-47f7-95e5-bdf8964af757\">\r\n      <driver-ref>mysql.8</driver-ref>\r\n      <synchronize>true</synchronize>\r\n      <remarks>docker for application</remarks>\r\n      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>\r\n      <jdbc-url>jdbc:mysql://localhost:3306/hellodemo</jdbc-url>\r\n      <working-dir>$ProjectFileDir$</working-dir>\r\n    </data-source>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.xml b/.idea/dataSources.xml
+--- a/.idea/dataSources.xml	(revision 7288dcb817b4fdb29f6cb934f78255e91e97c2e7)
++++ b/.idea/dataSources.xml	(date 1652365150347)
+@@ -1,10 +1,9 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+-    <data-source source="LOCAL" name="docker@localhost" uuid="03711afd-7c99-47f7-95e5-bdf8964af757">
++    <data-source source="LOCAL" name="hellodemo@localhost" uuid="fa530586-9825-4d25-af34-3808e3ee9998">
+       <driver-ref>mysql.8</driver-ref>
+       <synchronize>true</synchronize>
+-      <remarks>docker for application</remarks>
+       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+       <jdbc-url>jdbc:mysql://localhost:3306/hellodemo</jdbc-url>
+       <working-dir>$ProjectFileDir$</working-dir>
+Index: src/main/java/ejb/TimerBean.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ejb/TimerBean.java b/src/main/java/ejb/TimerBean.java
+new file mode 100644
+--- /dev/null	(date 1652364395260)
++++ b/src/main/java/ejb/TimerBean.java	(date 1652364395260)
+@@ -0,0 +1,16 @@
++package ejb;
++
++import jakarta.annotation.PostConstruct;
++import jakarta.annotation.Resource;
++import jakarta.ejb.*;
++
++@Startup
++@Singleton
++public class TimerBean {
++
++    @Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
++    public void doTimer(){
++        System.out.println("Tick Tock");
++    }
++
++}
+\ No newline at end of file
+Index: src/main/java/ejb/MySessionBeanBean.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ejb;\r\n\r\n@jakarta.ejb.Stateless(name = \"MySessionBeanEJB\")\r\npublic class MySessionBeanBean {\r\n    public MySessionBeanBean() {\r\n    }\r\n\r\n    public int doSomethingReallyDifficult(int a, int b) {\r\n        return  a + b;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ejb/MySessionBeanBean.java b/src/main/java/ejb/MySessionBeanBean.java
+--- a/src/main/java/ejb/MySessionBeanBean.java	(revision 7288dcb817b4fdb29f6cb934f78255e91e97c2e7)
++++ b/src/main/java/ejb/MySessionBeanBean.java	(date 1652363835111)
+@@ -1,11 +1,18 @@
+ package ejb;
+ 
++import jakarta.ejb.Schedule;
++
++import java.sql.Time;
++import java.time.LocalDateTime;
++
+ @jakarta.ejb.Stateless(name = "MySessionBeanEJB")
+ public class MySessionBeanBean {
+     public MySessionBeanBean() {
+     }
+ 
+-    public int doSomethingReallyDifficult(int a, int b) {
+-        return  a + b;
++    @Schedule(second = "*/2")
++    public LocalDateTime doSomethingReallyDifficult(int a, int b) {
++        System.out.println("Tick Tock");
++        return LocalDateTime.now();
+     }
+ }
+Index: src/main/resources/META-INF/persistence.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n<persistence xmlns=\"https://jakarta.ee/xml/ns/persistence\"\r\n             xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n             xsi:schemaLocation=\"https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd\"\r\n             version=\"3.0\">\r\n\r\n    <persistence-unit name=\"DADemoPU\">\r\n        <jta-data-source>jdbc/mysqlres</jta-data-source>\r\n        <class>entities.CourseEntity</class>\r\n        <class>entities.PersonEntity</class>\r\n        <class>entities.CommentEntity</class>\r\n        <class>entities.ProfessorEntity</class>\r\n        <class>entities.ratingComment</class>\r\n        <class>entities.ratingTextComment</class>\r\n        <class>entities.textComment</class>\r\n        <properties>\r\n            <property name=\"jakarta.persistence.schema-generation.database.action\" value=\"drop-and-create\"/>\r\n        </properties>\r\n    </persistence-unit>\r\n</persistence>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/META-INF/persistence.xml b/src/main/resources/META-INF/persistence.xml
+--- a/src/main/resources/META-INF/persistence.xml	(revision 7288dcb817b4fdb29f6cb934f78255e91e97c2e7)
++++ b/src/main/resources/META-INF/persistence.xml	(date 1652364779680)
+@@ -5,14 +5,8 @@
+              version="3.0">
+ 
+     <persistence-unit name="DADemoPU">
+-        <jta-data-source>jdbc/mysqlres</jta-data-source>
+-        <class>entities.CourseEntity</class>
+-        <class>entities.PersonEntity</class>
+-        <class>entities.CommentEntity</class>
+-        <class>entities.ProfessorEntity</class>
+-        <class>entities.ratingComment</class>
+-        <class>entities.ratingTextComment</class>
+-        <class>entities.textComment</class>
++        <jta-data-source>jdbc/mysql/res</jta-data-source>
++        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+         <properties>
+             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+         </properties>

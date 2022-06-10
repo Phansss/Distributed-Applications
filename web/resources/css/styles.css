@@ -66,6 +66,31 @@ h3, h4, p, a, b {
     transform: translateY(-50%);
 }
 
+.horizontal-center {
+    margin: 0;
+    position: absolute;
+    left: 10%;
+    -ms-transform: translateX(-10%);
+    transform: translateX(-10%);
+}
+
+.wieiswieBox{
+    min-height: 60%;
+}
+
+.wieiswieLeftColumn{
+    max-width: 30%;
+    min-width: 20%;
+    max-height: 90%;
+    float: left;
+}
+.wieiswieRightColumn{
+    max-width: 80%;
+    min-width: 70%;
+    max-height: 90%;
+    float: right;
+}
+
 .loginForm {
     position: absolute;
     top: 50%;

@@ -229,15 +229,7 @@ public class  homeScreenBean implements Serializable {
 
             gatherProfessors();
             makeCourseMenu();
-        } catch (NotSupportedException e) {
-            throw new RuntimeException(e);
-        } catch (SystemException e) {
-            throw new RuntimeException(e);
-        } catch (HeuristicRollbackException e) {
-            throw new RuntimeException(e);
-        } catch (HeuristicMixedException e) {
-            throw new RuntimeException(e);
-        } catch (RollbackException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -347,6 +339,12 @@ public class  homeScreenBean implements Serializable {
 
         // Set the new menumodel
         menumodel = menu;
+    }
+
+    public String gotowieiswie(int id){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        session.setAttribute("wieiswie", id);
+        return "./secured/wieiswie.xhtml";
     }
 
     public List<String> getCoursesAsString () {

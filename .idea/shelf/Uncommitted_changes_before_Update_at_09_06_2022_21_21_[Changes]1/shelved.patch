@@ -1,0 +1,79 @@
+Index: src/main/java/ejb/loginBean.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ejb;\r\n\r\nimport java.io.Serializable;\r\nimport java.sql.Connection;\r\nimport java.sql.PreparedStatement;\r\nimport java.sql.ResultSet;\r\nimport java.sql.SQLException;\r\nimport java.util.List;\r\n\r\nimport entities.PersonEntity;\r\nimport jakarta.enterprise.context.SessionScoped;\r\nimport jakarta.faces.bean.ManagedBean;\r\nimport jakarta.faces.bean.RequestScoped;\r\nimport jakarta.faces.context.FacesContext;\r\nimport jakarta.inject.Inject;\r\nimport jakarta.persistence.EntityManager;\r\nimport jakarta.persistence.PersistenceContext;\r\nimport jakarta.persistence.Query;\r\nimport jakarta.servlet.http.HttpSession;\r\nimport jakarta.transaction.UserTransaction;\r\n\r\n@ManagedBean(name = \"loginBean\")\r\n@SessionScoped\r\npublic class loginBean implements Serializable {\r\n    private String firstName;\r\n    private String lastName;\r\n    private String email;\r\n    private String password;\r\n    private String dbPassword;\r\n    private String dbName;\r\n    @PersistenceContext(unitName = \"DADemoPU\")\r\n    EntityManager em;\r\n    @Inject\r\n    UserTransaction ut;\r\n\r\n    int dbId;\r\n\r\n    public loginBean() {\r\n        // SETUP DB CONNECTION\r\n    }\r\n    public String getDbPassword() {\r\n        return dbPassword;\r\n    }\r\n    public String getDbName() {\r\n        return dbName;\r\n    }\r\n    public String getFirstName() {\r\n        return firstName;\r\n    }\r\n    public void setFirstName(String name) {\r\n        this.firstName = name;\r\n    }\r\n    public String getLastName() {\r\n        return lastName;\r\n    }\r\n    public void setLastName(String lastName) {\r\n        this.lastName = lastName;\r\n    }\r\n    public String getEmail() {\r\n        return email;\r\n    }\r\n    public void setEmail(String email) {\r\n        this.email = email;\r\n    }\r\n    public String getPassword() {\r\n        return password;\r\n    }\r\n    public void setPassword(String password) {\r\n        this.password = password;\r\n    }\r\n\r\n    // Try to add a user based on information they have entered. Return Success or No Success based on the outcome to control navigation\r\n    public String add() {\r\n        boolean success = false;\r\n        if (firstName != null && lastName != null && email != null && password != null) {\r\n            try {\r\n\r\n                ut.begin();\r\n                em.joinTransaction();\r\n                em.createNativeQuery(\"INSERT INTO Person (name, lastname, email, password) VALUES (?,?,?,?)\")\r\n                        .setParameter(1, firstName)\r\n                        .setParameter(2, lastName)\r\n                        .setParameter(3, email)\r\n                        .setParameter(4, password)\r\n                        .executeUpdate();\r\n                ut.commit();\r\n\r\n                success = true;\r\n\r\n            } catch (Exception e) {\r\n                System.out.println(e);\r\n                firstName = e.toString();\r\n            }\r\n        }\r\n        if (success) {\r\n            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);\r\n            session.setAttribute(\"user\", dbId); // TODO: MAKE SURE THE USER ID SET WHEN SIGNING UP\r\n            return \"success\";\r\n        } else\r\n            return \"no success\";\r\n    }\r\n\r\n    public String login() {\r\n\r\n        Query query = em.createQuery(\"SELECT p FROM PersonEntity p WHERE p.email = :email AND p.password = :password\", PersonEntity.class);\r\n        query.setParameter(\"email\", email);\r\n        query.setParameter(\"password\", password);\r\n        List<PersonEntity> resultList = (List<PersonEntity>) query.getResultList();\r\n        for (PersonEntity p: resultList) {\r\n            dbName = p.getEmail();\r\n            dbPassword = p.getPassword();\r\n            dbId = p.getId();\r\n        }\r\n\r\n        if (email.equals(dbName) && password.equals(dbPassword)) {\r\n            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);\r\n            session.setAttribute(\"user\", dbId);\r\n            return \"success\";\r\n        } else\r\n            return \"no success\";\r\n        // TODO: MAKE THE USER ABLE TO SEE THAT THEY WROTE SOMETHING WRONG\r\n    }\r\n\r\n    public void logout() {\r\n        FacesContext.getCurrentInstance().getExternalContext()\r\n                .invalidateSession();\r\n        FacesContext.getCurrentInstance()\r\n                .getApplication().getNavigationHandler()\r\n                .handleNavigation(FacesContext.getCurrentInstance(), null, \"/index.xhtml\");\r\n    }\r\n\r\n    public void setDbPassword(String dbPassword) {\r\n        this.dbPassword = dbPassword;\r\n    }\r\n\r\n    public void setDbName(String dbName) {\r\n        this.dbName = dbName;\r\n    }\r\n\r\n    public EntityManager getEm() {\r\n        return em;\r\n    }\r\n\r\n    public void setEm(EntityManager em) {\r\n        this.em = em;\r\n    }\r\n\r\n    public UserTransaction getUt() {\r\n        return ut;\r\n    }\r\n\r\n    public void setUt(UserTransaction ut) {\r\n        this.ut = ut;\r\n    }\r\n\r\n    public int getDbId() {\r\n        return dbId;\r\n    }\r\n\r\n    public void setDbId(int dbId) {\r\n        this.dbId = dbId;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ejb/loginBean.java b/src/main/java/ejb/loginBean.java
+--- a/src/main/java/ejb/loginBean.java	
++++ b/src/main/java/ejb/loginBean.java	
+@@ -26,8 +26,7 @@
+     private String lastName;
+     private String email;
+     private String password;
+-    private String dbPassword;
+-    private String dbName;
++
+     @PersistenceContext(unitName = "DADemoPU")
+     EntityManager em;
+     @Inject
+@@ -38,12 +37,6 @@
+     public loginBean() {
+         // SETUP DB CONNECTION
+     }
+-    public String getDbPassword() {
+-        return dbPassword;
+-    }
+-    public String getDbName() {
+-        return dbName;
+-    }
+     public String getFirstName() {
+         return firstName;
+     }
+@@ -94,7 +87,7 @@
+         }
+         if (success) {
+             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+-            session.setAttribute("user", dbId); // TODO: MAKE SURE THE USER ID SET WHEN SIGNING UP
++            session.setAttribute("user", dbId);
+             return "success";
+         } else
+             return "no success";
+@@ -102,6 +95,9 @@
+ 
+     public String login() {
+ 
++        String dbPassword = "";
++        String dbName = "";
++
+         Query query = em.createQuery("SELECT p FROM PersonEntity p WHERE p.email = :email AND p.password = :password", PersonEntity.class);
+         query.setParameter("email", email);
+         query.setParameter("password", password);
+@@ -118,10 +114,9 @@
+             return "success";
+         } else
+             return "no success";
+-        // TODO: MAKE THE USER ABLE TO SEE THAT THEY WROTE SOMETHING WRONG
+     }
+ 
+-    public void logout() {
++    public void logout() { // TODO: add button in page
+         FacesContext.getCurrentInstance().getExternalContext()
+                 .invalidateSession();
+         FacesContext.getCurrentInstance()
+@@ -129,14 +124,6 @@
+                 .handleNavigation(FacesContext.getCurrentInstance(), null, "/index.xhtml");
+     }
+ 
+-    public void setDbPassword(String dbPassword) {
+-        this.dbPassword = dbPassword;
+-    }
+-
+-    public void setDbName(String dbName) {
+-        this.dbName = dbName;
+-    }
+-
+     public EntityManager getEm() {
+         return em;
+     }

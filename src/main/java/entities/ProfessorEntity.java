@@ -1,7 +1,11 @@
 package entities;
 
+import ejb.SingletonCacheBean;
 import jakarta.persistence.*;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.sql.Blob;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,9 +27,6 @@ public class ProfessorEntity {
     @Column(name = "rating")
     private int rating;
 
-    @Column(name = "test")
-    private int test;
-
     @Column(name = "amountOfRatings")
     private int amountOfRatings;
     @ManyToMany(mappedBy = "courseGivenBy")
@@ -34,7 +35,8 @@ public class ProfessorEntity {
     @OneToMany
     private List<CommentEntity> commentsAbout;
 
-
+    @Lob
+    private byte[] picture;
 
     public int getId() {
         return id;
@@ -95,5 +97,22 @@ public class ProfessorEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, rating, amountOfRatings, profGivesCourses, commentsAbout);
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public byte[] getPicture() {
+        SingletonCacheBean singleton = new SingletonCacheBean();
+        return (byte[]) singleton.getFromCache((long) id);
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 }

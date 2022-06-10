@@ -2,7 +2,12 @@ package ejb;
 
 import entities.*;
 import jakarta.annotation.PostConstruct;
+import jakarta.ejb.PostActivate;
+import jakarta.ejb.Stateful;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -10,12 +15,14 @@ import jakarta.persistence.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.*;
 import jakarta.transaction.RollbackException;
+import org.primefaces.event.RateEvent;
 import org.primefaces.model.menu.*;
 
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.logging.Logger;
 
 // TODO: MAKE QUERYING ALL COURSES INTO A STATELESS BEAN
 
@@ -24,6 +31,7 @@ import java.util.*;
 public class  homeScreenBean implements Serializable {
 
     @Inject
+
     /*Returns the javax.transaction.UserTransaction interface to demarcate transactions.
     Only session beans with bean-managed transaction (BMT) can use this method.
     ALTERNATIE = CMT*/
@@ -103,9 +111,13 @@ public class  homeScreenBean implements Serializable {
 
     //Opgeroepen van zodra op de add knop wordt gedrukt. Rating = 1_5, text is comment
     public void printRating()  {
+
+
         System.out.println("Print Rating: " + rating + ". Text1: " + text1 + ". Professor: " + chosenProfessor);
+
         String commentType;
         Integer chosenProfId = 0;
+
         if(rating == null){
             commentType = "T";
         }
@@ -114,12 +126,14 @@ public class  homeScreenBean implements Serializable {
         } else {
             commentType = "RT";
         }
+
         for (ProfessorEntity p: allProfessors
         ) {
             if(p.getName().equals(chosenProfessor)){
                 chosenProfId = p.getId();
             }
         }
+
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("DADemoPU");
         EntityManager new_em = factory.createEntityManager();
 
@@ -210,15 +224,7 @@ public class  homeScreenBean implements Serializable {
 
             gatherProfessors();
             makeCourseMenu();
-        } catch (NotSupportedException e) {
-            throw new RuntimeException(e);
-        } catch (SystemException e) {
-            throw new RuntimeException(e);
-        } catch (HeuristicRollbackException e) {
-            throw new RuntimeException(e);
-        } catch (HeuristicMixedException e) {
-            throw new RuntimeException(e);
-        } catch (RollbackException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -330,6 +336,11 @@ public class  homeScreenBean implements Serializable {
         menumodel = menu;
     }
 
+    public String gotowieiswie(int id){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        session.setAttribute("wieiswie", id);
+        return "./secured/wieiswie.xhtml";
+    }
 
     public List<String> getCoursesAsString () {
         return coursesAsString;

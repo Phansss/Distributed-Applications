@@ -86,7 +86,7 @@
                   <br/>
                   <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.madeBy.name} #{comment.madeBy.lastName}"/>
                   <br/><br/>
-                  <b><h:outputText value="About: "/></b><h:outputLink value="#{homeScreenBean.gotowieiswie(comment.isAbout.id)}"><h:outputText value="#{comment.isAbout.name} "/><h:outputText value="#{comment.isAbout.surname}"/></h:outputLink>
+                  <b><h:outputText value="About: "/></b><h:outputText value="#{comment.isAbout.name}"/>
                   <br/><br/>
                   <h:outputText value="#{comment.text}"/>
                   <br/><br/>
@@ -101,7 +101,7 @@
                   <br/>
                   <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.madeBy.name} #{comment.madeBy.lastName}"/>
                   <br/><br/>
-                  <b><h:outputText value="About: "/></b><h:outputLink value="#{homeScreenBean.gotowieiswie(comment.isAbout.id)}"><h:outputText value="#{comment.isAbout.name} "/><h:outputText value="#{comment.isAbout.surname}"/></h:outputLink>
+                  <b><h:outputText value="About: "/></b><h:outputLink value="secured/wieiswie.xhtml"><h:outputText value="#{comment.isAbout.id}"/></h:outputLink>
                   <br/><br/>
                   <b><h:outputText value="Rating: "/></b><h:outputText value="#{comment.rating}"/>
                   <br/><br/>

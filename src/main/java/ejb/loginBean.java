@@ -26,8 +26,7 @@ public class loginBean implements Serializable {
     private String lastName;
     private String email;
     private String password;
-    private String dbPassword;
-    private String dbName;
+
     @PersistenceContext(unitName = "DADemoPU")
     EntityManager em;
     @Inject
@@ -38,12 +37,6 @@ public class loginBean implements Serializable {
 
     public loginBean() {
         // SETUP DB CONNECTION
-    }
-    public String getDbPassword() {
-        return dbPassword;
-    }
-    public String getDbName() {
-        return dbName;
     }
     public String getFirstName() {
         return firstName;
@@ -72,19 +65,7 @@ public class loginBean implements Serializable {
 
     // Try to add a user based on information they have entered. Return Success or No Success based on the outcome to control navigation
     public String add() {
-        System.out.println("entering add function");
-        try{
-
-            accountServiceBean.createAccount(getEmail(), getLastName(), getFirstName(), getPassword());
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            session.setAttribute("user", dbId);
-            return "success";
-        } catch (Exception e) {
-            System.out.println(e);
-            return "no success";
-        }
-        // TODO: MAKE SURE THE USER ID SET WHEN SIGNING UP
-        /*boolean success = false;
+        boolean success = false;
         if (firstName != null && lastName != null && email != null && password != null) {
             try {
 
@@ -106,12 +87,17 @@ public class loginBean implements Serializable {
             }
         }
         if (success) {
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            session.setAttribute("user", dbId);
             return "success";
         } else
-            return "no success";*/
+            return "no success";
     }
 
     public String login() {
+
+        String dbPassword = "";
+        String dbName = "";
 
         Query query = em.createQuery("SELECT p FROM PersonEntity p WHERE p.email = :email AND p.password = :password", PersonEntity.class);
         query.setParameter("email", email);
@@ -129,23 +115,14 @@ public class loginBean implements Serializable {
             return "success";
         } else
             return "no success";
-        // TODO: MAKE THE USER ABLE TO SEE THAT THEY WROTE SOMETHING WRONG
     }
 
-    public void logout() {
+    public void logout() { // TODO: add button in page
         FacesContext.getCurrentInstance().getExternalContext()
                 .invalidateSession();
         FacesContext.getCurrentInstance()
                 .getApplication().getNavigationHandler()
                 .handleNavigation(FacesContext.getCurrentInstance(), null, "/index.xhtml");
-    }
-
-    public void setDbPassword(String dbPassword) {
-        this.dbPassword = dbPassword;
-    }
-
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
     }
 
     public EntityManager getEm() {

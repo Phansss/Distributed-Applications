@@ -16,10 +16,14 @@ public class CourseServiceBean {
     public CourseServiceBean() {
     }
 
+
+    @Loggable
     public List<CourseEntity> getAllCourses() {
         List<CourseEntity> results = em.createQuery("SELECT c FROM CourseEntity c", CourseEntity.class).getResultList();
         return results;
     }
+
+
 
 
 

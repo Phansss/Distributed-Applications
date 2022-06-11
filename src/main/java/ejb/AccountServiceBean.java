@@ -8,7 +8,6 @@ import jakarta.interceptor.InvocationContext;
 import jakarta.persistence.EntityManager;
 
 import jakarta.persistence.PersistenceContext;
-import org.slf4j.Logger;
 
 @jakarta.ejb.Stateless(name = "AccountServiceEJB")
 public class AccountServiceBean {

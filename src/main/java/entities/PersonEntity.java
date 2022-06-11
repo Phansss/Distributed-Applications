@@ -24,17 +24,17 @@ public class PersonEntity {
     @Basic
     @Column(name = "password")
     private String password;
-    @ManyToMany(mappedBy = "personsInCourse")
-    private List<CourseEntity> followingCourses;
+    @ManyToMany(mappedBy = "followedByPersons", fetch = FetchType.EAGER)
+    private List<CourseEntity> subscribedCourses;
     @OneToMany(mappedBy = "madeBy")
     private List<CommentEntity> madeComments;
 
-    public List<CourseEntity> getFollowingCourses() {
-        return followingCourses;
+    public List<CourseEntity> getSubscribedCourses() {
+        return subscribedCourses;
     }
 
-    public void setFollowingCourses(List<CourseEntity> followingCourses) {
-        this.followingCourses = followingCourses;
+    public void setSubscribedCourses(List<CourseEntity> followingCourses) {
+        this.subscribedCourses = followingCourses;
     }
 
     public int getId() {
@@ -83,6 +83,27 @@ public class PersonEntity {
 
     public void setMadeComments(List<CommentEntity> madeComments) {
         this.madeComments = madeComments;
+    }
+
+
+    /**
+     * @param course
+     * @post  following courses contains a copy of a pointer to where course points.
+     */
+    public  void addCourse(CourseEntity course) {
+        this.subscribedCourses.add(course);
+    }
+
+    /**
+     * @param course
+     * @post if the list contained the element, it is removed from the list. Otherwise, nothing happens.
+     */
+    public  void removeCourse(CourseEntity course) {
+        boolean removed = this.subscribedCourses.remove(course);
+        if (!removed) {
+            throw new EntityNotFoundException("The course '" + course.getName() + "' could not be removed because " +
+                    "it was not found in the list of subscribedCourses of the Person: '" + this.getName() +"'.");
+        }
     }
 
     @Override

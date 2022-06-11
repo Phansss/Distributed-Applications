@@ -2,65 +2,53 @@ package ejb;
 
 import entities.*;
 import jakarta.annotation.PostConstruct;
-import jakarta.ejb.PostActivate;
-import jakarta.ejb.Stateful;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.*;
-import jakarta.transaction.RollbackException;
-import org.primefaces.event.RateEvent;
 import org.primefaces.model.menu.*;
-
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.logging.Logger;
-
-// TODO: MAKE QUERYING ALL COURSES INTO A STATELESS BEAN
 
 @Named
 @SessionScoped
 public class  homeScreenBean implements Serializable {
 
-    @Inject
 
+
+
+    //COMMENTS
+    ArrayList<ratingComment> RCommentsToShow;
+    ArrayList<textComment> TCommentsToShow;
+    ArrayList<ratingTextComment> RTCommentsToShow;
+    private List<CommentEntity> commentsToShow;
+    private String text1;
+    private Integer rating;
+
+
+    //PROFESSORS
+    private List<String> professorNames;
+    private List<ProfessorEntity> professorEntities;
+    private String chosenProfessor;
+
+    //COURSES
+    private List<String> coursesAsString;
+    private List<CourseEntity> courseEntities;
+
+    //LOGGEDINUSER
+    private PersonEntity person;
+    private int userId;
+
+    @Inject
     /*Returns the javax.transaction.UserTransaction interface to demarcate transactions.
     Only session beans with bean-managed transaction (BMT) can use this method.
     ALTERNATIE = CMT*/
     UserTransaction ut;
-
-
-
-    ArrayList<ratingComment> RCommentsToShow;
-    ArrayList<textComment> TCommentsToShow;
-    ArrayList<ratingTextComment> RTCommentsToShow;
-
-    private ArrayList<String> selectedCoursesAsString;
-    private List<String> allProfessorNames;
-    private List<ProfessorEntity> allProfessors;
-    private List<CourseEntity> selectedCoursesAsCourses;
-    private List<String> coursesAsString;
-    private List<CourseEntity> coursesAsCourses;
-    private MenuModel menumodel;
-    private List<CommentEntity> commentsToShow;
-    private PersonEntity person;
-    private int userId;
-    int count = 0; // PLEASE DELETE
-    private String text1;
-    private Integer rating;
-    private String chosenProfessor;
-    private String[] selectedCoursesAsStringArray;
-
-    private Integer test = 1;
-
 
     @PersistenceContext(unitName = "DADemoPU")
     private EntityManager em;
@@ -68,6 +56,29 @@ public class  homeScreenBean implements Serializable {
     CourseServiceBean courseServiceBean;
     @Inject
     PersonServiceBean personServiceBean;
+
+    @Inject
+    MenuBuilderBean menuBean;
+
+    private List<CourseEntity> subscribedCourses;
+    private MenuModel menuModel;
+
+    @PostConstruct
+    public void initialize() {
+        System.out.println("PRINT MSG: Postconstruct");
+        this.person = personServiceBean.getPersonEntity(userId);
+        this.subscribedCourses = person.getSubscribedCourses();
+        //subscribedCourses.forEach((course) -> {System.out.println(course.getName());});
+        this.menuModel = menuBean.getModel();
+        this.coursesAsString = new ArrayList<String>();
+        this.courseEntities = new ArrayList<CourseEntity>();
+        //All Courses. Adds a copy of pointer to the courses.
+        this.courseEntities.addAll(courseServiceBean.getAllCourses());
+        menuBean.buildMenu(subscribedCourses);
+
+        // Call the other functions that change on the followed courses changing
+        functionOnChange();
+    }
 
     public homeScreenBean() {
         System.out.println("PRINT MSG: Creating a homeScreenBean");
@@ -77,44 +88,76 @@ public class  homeScreenBean implements Serializable {
         System.out.println(userId);
     }
 
-    @PostConstruct
-    public void initialize() {
-        System.out.println("PRINT MSG: Postconstruct");
-        coursesAsString = new ArrayList<String>();
-        coursesAsCourses = new ArrayList<CourseEntity>();
-        //All Courses
-        courseServiceBean.getAllCourses().forEach((course) -> {
-            coursesAsString.add(course.getName());
-            coursesAsCourses.add(course);
-        });
-        //Person-followed courses
-        for (CourseEntity c : personServiceBean.getPersonCourses(userId)) {
-            selectedCoursesAsString.add(c.getName());
-            selectedCoursesAsCourses.add(c);
-        }
+    public void functionOnChange(){
+        // TODO: Check of we dit niet kunnen verbeteren, eventueel door iets efficienter te schrijven om te checken of door primefaces toch met een List<CourseEntity> te doen werken
+        System.out.println("Changing");
 
-        // Call the other functions that change on the followed courses changing
-        functionOnChange();
+        // PrimeFaces library seems to sometimes only work with either List<String> or sometimes List<Entity> so we have to write weird checks such as this
+        //try {
+            //List<CourseEntity> oldCourses = new ArrayList<>(selectedCoursesAsCourses);
+            //System.out.println("Print oldCourses 1" + oldCourses);
+            //CourseEntity changedCourse;
+            //boolean trueforaddfalseforremove;
+            //selectedCoursesAsCourses.clear();
+            //System.out.println("Print oldCourses 2" + oldCourses);
+            //System.out.println("Print selectedCourses" + selectedCoursesAsString);
+            /*for (CourseEntity c : coursesAsCourses
+            ) {
+                if(selectedCoursesAsString.
+
+
+
+             contains(c.getName())) {
+                    selectedCoursesAsCourses.add(c);
+
+                    if(!oldCourses.contains(c)){
+                        changedCourse = c;
+                        System.out.println("Print Created Relation between: " + changedCourse.getCourseId() + " and " + userId);
+                        ut.begin();
+                        em.joinTransaction();
+                        em.createNativeQuery("INSERT INTO jnd_course_person (course_fk, person_fk) VALUES (?,?)")
+                                .setParameter(1, changedCourse.getCourseId())
+                                .setParameter(2, userId)
+                                .executeUpdate();
+                        ut.commit();
+                    }
+
+                }
+
+                //stel courses weggegaan. Courses niet in huidige selectie (Primefaces) maar wel in vorige selectie (query uit databank).
+                else if (oldCourses.contains(c)) {
+                    changedCourse = c;
+                    System.out.println("Print Deleted Relation between: " + changedCourse.getCourseId() + " and " + userId);
+                    ut.begin();
+                    em.joinTransaction();
+                    em.createNativeQuery("DELETE FROM jnd_course_person WHERE (course_fk = ?) AND (person_fk = ?)")
+                            .setParameter(1, changedCourse.getCourseId())
+                            .setParameter(2, userId)
+                            .executeUpdate();
+                    ut.commit();
+                }
+            }
+            System.out.println("Print Selectedcourses as courses: " + selectedCoursesAsCourses);
+
+            gatherProfessors();
+            makeCourseMenu();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }*/
     }
 
+    public void subscribe() {
+        System.out.println("Subscribing for: ");
+        getSubscribedCourses().forEach((course) -> {
+            System.out.println(course);
+        });
+        menuBean.buildMenu(subscribedCourses);
 
-    public String testFunction() {
-        if (test == 1) {
-            test = 0;
-            return "even";
-        }
-        else {
-            test = 1;
-            return "odd";
-        }
     }
 
     //Opgeroepen van zodra op de add knop wordt gedrukt. Rating = 1_5, text is comment
     public void printRating()  {
-
-
         System.out.println("Print Rating: " + rating + ". Text1: " + text1 + ". Professor: " + chosenProfessor);
-
         String commentType;
         Integer chosenProfId = 0;
 
@@ -127,7 +170,7 @@ public class  homeScreenBean implements Serializable {
             commentType = "RT";
         }
 
-        for (ProfessorEntity p: allProfessors
+        for (ProfessorEntity p: professorEntities
         ) {
             if(p.getName().equals(chosenProfessor)){
                 chosenProfId = p.getId();
@@ -177,60 +220,8 @@ public class  homeScreenBean implements Serializable {
         }
     }
 
-    public void functionOnChange(){
-        // TODO: Check of we dit niet kunnen verbeteren, eventueel door iets efficienter te schrijven om te checken of door primefaces toch met een List<CourseEntity> te doen werken
-        // PrimeFaces library seems to sometimes only work with either List<String> or sometimes List<Entity> so we have to write weird checks such as this
-        try {
-            List<CourseEntity> oldCourses = new ArrayList<>(selectedCoursesAsCourses);
-            System.out.println("Print oldCourses 1" + oldCourses);
-            CourseEntity changedCourse;
-            boolean trueforaddfalseforremove;
-            selectedCoursesAsCourses.clear();
-            System.out.println("Print oldCourses 2" + oldCourses);
-            System.out.println("Print selectedCourses" + selectedCoursesAsString);
-            for (CourseEntity c : coursesAsCourses
-            ) {
-                if(selectedCoursesAsString.contains(c.getName())) {
-                    selectedCoursesAsCourses.add(c);
-
-                    if(!oldCourses.contains(c)){
-                        changedCourse = c;
-                        System.out.println("Print Created Relation between: " + changedCourse.getCourseId() + " and " + userId);
-                        ut.begin();
-                        em.joinTransaction();
-                        em.createNativeQuery("INSERT INTO jnd_course_person (course_fk, person_fk) VALUES (?,?)")
-                                .setParameter(1, changedCourse.getCourseId())
-                                .setParameter(2, userId)
-                                .executeUpdate();
-                        ut.commit();
-                    }
-
-                }
-
-                //stel courses weggegaan. Courses niet in huidige selectie (Primefaces) maar wel in vorige selectie (query uit databank).
-                else if (oldCourses.contains(c)) {
-                    changedCourse = c;
-                    System.out.println("Print Deleted Relation between: " + changedCourse.getCourseId() + " and " + userId);
-                    ut.begin();
-                    em.joinTransaction();
-                    em.createNativeQuery("DELETE FROM jnd_course_person WHERE (course_fk = ?) AND (person_fk = ?)")
-                            .setParameter(1, changedCourse.getCourseId())
-                            .setParameter(2, userId)
-                            .executeUpdate();
-                    ut.commit();
-                }
-            }
-            System.out.println("Print Selectedcourses as courses: " + selectedCoursesAsCourses);
-
-            gatherProfessors();
-            makeCourseMenu();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void gatherProfessors() {
-        allProfessorNames = new ArrayList<String>(); //wie geeft dit vak, welke professoren zijn dit?)
+        professorNames = new ArrayList<String>(); //wie geeft dit vak, welke professoren zijn dit?)
         RCommentsToShow = new ArrayList<ratingComment>();
         TCommentsToShow = new ArrayList<textComment>();
         RTCommentsToShow = new ArrayList<ratingTextComment>();
@@ -239,12 +230,12 @@ public class  homeScreenBean implements Serializable {
         // For each selected course, look at which professors teach that course.
         // For each professor, if they haven't been checked already, get all the comments that are about them
         // For each comment, check which type of comment it is, and store it appropriately
-        for (CourseEntity c : selectedCoursesAsCourses
+        for (CourseEntity c : subscribedCourses
         ) {
             for (ProfessorEntity p : c.getCourseGivenBy()
             ) {
                 //System.out.println("¨Print Courses given by prof: " + p.getName());
-                if (!allProfessorNames.contains(p.getName())) // TODO: Dit zorgt ervoor dat proffen met dezelfde naam er maar 1 keer inkomen. Misschien oplossen?
+                if (!professorNames.contains(p.getName())) // TODO: Dit zorgt ervoor dat proffen met dezelfde naam er maar 1 keer inkomen. Misschien oplossen?
                 {
                     if (p.getCommentsAbout().size() > 0) {
                         for (CommentEntity d : p.getCommentsAbout()
@@ -262,7 +253,7 @@ public class  homeScreenBean implements Serializable {
                             }
                         }
                     }
-                    allProfessorNames.add(p.getName());
+                    professorNames.add(p.getName());
                 }
             }
         }
@@ -270,32 +261,23 @@ public class  homeScreenBean implements Serializable {
     }
 
     public void makeCourseMenu () {
-
-        //System.out.println("Print selectedCoursesAsString while making menu: " + selectedCoursesAsString);
-
-        MenuModel menu = new DefaultMenuModel();
-
+        DefaultMenuModel model = new DefaultMenuModel();
         // Create labels for each different type of course in the submenu
         DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()
                 .label("1st Year")
                 .build();
-
         DefaultSubMenu secondSubmenu = DefaultSubMenu.builder()
                 .label("2nd Year")
                 .build();
-
         DefaultSubMenu thirdSubmenu = DefaultSubMenu.builder()
                 .label("3rd Year")
                 .build();
-
         DefaultSubMenu fourthSubmenu = DefaultSubMenu.builder()
                 .label("Master")
                 .build();
-
         DefaultMenuItem item;
-
         // For each selected course, make a new menu element and bind it to the proper submenu based on its enum value
-        for (CourseEntity c : selectedCoursesAsCourses
+        for (CourseEntity c : subscribedCourses
         ) {
             item = DefaultMenuItem.builder()
                     .value(c.getName())
@@ -320,20 +302,20 @@ public class  homeScreenBean implements Serializable {
 
         // If an item is bound to a submenu element, show it on the menu
         if (firstSubmenu.getElements().size() > 0) {
-            menu.getElements().add(firstSubmenu);
+            model.getElements().add(firstSubmenu);
         }
         if (secondSubmenu.getElements().size() > 0) {
-            menu.getElements().add(secondSubmenu);
+            model.getElements().add(secondSubmenu);
         }
         if (thirdSubmenu.getElements().size() > 0) {
-            menu.getElements().add(thirdSubmenu);
+            model.getElements().add(thirdSubmenu);
         }
         if (fourthSubmenu.getElements().size() > 0) {
-            menu.getElements().add(fourthSubmenu);
+            model.getElements().add(fourthSubmenu);
         }
 
         // Set the new menumodel
-        menumodel = menu;
+        this.menuModel = model;
     }
 
     public String gotowieiswie(int id){
@@ -342,40 +324,28 @@ public class  homeScreenBean implements Serializable {
         return "./secured/wieiswie.xhtml";
     }
 
-    public List<String> getCoursesAsString () {
-        return coursesAsString;
-    }
 
-    public void setCoursesAsString (List < String > courses) {
-        this.coursesAsString = courses;
-    }
+
 
     public int getUserId () {
         return userId;
     }
 
-    public ArrayList<String> getSelectedCoursesAsString () {
-        return selectedCoursesAsString;
+
+
+
+
+    public List<CourseEntity> getSubscribedCourses() {
+        return subscribedCourses;
     }
 
-    public void setSelectedCoursesAsString (ArrayList < String > selectedCoursesAsString) {
-        this.selectedCoursesAsString = selectedCoursesAsString;
+    public void setSubscribedCourses(List < CourseEntity > subscribedCourses) {
+        this.subscribedCourses = subscribedCourses;
     }
 
-    public List<CourseEntity> getSelectedCoursesAsCourses () {
-        return selectedCoursesAsCourses;
-    }
 
-    public void setSelectedCoursesAsCourses (List < CourseEntity > selectedCoursesAsCourses) {
-        this.selectedCoursesAsCourses = selectedCoursesAsCourses;
-    }
-
-    public MenuModel getMenumodel () {
-        return menumodel;
-    }
-
-    public void setMenumodel (MenuModel menumodel){
-        this.menumodel = menumodel;
+    public void setMenumodel (DefaultMenuModel menumodel){
+        this.menuModel = menumodel;
     }
 
     public List<CommentEntity> getCommentsToShow () {
@@ -386,24 +356,24 @@ public class  homeScreenBean implements Serializable {
         this.commentsToShow = commentsToShow;
     }
 
-    public List<String> getAllProfessorNames () {
-        return allProfessorNames;
+    public List<String> getProfessorNames() {
+        return professorNames;
     }
 
-    public void setAllProfessorNames (List < String > allProfessorNames) {
-        this.allProfessorNames = allProfessorNames;
+    public void setProfessorNames(List < String > professorNames) {
+        this.professorNames = professorNames;
     }
 
     public String getUserFullName () {
         return person.getName() + " " + person.getLastName();
     }
 
-    public List<ProfessorEntity> getAllProfessors () {
-        return allProfessors;
+    public List<ProfessorEntity> getProfessorEntities() {
+        return professorEntities;
     }
 
-    public void setAllProfessors (List < ProfessorEntity > allProfessors) {
-        this.allProfessors = allProfessors;
+    public void setProfessorEntities(List < ProfessorEntity > professorEntities) {
+        this.professorEntities = professorEntities;
     }
 
     public PersonEntity getPerson() {
@@ -418,21 +388,15 @@ public class  homeScreenBean implements Serializable {
         this.userId = userId;
     }
 
-    public int getCount () {
-        return count;
+
+    public List<CourseEntity> getCourseEntities() {
+        return courseEntities;
     }
 
-    public void setCount ( int count){
-        this.count = count;
+    public void setCourseEntities(List < CourseEntity > courseEntities) {
+        this.courseEntities = courseEntities;
     }
 
-    public List<CourseEntity> getCoursesAsCourses () {
-        return coursesAsCourses;
-    }
-
-    public void setCoursesAsCourses (List < CourseEntity > coursesAsCourses) {
-        this.coursesAsCourses = coursesAsCourses;
-    }
 
     public String getText1 () {
         return text1;
@@ -462,7 +426,6 @@ public class  homeScreenBean implements Serializable {
         this.chosenProfessor = chosenProfessor;
     }
 
-
     public ArrayList<ratingComment> getRCommentsToShow () {
         return RCommentsToShow;
     }
@@ -485,13 +448,26 @@ public class  homeScreenBean implements Serializable {
 
     public void setRTCommentsToShow (ArrayList < ratingTextComment > RTCommentsToShow) {
         this.RTCommentsToShow = RTCommentsToShow;
+
     }
 
-    public String[] getSelectedCoursesAsStringArray() {
-        return selectedCoursesAsStringArray;
+    public MenuModel getMenuModel() {
+        return menuModel;
     }
 
-    public void setSelectedCoursesAsStringArray(String[] selectedCoursesAsStringArray) {
-        this.selectedCoursesAsStringArray = selectedCoursesAsStringArray;
+    public void subscribeForCourse(jakarta.faces.event.ActionEvent actionEvent) {
     }
+
+
+
+    //TODO: Vind een manier om de code hieronder te verwijderen zonder een Faces render error te krijgen (clean-build?).
+    public ArrayList<String> getSelectedCoursesAsStringArray() {
+        return new ArrayList<String>();
+    }
+    public List<String> getCoursesAsString () {
+        return coursesAsString;
+    }
+
+
+
 }

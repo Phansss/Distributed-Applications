@@ -29,7 +29,7 @@
                <h1>Your Courses</h1>
 
                <h:form > <!-- A menu has to be inside a form tag because it has implementations for action selection -->
-                  <p:menu id="courseMenuModel" model="#{homeScreenBean.menumodel}">
+                  <p:menu id="courseMenuModel" model="#{homeScreenBean.menuModel}" toggleable="true">
                      <p:autoUpdate/>
                   </p:menu>
                <!--
@@ -44,16 +44,20 @@
             </h:form>
                -->
                <h1>Add a course</h1>
-                  <p:selectCheckboxMenu id="multiple" value="#{homeScreenBean.selectedCoursesAsString}" filter="true"
-                                        filterMatchMode="contains" label="Courses"
+                  <p:selectCheckboxMenu id="multiple" value="#{homeScreenBean.subscribedCourses}" filter="true"
+                                        filterMatchMode="contains" label="Courses" updateLabel="true"
                                         style="min-width: 15rem" panelStyle="width: 30rem" scrollHeight="250" multiple="true">
                      <p:ajax event="change" listener="#{homeScreenBean.functionOnChange()}"/>
-                     <f:selectItems value="#{homeScreenBean.coursesAsString}"/>
+                     <f:selectItems value="#{homeScreenBean.courseEntities}"
+                                    var="course"
+                                    itemValue="#{course}"
+                                    itemLabel="#{course.name}"
+                                    itemLabelEscaped="true"/>
+<!--                     <f:selectItems value="#{homeScreenBean.coursesAsString}"/>-->
                   </p:selectCheckboxMenu>
                </h:form>
                <h:form>
-                  <p:commandButton update="display" />
-                  <h:outputText id="display" value="#{homeScreenBean.testFunction()}"/>
+                  <h:commandButton action = "homeScreenBean" value = "Subscribe" actionListener="#{homeScreenBean.subscribe}"/>
                </h:form>
             </div>
          </div>
@@ -134,12 +138,12 @@
                   <h3>About Professor</h3>
                   <p:selectOneMenu id="professorsDropdown" value="#{homeScreenBean.chosenProfessor}">
                      <p:autoUpdate/>
-                     <f:selectItems value="#{homeScreenBean.allProfessorNames}"/>
+                     <f:selectItems value="#{homeScreenBean.professorNames}"/>
                   </p:selectOneMenu>
 
                   <br/><br/><br/>
 
-                  <h:commandButton action = "homeScreenBean" value = "ADD" actionListener="#{homeScreenBean.printRating()}"/><br/>
+                  <h:commandButton action = "homeScreenBean" value = "Add Comment" actionListener="#{homeScreenBean.printRating()}"/><br/>
                </h:form>
             </div>
          </div>

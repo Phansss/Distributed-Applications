@@ -27,12 +27,7 @@ public class loginBean implements Serializable {
     private String email;
     private String password;
 
-    @PersistenceContext(unitName = "DADemoPU")
-    EntityManager em;
-    @Inject
-    UserTransaction ut;
-    @Inject
-    AccountServiceBean accountServiceBean;
+
     int dbId;
 
     public loginBean() {
@@ -62,6 +57,13 @@ public class loginBean implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @PersistenceContext(unitName = "DADemoPU")
+    EntityManager em;
+    @Inject
+    UserTransaction ut;
+    @Inject
+    AccountServiceBean accountServiceBean;
 
     // Try to add a user based on information they have entered. Return Success or No Success based on the outcome to control navigation
     public String add() {
@@ -93,6 +95,8 @@ public class loginBean implements Serializable {
         } else
             return "no success";
     }
+
+
 
     public String login() {
 

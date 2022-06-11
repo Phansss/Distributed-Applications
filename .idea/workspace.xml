@@ -2,39 +2,31 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
+      <artifact name="DADemo:Web exploded" />
       <artifact name="DADemo:ejb exploded" />
-      <artifact name="DADemo:war exploded" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f74053b4-c223-44dd-8a16-4f49ced66f3c" name="Changes" comment="Upload query for courses">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ejb/SingletonCacheBean.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ejb/wieiswieBean.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interceptors/loggingInterceptor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/secured/wieiswie.xhtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/homeScreenBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/homeScreenBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/loginBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/loginBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ProfessorEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ProfessorEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/WEB-INF/faces-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/WEB-INF/faces-config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/resources/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/resources/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/secured/test.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/secured/test.xhtml" afterDir="false" />
+    <list default="true" id="dda23ae2-4c4a-446b-a7b7-3fe0f9fe5216" name="Changes" comment="EJB backbone first setup">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_05_2022_16_27__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_05_2022_16_27__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_05_2022_10_17__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_05_2022_10_17__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings">
-    <execution />
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Tag Library Descriptor" />
-        <option value="CSS File" />
         <option value="Class" />
       </list>
     </option>
@@ -47,7 +39,7 @@
     <option name="FILTER_WARNINGS" value="false" />
     <option name="FILTER_INFO" value="false" />
     <option name="FILTER_DEBUG" value="false" />
-    <option name="CUSTOM_FILTER" value="" />
+    <option name="CUSTOM_FILTER" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -60,57 +52,40 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectId" id="28kHbIng4rzHl4quCq3rBtEdNPU" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="2ALiic50wjrWmUdZs8JSnX4JxVh" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+    <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JPA.DatabaseSchemaImportDialog": "03711afd-7c99-47f7-95e5-bdf8964af757",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/daand/OneDrive/Documents/KoenPelsmaekers.jpg",
-    "list.type.of.created.stylesheet": "CSS",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.keymap"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JPA.DatabaseSchemaImportDialog&quot;: &quot;235cb29e-3afa-4958-bced-26e0709966fb&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/piete/IdeaProjects/Distributed-Applications/web/resources&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Facets&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.4375&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;debugger.hotswap&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ],
-    "RunConfigurationTargetLRU": [
-      "b178b607-a042-4209-8233-89a38a8b6618/schema/\"hellodemo\"",
-      "b178b607-a042-4209-8233-89a38a8b6618"
+    &quot;RunConfigurationTargetLRU&quot;: [
+      &quot;235cb29e-3afa-4958-bced-26e0709966fb&quot;,
+      &quot;235cb29e-3afa-4958-bced-26e0709966fb/schema/\&quot;hellodemo\&quot;&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\temp\DistributedApplications\VersionControl\web\secured" />
-      <recent name="C:\temp\DistributedApplications\VersionControl\web" />
-      <recent name="C:\temp\DistributedApplications\VersionControl\src\main\webapp" />
-      <recent name="C:\temp\DistributedApplications\VersionControl\web\WEB-INF" />
-      <recent name="C:\temp\DistributedApplications\VersionControl\web\resources\css" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\temp\DistributedApplications\VersionControl\src\main\java\filters" />
-      <recent name="C:\temp\DistributedApplications\VersionControl\web\secured" />
-      <recent name="C:\temp\DistributedApplications\VersionControl\web\WEB-INF" />
-      <recent name="C:\temp\DistributedApplications\VersionControl\web" />
-    </key>
     <key name="ImportMappingsDialog.RecentPackages">
       <recent name="" />
-      <recent name="entities" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="openRunningConfigInTab" value="true" />
   </component>
   <component name="RunManager" selected="GlassFish Server.GlassFish 6.2.5">
     <configuration name="Comments-data.sql and 9 more" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
@@ -125,37 +100,33 @@
       <script-file value="$PROJECT_DIR$/ddl/ratingTextComment-data.sql" />
       <script-file value="$PROJECT_DIR$/ddl/textComment-data.sql" />
       <script-mode>FILE</script-mode>
-      <data-source id="b178b607-a042-4209-8233-89a38a8b6618" />
+      <data-source id="235cb29e-3afa-4958-bced-26e0709966fb" />
       <method v="2" />
     </configuration>
-    <configuration name="Comments.sql and 9 more" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/ddl/hellodemo/Comments.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/hellodemo/Course.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/hellodemo/jnd_course_person.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/hellodemo/jnd_course_professor.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/hellodemo/Person.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/hellodemo/Professor.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/hellodemo/Professor_Comments.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/hellodemo/ratingComment.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/hellodemo/ratingTextComment.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/hellodemo/textComment.sql" />
-      <script-mode>FILE</script-mode>
-      <data-source id="b178b607-a042-4209-8233-89a38a8b6618" namespace="schema/&quot;hellodemo&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Comments.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/ddl/hellodemo/Comments.sql" />
+    <configuration name="Course-data.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/ddl/Course-data.sql" />
       <script-mode>FILE</script-mode>
       <method v="2" />
     </configuration>
-    <configuration name="GlassFish 6.2.5" type="GlassfishConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="GlassFish 6.2.5" ALTERNATIVE_JRE_ENABLED="false" ALTERNATIVE_JRE_PATH="$PROJECT_DIR$/../../../Program Files/Java/jdk-17.0.2" nameIsGenerated="true">
-      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/" />
+    <configuration name="Professor-data.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/ddl/Professor-data.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="235cb29e-3afa-4958-bced-26e0709966fb" namespace="schema/&quot;hellodemo&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="jnd_course_professor-data.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/ddl/jnd_course_professor-data.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="235cb29e-3afa-4958-bced-26e0709966fb" namespace="schema/&quot;hellodemo&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="GlassFish 6.2.5" type="GlassfishConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="GlassFish 6.2.5" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true" show_console_on_std_out="true">
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="DADemo:ejb exploded">
           <settings />
         </artifact>
-        <artifact name="DADemo:war exploded">
+        <artifact name="DADemo:Web exploded">
           <settings />
         </artifact>
       </deployment>
@@ -165,19 +136,9 @@
         <option name="COMPATIBILITY" value="false" />
         <option name="VIRTUAL_SERVER" />
         <option name="USERNAME" value="admin" />
-        <option name="CREDENTIAL_ALIAS" value="df8a1ffe-9037-43b2-a68b-6b1e77f3a62d" />
+        <option name="CREDENTIAL_ALIAS" />
       </server-settings>
       <predefined_log_file enabled="true" id="GlassFish" />
-      <extension name="net.ashald.envfile">
-        <option name="IS_ENABLED" value="false" />
-        <option name="IS_SUBST" value="false" />
-        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
-        <option name="IS_IGNORE_MISSING_FILES" value="false" />
-        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
-        <ENTRIES>
-          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
-        </ENTRIES>
-      </extension>
       <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="9009" />
       </RunnerSettings>
@@ -199,10 +160,10 @@
       <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
         <option name="USE_ENV_VARIABLES" value="true" />
         <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
+          <option name="USE_DEFAULT" value="false" />
+          <option name="SCRIPT" value="$PROJECT_DIR$/../../../../Tools/glassfish6/bin/asadmin.bat" />
           <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="start-domain --debug domain1 --verbose" />
         </STARTUP>
         <SHUTDOWN>
           <option name="USE_DEFAULT" value="true" />
@@ -230,139 +191,45 @@
         <option name="Make" enabled="true" />
         <option name="BuildArtifacts" enabled="true">
           <artifact name="DADemo:ejb exploded" />
-          <artifact name="DADemo:war exploded" />
+          <artifact name="DADemo:Web exploded" />
         </option>
       </method>
     </configuration>
-    <configuration name="docker: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="envFilePath" value="" />
-          <option name="sourceFilePath" value="docker/docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration name="docker.mysql: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="envFilePath" value="" />
-          <option name="services">
-            <list>
-              <option value="mysql" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker/docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
     <list>
+      <item itemvalue="Database Script.Course-data.sql" />
+      <item itemvalue="Database Script.Professor-data.sql" />
+      <item itemvalue="Database Script.jnd_course_professor-data.sql" />
       <item itemvalue="Database Script.Comments-data.sql and 9 more" />
-      <item itemvalue="Database Script.Comments.sql" />
-      <item itemvalue="Database Script.Comments.sql and 9 more" />
-      <item itemvalue="Docker.docker.mysql: Compose Deployment" />
-      <item itemvalue="Docker.docker: Compose Deployment" />
       <item itemvalue="GlassFish Server.GlassFish 6.2.5" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Database Script.Comments-data.sql and 9 more" />
-        <item itemvalue="Database Script.Comments.sql and 9 more" />
-        <item itemvalue="Database Script.Comments.sql" />
+        <item itemvalue="Database Script.Course-data.sql" />
+        <item itemvalue="Database Script.jnd_course_professor-data.sql" />
+        <item itemvalue="Database Script.Professor-data.sql" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f74053b4-c223-44dd-8a16-4f49ced66f3c" name="Changes" comment="" />
-      <created>1651753733630</created>
+      <changelist id="dda23ae2-4c4a-446b-a7b7-3fe0f9fe5216" name="Changes" comment="" />
+      <created>1654795399749</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1651753733630</updated>
-      <workItem from="1651753734922" duration="6823000" />
-      <workItem from="1651760631641" duration="5141000" />
-      <workItem from="1651922928582" duration="2986000" />
-      <workItem from="1652020417711" duration="1700000" />
-      <workItem from="1652026369640" duration="2102000" />
-      <workItem from="1652099985968" duration="8093000" />
-      <workItem from="1652255268811" duration="4009000" />
-      <workItem from="1652281878430" duration="1627000" />
-      <workItem from="1652353491327" duration="11583000" />
-      <workItem from="1652365180810" duration="4522000" />
-      <workItem from="1652466322786" duration="4043000" />
-      <workItem from="1652515522021" duration="16560000" />
-      <workItem from="1652626805164" duration="5817000" />
-      <workItem from="1652690142318" duration="4404000" />
-      <workItem from="1652709438850" duration="6083000" />
-      <workItem from="1652724431368" duration="1220000" />
-      <workItem from="1652814953506" duration="2609000" />
-      <workItem from="1652820478146" duration="133000" />
-      <workItem from="1652861679007" duration="13510000" />
-      <workItem from="1652891349202" duration="8557000" />
-      <workItem from="1652960253404" duration="13884000" />
-      <workItem from="1652974513029" duration="818000" />
-      <workItem from="1653075269600" duration="954000" />
-      <workItem from="1653125961682" duration="12848000" />
-      <workItem from="1653158000390" duration="23214000" />
-      <workItem from="1653233308178" duration="3350000" />
-      <workItem from="1653395959672" duration="13000" />
-      <workItem from="1653396062852" duration="6199000" />
-      <workItem from="1653465067130" duration="2945000" />
-      <workItem from="1653549669144" duration="901000" />
-      <workItem from="1653561934111" duration="19394000" />
-      <workItem from="1653735103183" duration="114000" />
-      <workItem from="1653895967009" duration="806000" />
-      <workItem from="1654176100605" duration="2716000" />
-      <workItem from="1654179173029" duration="1379000" />
-      <workItem from="1654180581535" duration="1429000" />
-      <workItem from="1654182041965" duration="1570000" />
-      <workItem from="1654183933784" duration="75000" />
-      <workItem from="1654184272242" duration="2315000" />
-      <workItem from="1654196804037" duration="102000" />
-      <workItem from="1654199871025" duration="561000" />
-      <workItem from="1654241390981" duration="28920000" />
-      <workItem from="1654802287955" duration="838000" />
-      <workItem from="1654803149906" duration="2027000" />
-      <workItem from="1654846269929" duration="17233000" />
+      <updated>1654795399749</updated>
+      <workItem from="1654795401613" duration="8754000" />
+      <workItem from="1654844766854" duration="22937000" />
     </task>
-    <task id="LOCAL-00001" summary="Delete">
-      <created>1651753815123</created>
+    <task id="LOCAL-00001" summary="Fix Build Error">
+      <created>1654795659362</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1651753815123</updated>
+      <updated>1654795659362</updated>
     </task>
-    <task id="LOCAL-00002" summary="Test 2">
-      <created>1651754587995</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1651754587995</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Database Connection">
-      <created>1652361676490</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1652361676490</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Database Connection">
-      <created>1652365699448</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1652365699448</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Visuals">
-      <created>1652861908835</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1652861908835</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -378,42 +245,11 @@
         </entry>
       </map>
     </option>
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="origin/master" />
-                </option>
-              </RecentGroup>
-            </list>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Delete" />
-    <MESSAGE value="Test 2" />
-    <MESSAGE value="Visuals" />
-    <MESSAGE value="Login/Signup Finished and First Elements of Homescreen Done" />
-    <MESSAGE value="Database Connection" />
-    <MESSAGE value="UI Update (Ajax sucks)" />
-    <MESSAGE value="UI Update" />
-    <MESSAGE value="Upload query for comments" />
-    <MESSAGE value="Upload query for courses" />
-    <option name="LAST_COMMIT_MESSAGE" value="Upload query for courses" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <breakpoint type="java-exception">
-          <properties class="jakarta.el.PropertyNotFoundException" package="jakarta.el" />
-          <option name="timeStamp" value="1" />
-        </breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Fix Build Error" />
+    <MESSAGE value="Fixed Deploy Error" />
+    <MESSAGE value="EJB backbone first setup" />
+    <option name="LAST_COMMIT_MESSAGE" value="EJB backbone first setup" />
   </component>
 </project>

@@ -28,10 +28,10 @@ public class CourseEntity implements Serializable, Converter, Comparable<CourseE
     @Basic
     @Column(name = "Name", nullable = false, unique = true)
     private String name;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "jnd_course_person", joinColumns = @JoinColumn(name = "course_fk"), inverseJoinColumns = @JoinColumn(name = "person_fk"))
-    private List<PersonEntity> personsInCourse;
-    @ManyToMany
+    private List<PersonEntity> followedByPersons;
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "jnd_course_professor", joinColumns = @JoinColumn(name = "course_fk"), inverseJoinColumns = @JoinColumn(name = "professor_fk"))
     private List<ProfessorEntity> courseGivenBy;
     @Enumerated
@@ -61,8 +61,8 @@ public class CourseEntity implements Serializable, Converter, Comparable<CourseE
         this.courseId = courseId;
     }
 
-    public List<PersonEntity> getPersonsInCourse() {
-        return personsInCourse;
+    public List<PersonEntity> getFollowedByPersons() {
+        return followedByPersons;
     }
 
     public List<ProfessorEntity> getCourseGivenBy() {
@@ -111,7 +111,7 @@ public class CourseEntity implements Serializable, Converter, Comparable<CourseE
         return "CourseEntity{" +
                 "courseId=" + courseId +
                 ", name='" + name + '\'' +
-                ", personsInCourse=" + personsInCourse +
+                ", personsInCourse=" + followedByPersons +
                 ", courseGivenBy=" + courseGivenBy +
                 ", yearOfCourse=" + yearOfCourse +
                 '}';

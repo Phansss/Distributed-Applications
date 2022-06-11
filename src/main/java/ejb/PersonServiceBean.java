@@ -20,10 +20,32 @@ public class PersonServiceBean {
     }
 
     public List<CourseEntity> getPersonCourses(Integer personId) {
+        System.out.println("PRINT MSG: getPersonCourses");
+        System.out.println(personId);
+
         PersonEntity person = em.find(PersonEntity.class, personId);
-        return person.getFollowingCourses();
+        for (CourseEntity c : person.getSubscribedCourses()) {
+            System.out.println(c.getName());
+        }
+        return person.getSubscribedCourses();
     }
 
+    public PersonEntity getPersonEntity(Integer userId) {
+       return em.find(PersonEntity.class, userId);
+    }
+
+    /**
+     * @param person the person whom wants to subsribe to the given courses
+     * @param courses an absolute list of given courses to which the person wants to subscribe.
+     * @Post:
+
+     */
+    public void subscribeToCourses(PersonEntity person, List<CourseEntity> courses) {
+        person.getSubscribedCourses().clear();
+        courses.forEach((course) -> {
+            person.addCourse(course);
+        }) ;
+    }
 
 
 

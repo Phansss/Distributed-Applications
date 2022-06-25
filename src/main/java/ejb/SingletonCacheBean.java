@@ -13,7 +13,7 @@ import java.util.Map;
 @Startup
 public class SingletonCacheBean {
 
-    private Map<Long, Object> cache = new HashMap<>();
+    private final Map<Long, Object> cache = new HashMap<>();
 
     @PersistenceContext(unitName = "DADemoPU")
     EntityManager singlebean_em;
@@ -24,8 +24,7 @@ public class SingletonCacheBean {
     }
 
     public void removeFromCache(Long id) {
-        if (cache.containsKey(id))
-            cache.remove(id);
+        cache.remove(id);
     }
     public Object getFromCache(Long id) {
         if(cache.isEmpty()){

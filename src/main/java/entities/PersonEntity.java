@@ -10,7 +10,7 @@ import java.util.Objects;
 public class PersonEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "personId")
     private int id;
     @Basic
     @Column(name = "name")
@@ -24,10 +24,13 @@ public class PersonEntity {
     @Basic
     @Column(name = "password")
     private String password;
-    @ManyToMany(mappedBy = "followedByPersons", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "followedByPersons", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<CourseEntity> subscribedCourses;
-    @OneToMany(mappedBy = "madeBy")
-    private List<CommentEntity> madeComments;
+
+    @OneToMany
+    @JoinTable(name = "Person_Posted_Comments", joinColumns = @JoinColumn(name = "personId"), inverseJoinColumns =
+    @JoinColumn(name = "commentId"))
+    private List<CommentEntity> comments;
 
     public List<CourseEntity> getSubscribedCourses() {
         return subscribedCourses;
@@ -77,12 +80,12 @@ public class PersonEntity {
         this.password = password;
     }
 
-    public List<CommentEntity> getMadeComments() {
-        return madeComments;
+    public List<CommentEntity> getComments() {
+        return comments;
     }
 
-    public void setMadeComments(List<CommentEntity> madeComments) {
-        this.madeComments = madeComments;
+    public void setComments(List<CommentEntity> madeComments) {
+        this.comments = madeComments;
     }
 
 

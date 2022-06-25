@@ -3,9 +3,6 @@ package entities;
 import ejb.SingletonCacheBean;
 import jakarta.persistence.*;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.sql.Blob;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,7 +11,7 @@ import java.util.Objects;
 public class ProfessorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "professorId")
     private int id;
     @Basic
     @Column(name = "name")
@@ -29,10 +26,13 @@ public class ProfessorEntity {
 
     @Column(name = "amountOfRatings")
     private int amountOfRatings;
-    @ManyToMany(mappedBy = "courseGivenBy")
-    private List<CourseEntity> profGivesCourses;
+
+    @ManyToMany(mappedBy = "givenByProfessors")
+    private List<CourseEntity> givesCourses;
 
     @OneToMany
+    @JoinTable(name = "Professor_Has_Comments", joinColumns = @JoinColumn(name = "professorId"), inverseJoinColumns =
+                    @JoinColumn(name = "commentId"))
     private List<CommentEntity> commentsAbout;
 
     @Lob
@@ -70,12 +70,12 @@ public class ProfessorEntity {
         this.amountOfRatings = amountOfRatings;
     }
 
-    public List<CourseEntity> getProfGivesCourses() {
-        return profGivesCourses;
+    public List<CourseEntity> getGivesCourses() {
+        return givesCourses;
     }
 
-    public void setProfGivesCourses(List<CourseEntity> profGivesCourses) {
-        this.profGivesCourses = profGivesCourses;
+    public void setGivesCourses(List<CourseEntity> profGivesCourses) {
+        this.givesCourses = profGivesCourses;
     }
 
     public List<CommentEntity> getCommentsAbout() {
@@ -91,12 +91,12 @@ public class ProfessorEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProfessorEntity that = (ProfessorEntity) o;
-        return id == that.id && rating == that.rating && amountOfRatings == that.amountOfRatings && Objects.equals(name, that.name) && Objects.equals(profGivesCourses, that.profGivesCourses) && Objects.equals(commentsAbout, that.commentsAbout);
+        return id == that.id && rating == that.rating && amountOfRatings == that.amountOfRatings && Objects.equals(name, that.name) && Objects.equals(givesCourses, that.givesCourses) && Objects.equals(commentsAbout, that.commentsAbout);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, rating, amountOfRatings, profGivesCourses, commentsAbout);
+        return Objects.hash(id, name, rating, amountOfRatings, givesCourses, commentsAbout);
     }
 
     public String getSurname() {

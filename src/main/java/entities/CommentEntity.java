@@ -8,25 +8,28 @@ import java.util.Objects;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "Comment_Type")
-@Table(name = "Comments", schema = "hellodemo")
+@Table(name = "Comment", schema = "hellodemo")
 public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "commentId")
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "MadeById")
-    private PersonEntity madeBy;
+  /*  @ManyToOne
+    @JoinColumn(name = "personId")
+    private PersonEntity person;
 
     @ManyToOne
-    @JoinColumn(name = "isAboutId")
-    private ProfessorEntity isAbout;
+    @JoinColumn(name = "professorId")
+    private ProfessorEntity professor;
+*/
 
     @Basic
-    @Column(name = "Name", nullable = false, unique = true)
+    @Column(name = "Date", nullable = false, unique = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timePosted;
+
+
 
     public int getId() {
         return id;
@@ -36,21 +39,21 @@ public class CommentEntity {
         this.id = id;
     }
 
-    public PersonEntity getMadeBy() {
-        return madeBy;
+    /*public PersonEntity getPerson() {
+        return person;
     }
 
-    public void setMadeBy(PersonEntity madeBy) {
-        this.madeBy = madeBy;
+    public void setPerson(PersonEntity madeBy) {
+        this.person = madeBy;
     }
 
-    public ProfessorEntity getIsAbout() {
-        return isAbout;
+    public ProfessorEntity getProfessor() {
+        return professor;
     }
 
-    public void setIsAbout(ProfessorEntity isAbout) {
-        this.isAbout = isAbout;
-    }
+    public void setProfessor(ProfessorEntity isAbout) {
+        this.professor = isAbout;
+    }*/
 
     public Date getTimePosted() {
         return timePosted;
@@ -65,12 +68,12 @@ public class CommentEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CommentEntity that = (CommentEntity) o;
-        return id == that.id && Objects.equals(madeBy, that.madeBy) && Objects.equals(isAbout, that.isAbout) && Objects.equals(timePosted, that.timePosted);
+        return id == that.id && Objects.equals(timePosted, that.timePosted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, madeBy, isAbout, timePosted);
+        return Objects.hash(id, timePosted);
     }
 }
 

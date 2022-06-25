@@ -27,7 +27,7 @@
             <b><h:outputText value="Overall Rating: "/></b><h:outputText value="#{wieiswieBean.professor.rating}"/>
             <br/><br/>
             <h:form>
-               <p:dataTable var="course" value="#{wieiswieBean.professor.profGivesCourses}">
+               <p:dataTable var="course" value="#{wieiswieBean.professor.givesCourses}">
                   <p:column headerText="Course Name">
                      <h:outputText value="#{course.name}" />
                   </p:column>

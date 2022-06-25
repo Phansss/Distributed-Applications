@@ -7,15 +7,21 @@ import jakarta.faces.convert.Converter;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Objects;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 
 enum Year {
     FIRST_YEAR,
     SECOND_YEAR,
     THIRD_YEAR,
-    MASTER;
+    MASTER
 }
+
 
 @Entity
 @Table(name = "Course", schema = "hellodemo")
@@ -33,9 +39,13 @@ public class CourseEntity implements Serializable, Converter, Comparable<CourseE
     private List<PersonEntity> followedByPersons;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "jnd_course_professor", joinColumns = @JoinColumn(name = "course_fk"), inverseJoinColumns = @JoinColumn(name = "professor_fk"))
-    private List<ProfessorEntity> courseGivenBy;
+    private List<ProfessorEntity> givenByProfessors;
     @Enumerated
     private Year yearOfCourse;
+
+    @OneToMany
+    @JoinTable(name = "Course_Comments", joinColumns = @JoinColumn(name = "courseId"), inverseJoinColumns = @JoinColumn(name = "commentId"))
+    private List<CommentEntity> comments;
 
     public int getId() {
         return courseId;
@@ -65,12 +75,12 @@ public class CourseEntity implements Serializable, Converter, Comparable<CourseE
         return followedByPersons;
     }
 
-    public List<ProfessorEntity> getCourseGivenBy() {
-        return courseGivenBy;
+    public List<ProfessorEntity> getGivenByProfessors() {
+        return givenByProfessors;
     }
 
-    public void setCourseGivenBy(List<ProfessorEntity> courseGivenBy) {
-        this.courseGivenBy = courseGivenBy;
+    public void setGivenByProfessors(List<ProfessorEntity> courseGivenBy) {
+        this.givenByProfessors = courseGivenBy;
     }
 
     public Year getYearOfCourse() {
@@ -112,7 +122,7 @@ public class CourseEntity implements Serializable, Converter, Comparable<CourseE
                 "courseId=" + courseId +
                 ", name='" + name + '\'' +
                 ", personsInCourse=" + followedByPersons +
-                ", courseGivenBy=" + courseGivenBy +
+                ", courseGivenBy=" + givenByProfessors +
                 ", yearOfCourse=" + yearOfCourse +
                 '}';
     }
@@ -129,5 +139,6 @@ public class CourseEntity implements Serializable, Converter, Comparable<CourseE
     public int hashCode() {
         return Objects.hash(getCourseId(), getName(), getYearOfCourse());
     }
+
 }
 

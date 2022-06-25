@@ -3,7 +3,6 @@ package ejb;
 import entities.CourseEntity;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 import org.primefaces.model.menu.*;
 
@@ -13,7 +12,7 @@ import java.util.*;
 
 @Named
 @SessionScoped
-public class CourseMenuView implements java.io.Serializable {
+public class CourseMenuModel implements java.io.Serializable {
 
     private DefaultSubMenu firstSubmenu;
     private DefaultSubMenu secondSubmenu;
@@ -22,7 +21,7 @@ public class CourseMenuView implements java.io.Serializable {
 
     private final DefaultMenuModel courseMenu;
 
-    public CourseMenuView() {
+    public CourseMenuModel() {
         courseMenu = new DefaultMenuModel();
     }
 

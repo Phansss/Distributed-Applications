@@ -24,9 +24,8 @@ public class  homeScreenBean implements Serializable {
     ArrayList<textComment> TCommentsToShow;
     ArrayList<ratingTextComment> RTCommentsToShow;
     private List<CommentEntity> commentsToShow;
-    private String inputComment;
-    private Integer inputRating;
-
+    private String inputCommentText;
+    private Integer inputCommentRating;
 
     //PROFESSORS
     private List<String> professorNames;
@@ -61,22 +60,28 @@ public class  homeScreenBean implements Serializable {
     @Inject
     PersonServiceBean personServiceBean;
     @Inject
-    CourseMenuView courseMenuView;
+    CourseMenuModel courseMenuView;
 
+
+    //bean constructor
+    public homeScreenBean() {
+        //System.out.println("PRINT MSG: Creating a homeScreenBean");
+        //System.out.println(courseServiceBean);
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        userId = (int) session.getAttribute("user");
+        //System.out.println(userId);
+    }
     @PostConstruct
     public void initialize() {
         //Load the personEntity (for now: persistent to DB!)
         this.person = personServiceBean.getPersonEntity(userId);
-
         //Load all courseEntities from DB (for now: persistent to DB!)
         this.courseEntities = new HashMap<Integer, CourseEntity>();
         courseServiceBean.getAllCourses().forEach((courseEntity) -> {
             courseEntities.put(courseEntity.getId(), courseEntity);
         });
-
         //Load all courses to which this user currently is subscribed from DB (for now: persistent to DB!)
         this.subscribedCourses = person.getSubscribedCourses();
-
         //Create 2 Hashmaps which contain key value pairs of subscried and unsubscribed courses of this user)
         this.unSubscribedCoursesMap = new HashMap<String, Integer>();
         this.subscribedCoursesMap = new HashMap<String, Integer>();
@@ -92,25 +97,16 @@ public class  homeScreenBean implements Serializable {
         //Set the current course which is showing to the first course in the subscribedCourseEntities list.
         if (getSubscribedCourses().size() != 0) {
             this.currentCourse = getSubscribedCourses().get(0);
+            //set the currentCourseProfessor
             setCurrentCourseProfessors();
         }
-        //set the currentCourseProfessor
-
-
         //Load the Menu Model of the course menu in this homeScreenBeans field so that it can be rendered by primefaces
         this.courseMenu = courseMenuView.getCourseMenu();
         courseMenuView.buildCoursesMenuTest(getSubscribedCourses());
-        System.out.println("subscribed courses: " + getSubscribedCoursesMap());
-        System.out.println("unsubscribed courses: " + getUnSubscribedCoursesMap());
+        //System.out.println("subscribed courses: " + getSubscribedCoursesMap());
+        //System.out.println("unsubscribed courses: " + getUnSubscribedCoursesMap());
     }
-
-    public homeScreenBean() {
-        //System.out.println("PRINT MSG: Creating a homeScreenBean");
-        //System.out.println(courseServiceBean);
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        userId = (int) session.getAttribute("user");
-        //System.out.println(userId);
-    }
+    //fired when you add a course in the 'add' dropwdown.
     public void addCourse(){
         String courseName = FacesContext.getCurrentInstance().getExternalContext().
                 getRequestParameterMap().get("j_idt9:multiple-add");
@@ -121,63 +117,8 @@ public class  homeScreenBean implements Serializable {
             getUnSubscribedCoursesMap().remove(courseName);
             courseMenuView.addCourse(getCourseEntities().get(courseId));
         }
-        //Add element to menu
-
-        //Persist to database
-
-        // PrimeFaces library seems to sometimes only work with either List<String> or sometimes List<Entity> so we have to write weird checks such as this
-        //try {
-            //List<CourseEntity> oldCourses = new ArrayList<>(selectedCoursesAsCourses);
-            //System.out.println("Print oldCourses 1" + oldCourses);
-            //CourseEntity changedCourse;
-            //boolean trueforaddfalseforremove;
-            //selectedCoursesAsCourses.clear();
-            //System.out.println("Print oldCourses 2" + oldCourses);
-            //System.out.println("Print selectedCourses" + selectedCoursesAsString);
-            /*for (CourseEntity c : coursesAsCourses
-            ) {
-                if(selectedCoursesAsString.
-
-
-
-             contains(c.getName())) {
-                    selectedCoursesAsCourses.add(c);
-
-                    if(!oldCourses.contains(c)){
-                        changedCourse = c;
-                        System.out.println("Print Created Relation between: " + changedCourse.getCourseId() + " and " + userId);
-                        ut.begin();
-                        em.joinTransaction();
-                        em.createNativeQuery("INSERT INTO jnd_course_person (course_fk, person_fk) VALUES (?,?)")
-                                .setParameter(1, changedCourse.getCourseId())
-                                .setParameter(2, userId)
-                                .executeUpdate();
-                        ut.commit();
-                    }
-
-                }
-
-                //stel courses weggegaan. Courses niet in huidige selectie (Primefaces) maar wel in vorige selectie (query uit databank).
-                else if (oldCourses.contains(c)) {
-                    changedCourse = c;
-                    System.out.println("Print Deleted Relation between: " + changedCourse.getCourseId() + " and " + userId);
-                    ut.begin();
-                    em.joinTransaction();
-                    em.createNativeQuery("DELETE FROM jnd_course_person WHERE (course_fk = ?) AND (person_fk = ?)")
-                            .setParameter(1, changedCourse.getCourseId())
-                            .setParameter(2, userId)
-                            .executeUpdate();
-                    ut.commit();
-                }
-            }
-            System.out.println("Print Selectedcourses as courses: " + selectedCoursesAsCourses);
-
-            gatherProfessors();
-            makeCourseMenu();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }*/
     }
+    //fired when you remove a course in the 'remove' dropdown.
     public void removeCourse() {
         String courseName = FacesContext.getCurrentInstance().getExternalContext().
                 getRequestParameterMap().get("j_idt9:multiple-remove");
@@ -192,18 +133,17 @@ public class  homeScreenBean implements Serializable {
         }
     }
 
+    //Fired when you click on a course in the course menu.
     public void showCourse() {
         System.out.println("MENU ITEM PARAMETERS: ");
         Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         System.out.println("MENU ITEM PARAMETERS: " + params);
-
         Integer courseId = Integer.parseInt(params.get("courseId"));
         System.out.println(courseId);
         CourseEntity currentCourse = courseServiceBean.getCourseEntity(courseId);
         this.currentCourse = currentCourse;
         setCurrentCourseProfessors();
     }
-
     private void setCurrentCourseProfessors() {
         //System.out.println("Setting the professors for current course: " + getCurrentCourse().getName());
         this.currentCourseProfessors.clear();
@@ -220,14 +160,14 @@ public class  homeScreenBean implements Serializable {
 
     //Opgeroepen van zodra op de add knop wordt gedrukt. Rating = 1_5, text is comment
     public void printRating()  {
-        System.out.println("Print Rating: " + inputRating + ". Text1: " + inputComment + ". Professor: " + chosenProfessor);
+        System.out.println("Print Rating: " + inputCommentRating + ". Text1: " + inputCommentText + ". Professor: " + chosenProfessor);
         String commentType;
         Integer chosenProfId = 0;
 
-        if(inputRating == null){
+        if(inputCommentRating == null){
             commentType = "T";
         }
-        else if (Objects.equals(inputComment, "")) {
+        else if (Objects.equals(inputCommentText, "")) {
             commentType = "R";
         } else {
             commentType = "RT";
@@ -250,18 +190,18 @@ public class  homeScreenBean implements Serializable {
             switch (commentType){
                 case "RT":
                     em.createNativeQuery("INSERT INTO ratingTextComment(commentId, Comment_Rating, Comment_Text) VALUES ((SELECT MAX(commentId) FROM Comments),?,?)")
-                            .setParameter(1, inputRating)
-                            .setParameter(2, inputComment)
+                            .setParameter(1, inputCommentRating)
+                            .setParameter(2, inputCommentText)
                             .executeUpdate();
                     break;
                 case "T":
                     em.createNativeQuery("INSERT INTO textComment(commentId, Comment_Text) VALUES ((SELECT MAX(commentId) FROM Comments),?)")
-                            .setParameter(1, inputComment)
+                            .setParameter(1, inputCommentText)
                             .executeUpdate();
                     break;
                 case "R":
                     em.createNativeQuery("INSERT INTO ratingComment(commentId, Comment_Rating) VALUES ((SELECT MAX(commentId) FROM Comments),?)")
-                            .setParameter(1, inputRating)
+                            .setParameter(1, inputCommentRating)
                             .executeUpdate();
                     break;
             }
@@ -385,20 +325,20 @@ public class  homeScreenBean implements Serializable {
     }
 
 
-    public String getInputComment() {
-        return inputComment;
+    public String getInputCommentText() {
+        return inputCommentText;
     }
 
-    public void setInputComment(String inputComment){
-        this.inputComment = inputComment;
+    public void setInputCommentText(String inputCommentText){
+        this.inputCommentText = inputCommentText;
     }
 
-    public Integer getInputRating() {
-        return inputRating;
+    public Integer getInputCommentRating() {
+        return inputCommentRating;
     }
 
-    public void setInputRating(Integer inputRating){
-        this.inputRating = inputRating;
+    public void setInputCommentRating(Integer inputCommentRating){
+        this.inputCommentRating = inputCommentRating;
     }
 
     /*public void onrate(RateEvent rateEvent){

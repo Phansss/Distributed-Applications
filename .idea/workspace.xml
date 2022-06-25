@@ -11,18 +11,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dda23ae2-4c4a-446b-a7b7-3fe0f9fe5216" name="Changes" comment="EJB backbone first setup">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_05_2022_16_27__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_05_2022_16_27__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_05_2022_10_17__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_05_2022_10_17__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b178b607-a042-4209-8233-89a38a8b6618.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b178b607-a042-4209-8233-89a38a8b6618/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21_[Changes]1/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -32,6 +34,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Daan" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="LogFilters">
@@ -53,6 +60,7 @@
     </option>
   </component>
   <component name="ProjectId" id="2ALiic50wjrWmUdZs8JSnX4JxVh" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -195,19 +203,34 @@
         </option>
       </method>
     </configuration>
+    <configuration name="docker.mysql: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="mysql" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker/docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Database Script.Course-data.sql" />
       <item itemvalue="Database Script.Professor-data.sql" />
       <item itemvalue="Database Script.jnd_course_professor-data.sql" />
       <item itemvalue="Database Script.Comments-data.sql and 9 more" />
+      <item itemvalue="Docker.docker.mysql: Compose Deployment" />
       <item itemvalue="GlassFish Server.GlassFish 6.2.5" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.docker.mysql: Compose Deployment" />
         <item itemvalue="Database Script.Comments-data.sql and 9 more" />
-        <item itemvalue="Database Script.Course-data.sql" />
         <item itemvalue="Database Script.jnd_course_professor-data.sql" />
         <item itemvalue="Database Script.Professor-data.sql" />
+        <item itemvalue="Database Script.Course-data.sql" />
       </list>
     </recent_temporary>
   </component>
@@ -221,6 +244,7 @@
       <updated>1654795399749</updated>
       <workItem from="1654795401613" duration="8754000" />
       <workItem from="1654844766854" duration="22937000" />
+      <workItem from="1656188721913" duration="356000" />
     </task>
     <task id="LOCAL-00001" summary="Fix Build Error">
       <created>1654795659362</created>

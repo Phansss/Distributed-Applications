@@ -31,7 +31,7 @@ public class ProfessorEntity {
     private List<CourseEntity> givesCourses;
 
     @OneToMany
-    @JoinTable(name = "Professor_Comments", joinColumns = @JoinColumn(name = "professorId"), inverseJoinColumns =
+    @JoinTable(name = "Professor_Has_Comments", joinColumns = @JoinColumn(name = "professorId"), inverseJoinColumns =
                     @JoinColumn(name = "commentId"))
     private List<CommentEntity> commentsAbout;
 

@@ -29,22 +29,22 @@ enum Year {
 public class CourseEntity implements Serializable, Converter, Comparable<CourseEntity> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "courseId")
     private int courseId;
     @Basic
     @Column(name = "Name", nullable = false, unique = true)
     private String name;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "jnd_course_person", joinColumns = @JoinColumn(name = "course_fk"), inverseJoinColumns = @JoinColumn(name = "person_fk"))
+    @JoinTable(name = "Persons_Follow_Courses", joinColumns = @JoinColumn(name = "courseId"), inverseJoinColumns = @JoinColumn(name = "personId"))
     private List<PersonEntity> followedByPersons;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "jnd_course_professor", joinColumns = @JoinColumn(name = "course_fk"), inverseJoinColumns = @JoinColumn(name = "professor_fk"))
+    @JoinTable(name = "Professors_Teach_Courses", joinColumns = @JoinColumn(name = "courseId"), inverseJoinColumns = @JoinColumn(name = "professorId"))
     private List<ProfessorEntity> givenByProfessors;
     @Enumerated
     private Year yearOfCourse;
 
     @OneToMany
-    @JoinTable(name = "Course_Comments", joinColumns = @JoinColumn(name = "courseId"), inverseJoinColumns = @JoinColumn(name = "commentId"))
+    @JoinTable(name = "Course_Has_Comments", joinColumns = @JoinColumn(name = "courseId"), inverseJoinColumns = @JoinColumn(name = "commentId"))
     private List<CommentEntity> comments;
 
     public int getId() {

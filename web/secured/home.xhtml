@@ -62,7 +62,7 @@
 
          <h:form id="repeatform">
             <p:autoUpdate/>
-            <p:repeat value="#{homeScreenBean.RTCommentsToShow}" var="comment">
+            <p:repeat value="#{homeScreenBean.currentRatingTextComments}" var="comment">
 
              <div class="commentBox white-background">
                <br/>
@@ -80,7 +80,7 @@
                <br/>
             </p:repeat>
 
-            <p:repeat value="#{homeScreenBean.TCommentsToShow}" var="comment">
+            <p:repeat value="#{homeScreenBean.currentTextComments}" var="comment">
                <div class="commentBox white-background">
                   <br/>
                   <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}"/>
@@ -95,7 +95,7 @@
                <br/>
             </p:repeat>
 
-            <p:repeat value="#{homeScreenBean.RCommentsToShow}" var="comment">
+            <p:repeat value="#{homeScreenBean.currentRatingComments}" var="comment">
                <div class="commentBox white-background">
                   <br/>
                   <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}"/>

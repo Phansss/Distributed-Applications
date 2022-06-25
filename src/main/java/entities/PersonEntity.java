@@ -28,7 +28,7 @@ public class PersonEntity {
     private List<CourseEntity> subscribedCourses;
 
     @OneToMany
-    @JoinTable(name = "Person_Comments", joinColumns = @JoinColumn(name = "personId"), inverseJoinColumns =
+    @JoinTable(name = "Person_Posted_Comments", joinColumns = @JoinColumn(name = "personId"), inverseJoinColumns =
     @JoinColumn(name = "commentId"))
     private List<CommentEntity> comments;
 

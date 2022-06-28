@@ -24,7 +24,7 @@
             <br/><br/>
             <b><h:outputText value="Amount of Comments: "/></b><h:outputText value="#{wieiswieBean.professor.commentsAbout.size()}"/>
             <br/><br/>
-            <b><h:outputText value="Overall Rating: "/></b><h:outputText value="#{wieiswieBean.getRatingFromId()}"/>
+            <b><h:outputText value="Overall Rating: "/></b><h:outputText value="#{wieiswieBean.getRatingFromSurname()}"/>
             <br/><br/>
             <h:form>
                <p:dataTable var="course" value="#{wieiswieBean.professor.givesCourses}">

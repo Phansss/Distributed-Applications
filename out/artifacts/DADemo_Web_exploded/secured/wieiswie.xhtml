@@ -24,10 +24,10 @@
             <br/><br/>
             <b><h:outputText value="Amount of Comments: "/></b><h:outputText value="#{wieiswieBean.professor.commentsAbout.size()}"/>
             <br/><br/>
-            <b><h:outputText value="Overall Rating: "/></b><h:outputText value="#{wieiswieBean.professor.rating}"/>
+            <b><h:outputText value="Overall Rating: "/></b><h:outputText value="#{wieiswieBean.getRatingFromId()}"/>
             <br/><br/>
             <h:form>
-               <p:dataTable var="course" value="#{wieiswieBean.professor.profGivesCourses}">
+               <p:dataTable var="course" value="#{wieiswieBean.professor.givesCourses}">
                   <p:column headerText="Course Name">
                      <h:outputText value="#{course.name}" />
                   </p:column>

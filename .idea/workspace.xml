@@ -11,14 +11,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dda23ae2-4c4a-446b-a7b7-3fe0f9fe5216" name="Changes" comment="EJB backbone first setup">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b178b607-a042-4209-8233-89a38a8b6618.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b178b607-a042-4209-8233-89a38a8b6618/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_1.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/DADemo_ear_exploded.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/META-INF/application.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/REST/RESTapplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/REST/getProfessorRatingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SOAP/Validator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SOAP/professorValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/WEB-INF/server-config.wsdd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-tables/Comment.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-tables/Comment.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-tables/Course_Has_Comments.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-tables/Course_Has_Comments.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-tables/Persons_Follow_Courses.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-tables/Persons_Follow_Courses.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-tables/Professor_Has_Comments.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-tables/Professor_Has_Comments.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-tables/Professors_Teach_Courses.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-tables/Professors_Teach_Courses.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/secured/home.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/secured/home.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/secured/wieiswie.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/secured/wieiswie.xhtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_ejb_exploded/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_ejb_exploded/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/CourseMenuModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/CourseMenuModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/loginBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/loginBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/wieiswieBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/wieiswieBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ProfessorEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ProfessorEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/secured/wieiswie.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/secured/wieiswie.xhtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +49,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -48,7 +67,7 @@
     <option name="FILTER_WARNINGS" value="false" />
     <option name="FILTER_INFO" value="false" />
     <option name="FILTER_DEBUG" value="false" />
-    <option name="CUSTOM_FILTER" />
+    <option name="CUSTOM_FILTER" value="Print" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -69,68 +88,38 @@
     <option name="showMembers" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JPA.DatabaseSchemaImportDialog&quot;: &quot;235cb29e-3afa-4958-bced-26e0709966fb&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/piete/IdeaProjects/Distributed-Applications/web/resources&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Facets&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.4375&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;debugger.hotswap&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JPA.DatabaseSchemaImportDialog": "235cb29e-3afa-4958-bced-26e0709966fb",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/piete/IdeaProjects/Distributed-Applications/web/resources",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Facets",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.4375",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ],
-    &quot;RunConfigurationTargetLRU&quot;: [
-      &quot;235cb29e-3afa-4958-bced-26e0709966fb&quot;,
-      &quot;235cb29e-3afa-4958-bced-26e0709966fb/schema/\&quot;hellodemo\&quot;&quot;
+    "RunConfigurationTargetLRU": [
+      "235cb29e-3afa-4958-bced-26e0709966fb",
+      "235cb29e-3afa-4958-bced-26e0709966fb/schema/\"hellodemo\""
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="ImportMappingsDialog.RecentPackages">
       <recent name="" />
     </key>
   </component>
   <component name="RunManager" selected="GlassFish Server.GlassFish 6.2.5">
-    <configuration name="Comments-data.sql and 9 more" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/ddl/Comments-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/Course-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/jnd_course-person-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/jnd_course_professor-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/Person-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/Professor-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/Professor_Comments-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/ratingComment-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/ratingTextComment-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/textComment-data.sql" />
-      <script-mode>FILE</script-mode>
-      <data-source id="235cb29e-3afa-4958-bced-26e0709966fb" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Course-data.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/ddl/Course-data.sql" />
-      <script-mode>FILE</script-mode>
-      <method v="2" />
-    </configuration>
-    <configuration name="Professor-data.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/ddl/Professor-data.sql" />
-      <script-mode>FILE</script-mode>
-      <data-source id="235cb29e-3afa-4958-bced-26e0709966fb" namespace="schema/&quot;hellodemo&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="jnd_course_professor-data.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/ddl/jnd_course_professor-data.sql" />
-      <script-mode>FILE</script-mode>
-      <data-source id="235cb29e-3afa-4958-bced-26e0709966fb" namespace="schema/&quot;hellodemo&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration name="GlassFish 6.2.5" type="GlassfishConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="GlassFish 6.2.5" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true" show_console_on_std_out="true">
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/DADemo_Web_exploded/api/hello-world" />
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="DADemo:ejb exploded">
@@ -149,6 +138,16 @@
         <option name="CREDENTIAL_ALIAS" />
       </server-settings>
       <predefined_log_file enabled="true" id="GlassFish" />
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+        </ENTRIES>
+      </extension>
       <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="9009" />
       </RunnerSettings>
@@ -171,9 +170,9 @@
         <option name="USE_ENV_VARIABLES" value="true" />
         <STARTUP>
           <option name="USE_DEFAULT" value="false" />
-          <option name="SCRIPT" value="$PROJECT_DIR$/../../../../Tools/glassfish6/bin/asadmin.bat" />
+          <option name="SCRIPT" value="$PROJECT_DIR$/../../../../Tools/glassfish6/bin/asadmin.bat start-domain --debug domain1 --verbose" />
           <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="start-domain --debug domain1 --verbose" />
+          <option name="PROGRAM_PARAMETERS" value="" />
         </STARTUP>
         <SHUTDOWN>
           <option name="USE_DEFAULT" value="true" />
@@ -205,34 +204,36 @@
         </option>
       </method>
     </configuration>
-    <configuration name="docker.mysql: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="services">
-            <list>
-              <option value="mysql" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker/docker-compose.yml" />
-        </settings>
-      </deployment>
+    <configuration name="All in generated-requests" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #10" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="10" requestIdentifier="#10" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #22" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="22" requestIdentifier="#22" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #4" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="4" requestIdentifier="#4" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #9" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="9" requestIdentifier="#9" runType="Run single request">
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Database Script.Course-data.sql" />
-      <item itemvalue="Database Script.Professor-data.sql" />
-      <item itemvalue="Database Script.jnd_course_professor-data.sql" />
-      <item itemvalue="Database Script.Comments-data.sql and 9 more" />
-      <item itemvalue="Docker.docker.mysql: Compose Deployment" />
       <item itemvalue="GlassFish Server.GlassFish 6.2.5" />
+      <item itemvalue="HTTP Request.generated-requests | #10" />
+      <item itemvalue="HTTP Request.generated-requests | #22" />
+      <item itemvalue="HTTP Request.generated-requests | #9" />
+      <item itemvalue="HTTP Request.All in generated-requests" />
+      <item itemvalue="HTTP Request.generated-requests | #4" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.docker.mysql: Compose Deployment" />
-        <item itemvalue="Database Script.Comments-data.sql and 9 more" />
-        <item itemvalue="Database Script.jnd_course_professor-data.sql" />
-        <item itemvalue="Database Script.Professor-data.sql" />
-        <item itemvalue="Database Script.Course-data.sql" />
+        <item itemvalue="HTTP Request.All in generated-requests" />
+        <item itemvalue="HTTP Request.generated-requests | #22" />
+        <item itemvalue="HTTP Request.generated-requests | #10" />
+        <item itemvalue="HTTP Request.generated-requests | #9" />
+        <item itemvalue="HTTP Request.generated-requests | #4" />
       </list>
     </recent_temporary>
   </component>
@@ -246,7 +247,11 @@
       <updated>1654795399749</updated>
       <workItem from="1654795401613" duration="8754000" />
       <workItem from="1654844766854" duration="22937000" />
-      <workItem from="1656188721913" duration="709000" />
+      <workItem from="1656188721913" duration="922000" />
+      <workItem from="1656243235379" duration="48000" />
+      <workItem from="1656409181082" duration="3316000" />
+      <workItem from="1656412551113" duration="8556000" />
+      <workItem from="1656424402201" duration="9626000" />
     </task>
     <task id="LOCAL-00001" summary="Fix Build Error">
       <created>1654795659362</created>
@@ -277,5 +282,9 @@
     <MESSAGE value="Fixed Deploy Error" />
     <MESSAGE value="EJB backbone first setup" />
     <option name="LAST_COMMIT_MESSAGE" value="EJB backbone first setup" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

@@ -1,16 +1,12 @@
 package ejb;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.net.URI;
 import java.util.List;
 
 import entities.PersonEntity;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.bean.ManagedBean;
-import jakarta.faces.bean.RequestScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -18,6 +14,11 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.UserTransaction;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
 
 @ManagedBean(name = "loginBean")
 @SessionScoped
@@ -73,7 +74,7 @@ public class loginBean implements Serializable {
 
                 ut.begin();
                 em.joinTransaction();
-                em.createNativeQuery("INSERT INTO Person (name, lastname, email, password) VALUES (?,?,?,?)")
+                em.createNativeQuery("INSERT INTO Person (name, lastName, email, password) VALUES (?,?,?,?)")
                         .setParameter(1, firstName)
                         .setParameter(2, lastName)
                         .setParameter(3, email)

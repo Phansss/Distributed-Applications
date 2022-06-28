@@ -9,8 +9,8 @@ create table Comments
     constraint Name
         unique (Name),
     constraint FK_Comments_MadeById
-        foreign key (MadeById) references Person (id),
+        foreign key (MadeById) references Person (personId),
     constraint FK_Comments_isAboutId
-        foreign key (isAboutId) references Professor (id)
+        foreign key (isAboutId) references Professor (professorId)
 );
 

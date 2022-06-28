@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+   <title>Main Page</title>
+   <h:outputStylesheet library = "css" name = "styles.css"  />
+</h:head>
+
+<h:body style="margin: 0" class="background">
+
+   <div class="header">
+      <h1 style="align-self: center; margin: 0;">Rate Your Professor by P&amp;D</h1>
+
+      <h:outputText style="align-self: right" value="Welcome #{homeScreenBean.userFullName}"/>
+   </div>
+
+   <div class="row">
+      <div class="left">
+         <div class="sticky">
+            <br/>
+            <div class="margin-10-left white-background sticky">
+
+               <h1>Your Courses</h1>
+
+               <h:form > <!-- A menu has to be inside a form tag because it has implementations for action selection -->
+                  <p:menu id="courseMenuModel" model="#{homeScreenBean.courseMenu}" toggleable="true">
+                     <p:autoUpdate/>
+                  </p:menu>
+
+               <h1>Add course</h1>
+                  <p:selectCheckboxMenu id="multiple-add" value="#{homeScreenBean.subscribedCourses}" filter="true"
+                                        filterMatchMode="contains" label="Courses" updateLabel="false"
+                                        style="min-width: 15rem" panelStyle="width: 30rem" scrollHeight="250" multiple="true">
+                     <p:ajax event="change" listener="#{homeScreenBean.addCourse}"/>
+                        <f:selectItems value="#{homeScreenBean.unSubscribedCoursesMap.keySet()}"/>
+                        <f:param name="selectedCourse" value = "#{course}"/>
+                     <p:autoUpdate/>
+                  </p:selectCheckboxMenu>
+
+               <h1>Remove course</h1>
+                  <p:selectCheckboxMenu id="multiple-remove" value="#{homeScreenBean.subscribedCourses}" filter="true"
+                                        filterMatchMode="contains" label="Courses" updateLabel="false"
+                                        style="min-width: 15rem" panelStyle="width: 30rem" scrollHeight="250" multiple="true">
+                     <p:ajax event="change" listener="#{homeScreenBean.removeCourse}"/>
+                     <f:selectItems value="#{homeScreenBean.subscribedCoursesMap.keySet()}"/>
+                     <f:param name="selectedCourse" value = "#{course}"/>
+                     <p:autoUpdate/>
+                  </p:selectCheckboxMenu>
+               </h:form>
+
+            </div>
+         </div>
+      </div>
+      <div class="middle margin-10-left">
+         <h1 class="text-on-background">Latest Comments</h1>
+
+         <h:form id="repeatform">
+            <p:autoUpdate/>
+            <p:repeat value="#{homeScreenBean.currentRatingTextComments}" var="comment">
+
+             <div class="commentBox white-background">
+               <br/>
+                  <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}"/>
+                  <br/><br/>
+                  <b><h:outputText value="About: "/></b><h:outputText value="#{comment.professor.name}"/>
+                  <br/><br/>
+                  <b><h:outputText value="Rating: "/></b><h:outputText value="#{comment.rating}"/>
+                  <br/><br/>
+                  <h:outputText value="#{comment.text}"/>
+                  <br/><br/>
+                  <h:outputText class="timeText" value="Posted on: #{comment.timePosted}"/>
+                  <br/>
+               </div>
+               <br/>
+            </p:repeat>
+
+            <p:repeat value="#{homeScreenBean.currentTextComments}" var="comment">
+               <div class="commentBox white-background">
+                  <br/>
+                  <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}"/>
+                  <br/><br/>
+                  <b><h:outputText value="About: "/></b><h:outputText value="#{comment.professor.name}"/>
+                  <br/><br/>
+                  <h:outputText value="#{comment.text}"/>
+                  <br/><br/>
+                  <h:outputText class="timeText" value="Posted on: #{comment.timePosted}"/>
+                  <br/>
+               </div>
+               <br/>
+            </p:repeat>
+
+            <p:repeat value="#{homeScreenBean.currentRatingComments}" var="comment">
+               <div class="commentBox white-background">
+                  <br/>
+                  <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}"/>
+                  <br/><br/>
+                  <b><h:outputText value="About: "/></b><h:outputText value="#{comment.professor.name}"/>
+                  <br/><br/>
+                  <b><h:outputText value="Rating: "/></b><h:outputText value="#{comment.rating}"/>
+                  <br/><br/>
+                  <h:outputText class="timeText" value="Posted on: #{comment.timePosted}"/>
+                  <br/>
+               </div>
+               <br/>
+            </p:repeat>
+
+         </h:form>
+      </div>
+      <div class="right" >
+         <div class="sticky">
+            <br/>
+            <div class="margin-10-right white-background">
+
+               <h1>Make a new comment</h1>
+
+               <h3>Text</h3>
+               <h:form>
+                  <h:inputTextarea value="#{homeScreenBean.inputCommentText}"/>
+
+                  <br/><br/>
+
+                  <h3>Rating</h3>
+                  <p:rating value="#{homeScreenBean.inputCommentRating}"/>
+                  <br/><br/>
+                  <br/><br/>
+
+                  <h3>About Professor</h3>
+                  <p:selectOneMenu id="professorsDropdown" value="#{homeScreenBean.chosenProfessor}">
+                     <p:autoUpdate/>
+                     <f:selectItems value="#{homeScreenBean.currentCourseProfessors}"/>
+                  </p:selectOneMenu>
+
+                  <br/><br/><br/>
+
+                  <h:commandButton action = "homeScreenBean" value = "Add Comment" actionListener="#{homeScreenBean.printRating()}"/><br/>
+               </h:form>
+            </div>
+         </div>
+      </div>
+   </div>
+
+</h:body>
+
+</html>

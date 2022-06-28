@@ -6,5 +6,5 @@ create table Course_Comments
     constraint FK_Course_Comments_commentId
         foreign key (commentId) references Comment (commentId),
     constraint FK_Course_Comments_courseId
-        foreign key (courseId) references Course (id)
+        foreign key (courseId) references Course (courseId)
 );

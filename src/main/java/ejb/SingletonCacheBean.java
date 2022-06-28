@@ -15,9 +15,6 @@ public class SingletonCacheBean {
 
     private final Map<Long, Object> cache = new HashMap<>();
 
-    @PersistenceContext(unitName = "DADemoPU")
-    EntityManager singlebean_em;
-
     public void addToCache(Long id, Object object) {
         if (!cache.containsKey(id))
             cache.put(id, object);
@@ -37,6 +34,8 @@ public class SingletonCacheBean {
     }
 
     public void fillCache(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("DADemoPU");
+        EntityManager singlebean_em = emf.createEntityManager();
         for (ProfessorEntity p: singlebean_em.createQuery("Select P from ProfessorEntity P", ProfessorEntity.class).getResultList()
         ) {
             addToCache((long) p.getId(), p.getPicture());

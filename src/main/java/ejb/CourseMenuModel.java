@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import org.primefaces.model.menu.*;
+import org.primefaces.model.menu.DefaultSubMenu.*;
 
 
 import java.util.*;
@@ -31,6 +32,7 @@ public class CourseMenuModel implements java.io.Serializable {
         secondSubmenu = new DefaultSubMenu();
         thirdSubmenu = new DefaultSubMenu();
         fourthSubmenu = new DefaultSubMenu();
+        /*
         firstSubmenu = DefaultSubMenu.builder()
                 .label("1st Bachelor")
                 .build();
@@ -42,7 +44,7 @@ public class CourseMenuModel implements java.io.Serializable {
                 .build();
         fourthSubmenu = DefaultSubMenu.builder()
                 .label("Master")
-                .build();
+                .build();*/
     }
 
     public void buildCoursesMenuTest(List<CourseEntity> subscribedCourses) {
@@ -50,7 +52,7 @@ public class CourseMenuModel implements java.io.Serializable {
         DefaultMenuItem item;
         for (CourseEntity c : subscribedCourses) {
 
-            Integer courseId = c.getCourseId();
+            Integer courseId = c.getCourseId();/*
             item = DefaultMenuItem.builder()
                     .value(c.getName())
                     .command("#{homeScreenBean.showCourse}")
@@ -72,7 +74,7 @@ public class CourseMenuModel implements java.io.Serializable {
                 case 4:
                     fourthSubmenu.getElements().add(item);
                     break;
-            }
+            }*/
         }
         if (firstSubmenu.getElements().size() > 0) {
             //System.out.println("showing Submenu 1");
@@ -98,6 +100,7 @@ public class CourseMenuModel implements java.io.Serializable {
         Integer courseId = course.getCourseId();
         DefaultMenuItem item;
 
+        /*
         item = DefaultMenuItem.builder()
                 .value(course.getName())
                 .command("#{homeScreenBean.showCourse}")
@@ -132,7 +135,7 @@ public class CourseMenuModel implements java.io.Serializable {
         if (fourthSubmenu.getElements().size() > 0 && !(courseMenu.getElements().contains(fourthSubmenu))) {
             //System.out.println("showing Submenu 4");
             courseMenu.getElements().add(fourthSubmenu);
-        }
+        }*/
     }
 
     public void removeCourse(CourseEntity course) {

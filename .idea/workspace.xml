@@ -10,10 +10,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dda23ae2-4c4a-446b-a7b7-3fe0f9fe5216" name="Changes" comment="EJB backbone first setup">
+    <list default="true" id="dda23ae2-4c4a-446b-a7b7-3fe0f9fe5216" name="Changes" comment="Small edit to REST so it now searches on Surname instead of ID">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/secured/wieiswie.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/secured/wieiswie.xhtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/REST/getProfessorRatingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/REST/getProfessorRatingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SOAP/professorValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SOAP/professorValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/SingletonCacheBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/SingletonCacheBean.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ejb/wieiswieBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/wieiswieBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ProfessorEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ProfessorEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/WEB-INF/server-config.wsdd" beforeDir="false" afterPath="$PROJECT_DIR$/web/WEB-INF/server-config.wsdd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/secured/wieiswie.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/secured/wieiswie.xhtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +50,7 @@
     <option name="FILTER_WARNINGS" value="false" />
     <option name="FILTER_INFO" value="false" />
     <option name="FILTER_DEBUG" value="false" />
-    <option name="CUSTOM_FILTER" value="Print" />
+    <option name="CUSTOM_FILTER" value="" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -228,7 +234,7 @@
       <workItem from="1656243235379" duration="48000" />
       <workItem from="1656409181082" duration="3316000" />
       <workItem from="1656412551113" duration="8556000" />
-      <workItem from="1656424402201" duration="11662000" />
+      <workItem from="1656424402201" duration="14671000" />
     </task>
     <task id="LOCAL-00001" summary="Fix Build Error">
       <created>1654795659362</created>
@@ -258,7 +264,8 @@
     <MESSAGE value="Fix Build Error" />
     <MESSAGE value="Fixed Deploy Error" />
     <MESSAGE value="EJB backbone first setup" />
-    <option name="LAST_COMMIT_MESSAGE" value="EJB backbone first setup" />
+    <MESSAGE value="Small edit to REST so it now searches on Surname instead of ID" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small edit to REST so it now searches on Surname instead of ID" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

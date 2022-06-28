@@ -16,11 +16,12 @@ public class getProfessorRatingService {
 
     @GET
     @Produces("text/plain")
-    @Path("/{surname: [a-zA-Z]*}")
-    public String getProfessorRating(@PathParam("surname") String name){
+    @Path("/{surname:[a-zA-Z]*}")
+    public String getProfessorRating(@PathParam("surname") String surname){
+        System.out.println("Print Fetching rating for professor: " + surname);
         for (ProfessorEntity p:
                 em.createQuery("SELECT p FROM ProfessorEntity p", ProfessorEntity.class).getResultList()) {
-            if(p.getSurname().equals(name)){
+            if(p.getSurname().equals(surname)){
                 return ((Integer)p.getRating()).toString();
             }
         }

@@ -2,6 +2,8 @@ package entities;
 
 import ejb.SingletonCacheBean;
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
@@ -10,6 +12,7 @@ import java.util.Objects;
 
 @Entity
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Table(name = "Professor", schema = "hellodemo")
 public class ProfessorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -119,9 +122,10 @@ public class ProfessorEntity {
     }
 
     public byte[] getPicture() {
-        SingletonCacheBean singleton = new SingletonCacheBean();
-        return (byte[]) singleton.getFromCache((long) id);
+        return picture;
     }
+
+
 
     public void setPicture(byte[] picture) {
         this.picture = picture;

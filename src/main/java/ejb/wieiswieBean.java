@@ -29,10 +29,10 @@ import jakarta.xml.ws.WebServiceRef;
 @SessionScoped
 public class wieiswieBean implements Serializable {
 
-    /*
+/*
     @WebServiceRef
-    private static professorValidator professorValidator;
-*/
+    private static professorValidator professorValidator;*/
+
     private int professorId;
 
     private ProfessorEntity professor;
@@ -49,16 +49,23 @@ public class wieiswieBean implements Serializable {
 
         // Have the EntityManager find the loggedin user
         professor = new_em.find(ProfessorEntity.class, professorId);
-        /*
-        if(!professorValidator.isRegisteredProfessor(professor.getName(), professor.getSurname())){
+
+        professorValidator profValidator = new professorValidator();
+        if(!profValidator.isRegisteredProfessor(professor.getName(), professor.getSurname())){
+            System.out.println("Print Not a valid professor");
             professor = null;
-        }*/
+        }
     }
 
     public String getRatingFromSurname(){
         URI uri = UriBuilder.fromUri("http://localhost:8080/DADemo_Web_exploded/api/getProfessorRating/" + professor.getSurname()).build();
         Response response = ClientBuilder.newClient().target(uri).request(MediaType.TEXT_PLAIN).buildGet().invoke();
         return response.readEntity(String.class);
+    }
+
+    public byte[] getPictureFromCache(){
+        SingletonCacheBean singleton = new SingletonCacheBean();
+        return (byte[]) singleton.getFromCache((long) professorId);
     }
 
     public int getProfessorId() {

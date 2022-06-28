@@ -2,6 +2,7 @@ package ejb;
 
 import jakarta.annotation.Resource;
 import jakarta.ejb.MessageDriven;
+import jakarta.ejb.SessionContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.jms.ConnectionFactory;
 import jakarta.jms.Destination;
@@ -24,7 +25,9 @@ public class messagingBean implements MessageListener {
     @Resource(
             lookup = "jms/DestinationResource"
     )
+
     private Queue queue;
+
     private FacesContext context;
 
     public messagingBean() {

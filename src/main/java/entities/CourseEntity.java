@@ -91,6 +91,14 @@ public class CourseEntity implements Serializable, Converter, Comparable<CourseE
         this.yearOfCourse = yearOfCourse;
     }
 
+    public List<CommentEntity> getComments() {
+        return this.comments;
+    }
+    public void setComments(List<CommentEntity> comments) {
+        this.comments = comments;
+    }
+
+
     public int getEnumAsInt(){
         switch (yearOfCourse){
 

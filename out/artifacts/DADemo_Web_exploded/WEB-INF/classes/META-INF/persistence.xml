@@ -10,9 +10,9 @@
         <class>entities.PersonEntity</class>
         <class>entities.CommentEntity</class>
         <class>entities.ProfessorEntity</class>
-        <class>entities.ratingComment</class>
-        <class>entities.ratingTextComment</class>
-        <class>entities.textComment</class>
+        <class>entities.RatingComment</class>
+        <class>entities.RatingTextComment</class>
+        <class>entities.TextComment</class>
 
         <!-- <exclude-unlisted-classes>false</exclude-unlisted-classes> -->
         <properties><property name="jakarta.persistence.schema-generation.database.action" value="none"/>

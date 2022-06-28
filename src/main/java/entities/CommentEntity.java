@@ -15,14 +15,14 @@ public class CommentEntity {
     @Column(name = "commentId")
     private int id;
 
-  /*  @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "personId")
     private PersonEntity person;
 
     @ManyToOne
     @JoinColumn(name = "professorId")
     private ProfessorEntity professor;
-*/
+
 
     @Basic
     @Column(name = "Date", nullable = false, unique = true)
@@ -39,7 +39,7 @@ public class CommentEntity {
         this.id = id;
     }
 
-    /*public PersonEntity getPerson() {
+    public PersonEntity getPerson() {
         return person;
     }
 
@@ -53,7 +53,7 @@ public class CommentEntity {
 
     public void setProfessor(ProfessorEntity isAbout) {
         this.professor = isAbout;
-    }*/
+    }
 
     public Date getTimePosted() {
         return timePosted;

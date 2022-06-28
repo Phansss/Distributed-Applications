@@ -1,4 +1,4 @@
-insert into hellodemo.jnd_course_professor (course_fk, professor_fk)
+insert into hellodemo.Professors_Teach_Courses (courseId, professorId)
 values (5,1),
        (1,2),
        (4,2),

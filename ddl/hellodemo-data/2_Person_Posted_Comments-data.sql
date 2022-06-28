@@ -1,4 +1,4 @@
-insert into hellodemo.Person_Comments(personId, commentId)
+insert into hellodemo.Person_Posted_Comments(personId, commentId)
 values (6,1), (6,2), (6,3), (7,4), (7,5),
        (7,6), (8,7), (8,8), (8,9), (9,10), (9,11), (9,12), (10,13), (10,14), (10,15),
        (11,16), (11,17), (11,18), (12,19), (12,20), (12,21), (13,22), (13,23), (13,24), (14,25),

@@ -1,2 +1,2 @@
-insert into hellodemo.jnd_course_person (course_fk, person_fk)
+insert into hellodemo.Persons_Follow_Courses (courseId, personId)
 values (5,5);

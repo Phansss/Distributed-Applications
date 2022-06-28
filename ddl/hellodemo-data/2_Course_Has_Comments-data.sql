@@ -1,4 +1,4 @@
-insert into hellodemo.Course_Comments(courseId, commentId)
+insert into hellodemo.Course_Has_Comments(courseId, commentId)
 values (1, 1), (1,21 ), (1,44 ), (1, 2), (1, 22), (1, 45),
        (2, 3), (2,23 ), (2, 46), (2, 4), (2, 24), (2, 47),
        (3, 5), (3, 25), (3, 48), (3, 6), (3, 26), (3, 49),

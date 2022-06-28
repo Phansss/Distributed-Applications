@@ -10,17 +10,54 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dda23ae2-4c4a-446b-a7b7-3fe0f9fe5216" name="Changes" comment="EJB backbone first setup">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="dda23ae2-4c4a-446b-a7b7-3fe0f9fe5216" name="Changes" comment="Working courses menu and add course+ remove course">
+      <change afterPath="$PROJECT_DIR$/src/main/java/backingbeans/AddCourseSelector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/backingbeans/CourseMenuBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/backingbeans/RemoveCourseSelector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/backingbeans/UserWizard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ejb/MenuBean.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/interceptors/Loggable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/interceptors/LoggerInterceptor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b178b607-a042-4209-8233-89a38a8b6618.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b178b607-a042-4209-8233-89a38a8b6618/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_05_2022_16_27__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_05_2022_16_27__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_05_2022_10_17__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_05_2022_10_17__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_05_2022_16_27__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_05_2022_10_17__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/META-INF/ejb-jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/META-INF/ejb-jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/1_Comment-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/1_Comment-data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/1_Course-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/1_Course-data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/2_Course_Has_Comments-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/2_Course_Has_Comments-data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/2_Person_Posted_Comments-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/2_Person_Posted_Comments-data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/2_Persons_Follow_Courses-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/2_Persons_Follow_Courses-data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/2_Professor_Has_Comments-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/2_Professor_Has_Comments-data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/2_Professors_Teach_Courses-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/2_Professors_Teach_Courses-data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/classes/META-INF/beans.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/classes/META-INF/beans.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/classes/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/classes/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/index.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/index.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/secured/home.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/secured/home.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_ejb_exploded/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_ejb_exploded/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/AccountServiceBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/AccountServiceBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/CourseMenuModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/CourseServiceBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/CourseServiceBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/Loggable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/LoggerProducerBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/LoggerProducerBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/LoggingInterceptor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/PersonServiceBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/PersonServiceBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/homeScreenBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backingbeans/HomeScreenBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/loginBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/loginBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/messagingBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/messagingBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/CommentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/CommentEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/CourseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/CourseEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/PersonEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/PersonEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interceptors/loggingInterceptor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/beans.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/beans.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/useful-documents/DB-scheme.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/useful-documents/DB-scheme.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/index.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/secured/home.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/secured/home.xhtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +67,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
+        <option value="AnnotationType" />
         <option value="Class" />
       </list>
     </option>
@@ -71,12 +110,13 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/piete/IdeaProjects/Distributed-Applications/web/resources&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/piete/IdeaProjects/Distributed-Applications/src/main/java&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Facets&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.4375&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;debugger.hotswap&quot;
+    &quot;project.structure.side.proportion&quot;: &quot;0.2676182&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   },
   &quot;keyToStringList&quot;: {
     &quot;DatabaseDriversLRU&quot;: [
@@ -84,46 +124,71 @@
     ],
     &quot;RunConfigurationTargetLRU&quot;: [
       &quot;235cb29e-3afa-4958-bced-26e0709966fb&quot;,
-      &quot;235cb29e-3afa-4958-bced-26e0709966fb/schema/\&quot;hellodemo\&quot;&quot;
+      &quot;235cb29e-3afa-4958-bced-26e0709966fb/schema/\&quot;hellodemo\&quot;&quot;,
+      &quot;9d5397d2-98c2-4e46-82c5-dcb9fba7caaa&quot;
     ]
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="Interceptors" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\piete\IdeaProjects\Distributed-Applications\ddl\hello-demo-data" />
+    </key>
     <key name="ImportMappingsDialog.RecentPackages">
       <recent name="" />
+      <recent name="entities" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="entities" />
     </key>
   </component>
   <component name="RunManager" selected="GlassFish Server.GlassFish 6.2.5">
-    <configuration name="Comments-data.sql and 9 more" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/ddl/Comments-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/Course-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/jnd_course-person-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/jnd_course_professor-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/Person-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/Professor-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/Professor_Comments-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/ratingComment-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/ratingTextComment-data.sql" />
-      <script-file value="$PROJECT_DIR$/ddl/textComment-data.sql" />
+    <configuration name="1_Comment-data.sql and 8 more" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/1_Comment-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/1_Course-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/1_Person-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/1_Professor-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Course_Has_Comments-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Person_Posted_Comments-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Persons_Follow_Courses-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Professor_Has_Comments-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Professors_Teach_Courses-data.sql" />
       <script-mode>FILE</script-mode>
-      <data-source id="235cb29e-3afa-4958-bced-26e0709966fb" />
+      <data-source id="9d5397d2-98c2-4e46-82c5-dcb9fba7caaa" />
       <method v="2" />
     </configuration>
-    <configuration name="Course-data.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/ddl/Course-data.sql" />
+    <configuration name="1_Comment-data.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/1_Comment-data.sql" />
       <script-mode>FILE</script-mode>
+      <data-source id="9d5397d2-98c2-4e46-82c5-dcb9fba7caaa" />
       <method v="2" />
     </configuration>
-    <configuration name="Professor-data.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/ddl/Professor-data.sql" />
+    <configuration name="1_Course-data.sql and 2 more" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/1_Course-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/1_Person-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/1_Professor-data.sql" />
       <script-mode>FILE</script-mode>
-      <data-source id="235cb29e-3afa-4958-bced-26e0709966fb" namespace="schema/&quot;hellodemo&quot;" />
+      <data-source id="9d5397d2-98c2-4e46-82c5-dcb9fba7caaa" />
       <method v="2" />
     </configuration>
-    <configuration name="jnd_course_professor-data.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/ddl/jnd_course_professor-data.sql" />
+    <configuration name="2_Course_Has_Comments-data.sql and 4 more" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Course_Has_Comments-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Person_Posted_Comments-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Persons_Follow_Courses-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Professor_Has_Comments-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Professors_Teach_Courses-data.sql" />
       <script-mode>FILE</script-mode>
-      <data-source id="235cb29e-3afa-4958-bced-26e0709966fb" namespace="schema/&quot;hellodemo&quot;" />
+      <data-source id="9d5397d2-98c2-4e46-82c5-dcb9fba7caaa" />
+      <method v="2" />
+    </configuration>
+    <configuration name="2_Professor_Has_Comments-data.sql and 2 more" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Professor_Has_Comments-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Course_Has_Comments-data.sql" />
+      <script-file value="$PROJECT_DIR$/ddl/hellodemo-data/2_Person_Posted_Comments-data.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="9d5397d2-98c2-4e46-82c5-dcb9fba7caaa" />
       <method v="2" />
     </configuration>
     <configuration name="GlassFish 6.2.5" type="GlassfishConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="GlassFish 6.2.5" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true" show_console_on_std_out="true">
@@ -166,10 +231,10 @@
       <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
         <option name="USE_ENV_VARIABLES" value="true" />
         <STARTUP>
-          <option name="USE_DEFAULT" value="false" />
-          <option name="SCRIPT" value="$PROJECT_DIR$/../../../../Tools/glassfish6/bin/asadmin.bat" />
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
           <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="start-domain --debug domain1 --verbose" />
+          <option name="PROGRAM_PARAMETERS" value="" />
         </STARTUP>
         <SHUTDOWN>
           <option name="USE_DEFAULT" value="true" />
@@ -202,18 +267,20 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Database Script.Course-data.sql" />
-      <item itemvalue="Database Script.Professor-data.sql" />
-      <item itemvalue="Database Script.jnd_course_professor-data.sql" />
-      <item itemvalue="Database Script.Comments-data.sql and 9 more" />
+      <item itemvalue="Database Script.1_Comment-data.sql" />
+      <item itemvalue="Database Script.1_Comment-data.sql and 8 more" />
+      <item itemvalue="Database Script.1_Course-data.sql and 2 more" />
+      <item itemvalue="Database Script.2_Course_Has_Comments-data.sql and 4 more" />
+      <item itemvalue="Database Script.2_Professor_Has_Comments-data.sql and 2 more" />
       <item itemvalue="GlassFish Server.GlassFish 6.2.5" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Database Script.Comments-data.sql and 9 more" />
-        <item itemvalue="Database Script.Course-data.sql" />
-        <item itemvalue="Database Script.jnd_course_professor-data.sql" />
-        <item itemvalue="Database Script.Professor-data.sql" />
+        <item itemvalue="Database Script.2_Professor_Has_Comments-data.sql and 2 more" />
+        <item itemvalue="Database Script.1_Comment-data.sql" />
+        <item itemvalue="Database Script.2_Course_Has_Comments-data.sql and 4 more" />
+        <item itemvalue="Database Script.1_Comment-data.sql and 8 more" />
+        <item itemvalue="Database Script.1_Course-data.sql and 2 more" />
       </list>
     </recent_temporary>
   </component>
@@ -226,7 +293,14 @@
       <option name="presentableId" value="Default" />
       <updated>1654795399749</updated>
       <workItem from="1654795401613" duration="8754000" />
-      <workItem from="1654844766854" duration="22937000" />
+      <workItem from="1654844766854" duration="35317000" />
+      <workItem from="1654890699828" duration="26617000" />
+      <workItem from="1655138451471" duration="410000" />
+      <workItem from="1655881379494" duration="1809000" />
+      <workItem from="1655975822887" duration="101656000" />
+      <workItem from="1656363500303" duration="5771000" />
+      <workItem from="1656413499382" duration="32658000" />
+      <workItem from="1656457291420" duration="327000" />
     </task>
     <task id="LOCAL-00001" summary="Fix Build Error">
       <created>1654795659362</created>
@@ -235,7 +309,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654795659362</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Update gitignore">
+      <created>1654871309757</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1654871309757</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -256,6 +337,9 @@
     <MESSAGE value="Fix Build Error" />
     <MESSAGE value="Fixed Deploy Error" />
     <MESSAGE value="EJB backbone first setup" />
-    <option name="LAST_COMMIT_MESSAGE" value="EJB backbone first setup" />
+    <MESSAGE value="Update gitignore" />
+    <MESSAGE value="Partially cleaned Homescreenbean. Functioning Frontend courses menu with MenuBuilderBean" />
+    <MESSAGE value="Working courses menu and add course+ remove course" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working courses menu and add course+ remove course" />
   </component>
 </project>

@@ -5,6 +5,10 @@ import java.net.URI;
 import java.util.List;
 
 import entities.PersonEntity;
+import jakarta.annotation.Resource;
+import jakarta.ejb.ScheduleExpression;
+import jakarta.ejb.TimerConfig;
+import jakarta.ejb.TimerService;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.context.FacesContext;
@@ -23,12 +27,11 @@ import jakarta.ws.rs.core.UriBuilder;
 @ManagedBean(name = "loginBean")
 @SessionScoped
 public class loginBean implements Serializable {
+
     private String firstName;
     private String lastName;
     private String email;
     private String password;
-
-
     int dbId;
 
     public loginBean() {
@@ -65,6 +68,7 @@ public class loginBean implements Serializable {
     UserTransaction ut;
     @Inject
     AccountServiceBean accountServiceBean;
+
 
     // Try to add a user based on information they have entered. Return Success or No Success based on the outcome to control navigation
     public String add() {
@@ -108,11 +112,15 @@ public class loginBean implements Serializable {
         query.setParameter("email", email);
         query.setParameter("password", password);
         List<PersonEntity> resultList = (List<PersonEntity>) query.getResultList();
+
+        PersonEntity loggedInUser;
         for (PersonEntity p: resultList) {
             dbName = p.getEmail();
             dbPassword = p.getPassword();
             dbId = p.getId();
+            loggedInUser = p;
         }
+
 
         if (email.equals(dbName) && password.equals(dbPassword)) {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
@@ -128,22 +136,6 @@ public class loginBean implements Serializable {
         FacesContext.getCurrentInstance()
                 .getApplication().getNavigationHandler()
                 .handleNavigation(FacesContext.getCurrentInstance(), null, "/index.xhtml");
-    }
-
-    public EntityManager getEm() {
-        return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
-    }
-
-    public UserTransaction getUt() {
-        return ut;
-    }
-
-    public void setUt(UserTransaction ut) {
-        this.ut = ut;
     }
 
     public int getDbId() {

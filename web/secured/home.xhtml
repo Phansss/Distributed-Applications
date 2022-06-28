@@ -26,49 +26,87 @@
             <br/>
             <div class="margin-10-left white-background sticky">
 
-               <h1>Your Courses</h1>
+               <h1>My Courses</h1>
 
-               <h:form > <!-- A menu has to be inside a form tag because it has implementations for action selection -->
-                  <p:menu id="courseMenuModel" model="#{homeScreenBean.courseMenu}" toggleable="true">
+               <!-- A menu has to be inside a form tag because it has implementations for action selection -->
+                  <!--<p:menu id="courseMenuModel" model="#{homeScreenBean.courseMenu}" toggleable="true">
                      <p:autoUpdate/>
-                  </p:menu>
 
+                  </p:menu>-->
+<!--                  <p:outputLabel for="@next" value="Select Course"/>-->
+
+                  <div class="card">
+                     <h:form name = "form-menu">
+                        <h5>Programmatic</h5>
+                        <p:menu  id="course-menu" model="#{homeScreenBean.courseMenu}"/>
+                           <p:autoUpdate/>
+                     </h:form>
+
+                  </div>
+
+
+
+                 <!-- <p:selectOneMenu id="my-courses" value="#{homeScreenBean.subscribedCourses}" var = "c">
+                  <p:autoUpdate/>
+                     <f:selectItem itemLabel="Select Course" itemValue=""/>
+                     <f:selectItems value="#{homeScreenBean.subscribedCoursesMap.keySet()}" var = "course" itemLabel= "#{course}" itemValue=
+                                "#{course}"/>
+                     <p:column>
+                        #{c.name}
+                        <f:facet name="header">
+                           <h:outputText value="Course"/>
+                        </f:facet>
+                     </p:column>
+                     <f:facet name="footer">
+                        <p:separator />
+                        <h:outputText value="#{homeScreenBean.subscribedCoursesMap.keySet().size()} subscribed courses" style="font-weight:bold;"/>
+                     </f:facet>-->
+
+               <!--   </p:selectOneMenu>-->
+
+
+
+
+               <h:form id="form-add">
                <h1>Add course</h1>
-                  <p:selectCheckboxMenu id="multiple-add" value="#{homeScreenBean.subscribedCourses}" filter="true"
+                  <p:selectCheckboxMenu id="multiple-add" value="#{addCourseSelector.coursesToAdd}" filter="true"
                                         filterMatchMode="contains" label="Courses" updateLabel="false"
                                         style="min-width: 15rem" panelStyle="width: 30rem" scrollHeight="250" multiple="true">
-                     <p:ajax event="change" listener="#{homeScreenBean.addCourse}"/>
-                        <f:selectItems value="#{homeScreenBean.unSubscribedCoursesMap.keySet()}"/>
-                        <f:param name="selectedCourse" value = "#{course}"/>
-                     <p:autoUpdate/>
+                        <f:selectItems value="#{homeScreenBean.unSubscribedCourses}"
+                                       var="courseEntity" itemLabel="#{courseEntity.name}"/>
                   </p:selectCheckboxMenu>
+                  <p:commandButton action="#{homeScreenBean.addCourses}" value="Add" update="form-add:multiple-add,
+                  form-remove:multiple-remove" styleClass="p-mt-3" />
 
+               </h:form>
+
+
+               <h:form id="form-remove" >
                <h1>Remove course</h1>
-                  <p:selectCheckboxMenu id="multiple-remove" value="#{homeScreenBean.subscribedCourses}" filter="true"
+                  <p:selectCheckboxMenu id="multiple-remove" value="#{removeCourseSelector.coursesToRemove}" filter="true"
                                         filterMatchMode="contains" label="Courses" updateLabel="false"
                                         style="min-width: 15rem" panelStyle="width: 30rem" scrollHeight="250" multiple="true">
-                     <p:ajax event="change" listener="#{homeScreenBean.removeCourse}"/>
-                     <f:selectItems value="#{homeScreenBean.subscribedCoursesMap.keySet()}"/>
-                     <f:param name="selectedCourse" value = "#{course}"/>
-                     <p:autoUpdate/>
+                     <f:selectItems value="#{homeScreenBean.subscribedCourses}"
+                                    var="courseEntity" itemLabel="#{courseEntity.name}"/>
                   </p:selectCheckboxMenu>
+                  <p:commandButton action="#{homeScreenBean.removeCourses}" value="Remove" update="form-add:multiple-add,
+                  form-remove:multiple-remove" styleClass="p-mt-3" />
+
                </h:form>
 
             </div>
          </div>
       </div>
       <div class="middle margin-10-left">
-         <h1 class="text-on-background">Latest Comments</h1>
-
          <h:form id="repeatform">
             <p:autoUpdate/>
+            <h1 class="text-on-background">Latest Comments on <h:outputText value="#{homeScreenBean.currentCourse.name}"/></h1>
             <p:repeat value="#{homeScreenBean.currentRatingTextComments}" var="comment">
-
              <div class="commentBox white-background">
                <br/>
                   <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}"/>
                   <br/><br/>
-                  <b><h:outputText value="About: "/></b><h:outputText value="#{comment.professor.name}"/>
+                  <b><h:outputText value="About: "/></b><h:outputText value="prof. #{comment.professor.surname}"/>
                   <br/><br/>
                   <b><h:outputText value="Rating: "/></b><h:outputText value="#{comment.rating}"/>
                   <br/><br/>
@@ -85,7 +123,7 @@
                   <br/>
                   <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}"/>
                   <br/><br/>
-                  <b><h:outputText value="About: "/></b><h:outputText value="#{comment.professor.name}"/>
+                  <b><h:outputText value="About: "/></b><h:outputText value="prof. #{comment.professor.surname}"/>
                   <br/><br/>
                   <h:outputText value="#{comment.text}"/>
                   <br/><br/>
@@ -100,7 +138,7 @@
                   <br/>
                   <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}"/>
                   <br/><br/>
-                  <b><h:outputText value="About: "/></b><h:outputText value="#{comment.professor.name}"/>
+                  <b><h:outputText value="About: "/></b><h:outputText value="prof. #{comment.professor.surname}"/>
                   <br/><br/>
                   <b><h:outputText value="Rating: "/></b><h:outputText value="#{comment.rating}"/>
                   <br/><br/>

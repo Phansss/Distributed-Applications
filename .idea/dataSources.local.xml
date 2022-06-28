@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal" created-in="IU-221.5080.210">
-    <data-source name="docker@localhost" uuid="235cb29e-3afa-4958-bced-26e0709966fb">
+    <data-source name="hellodemo@localhost" uuid="9d5397d2-98c2-4e46-82c5-dcb9fba7caaa">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" exact-version="0" />
       <schema-mapping />
     </data-source>

@@ -1,4 +1,4 @@
-insert into hellodemo.Professor_Comments(professorId, commentId)
+insert into hellodemo.Professor_Has_Comments(professorId, commentId)
 values (2,1), (2,21), (2,44), (3,2), (3,22), (3,45),
        (6,3), (23,23), (24,46), (26,4), (23,24), (6,47),
        (13,5), (27,25), (28,48), (29,6), (13,26), (29,49),

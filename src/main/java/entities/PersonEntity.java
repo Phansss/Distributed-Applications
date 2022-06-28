@@ -2,12 +2,13 @@ package entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Person", schema = "hellodemo")
-public class PersonEntity {
+public class PersonEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "personId")

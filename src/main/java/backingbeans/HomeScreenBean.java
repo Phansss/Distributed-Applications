@@ -1,5 +1,8 @@
-package ejb;
+package backingbeans;
 
+import ejb.CourseServiceBean;
+import ejb.MenuBean;
+import ejb.PersonServiceBean;
 import entities.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
@@ -16,7 +19,7 @@ import java.util.*;
 
 @Named
 @SessionScoped
-public class  homeScreenBean implements Serializable {
+public class HomeScreenBean implements Serializable {
 
 
     //COMMENTS
@@ -33,6 +36,7 @@ public class  homeScreenBean implements Serializable {
     private Map<Integer, CourseEntity> courseEntities;
     private Map<String, Integer> unSubscribedCoursesMap;
     private Map<String, Integer> subscribedCoursesMap;
+    private List<CourseEntity> unSubscribedCourses;
     private List<CourseEntity> subscribedCourses;
 
     //LOGGEDINUSER
@@ -44,9 +48,9 @@ public class  homeScreenBean implements Serializable {
      (idea: make a second stateful bean 'currentCourse' with the attributes containing
       presentation data that is rendered on request.*/
     CourseEntity currentCourse;
-    ArrayList<ratingComment> currentRatingComments;
-    ArrayList<textComment> currentTextComments;
-    ArrayList<ratingTextComment> currentRatingTextComments;
+    private ArrayList<ratingComment> currentRatingComments;
+    private ArrayList<textComment> currentTextComments;
+    private ArrayList<ratingTextComment> currentRatingTextComments;
     private List<String> currentCourseProfessors;
 
 
@@ -58,27 +62,39 @@ public class  homeScreenBean implements Serializable {
     Only session beans with bean-managed transaction (BMT) can use this method.
     ALTERNATIVE = CMT*/
     UserTransaction ut;
-    @PersistenceContext(unitName = "DADemoPU")
-    private EntityManager em;
+
+
+    @PersistenceContext(unitName = "DADemoPU") private EntityManager em;
     @Inject
     CourseServiceBean courseServiceBean;
     @Inject
     PersonServiceBean personServiceBean;
     @Inject
-    CourseMenuModel courseMenuModel;
+    CourseMenuBuilder courseMenuBuilder;
+    @Inject
+    MenuBean menuBean;
+    @Inject AddCourseSelector addCourseSelector;
+    @Inject RemoveCourseSelector removeCourseSelector;
 
 
     //bean constructor
-    public homeScreenBean() {
+    public HomeScreenBean() {
         //System.out.println("PRINT MSG: Creating a homeScreenBean");
         //System.out.println(courseServiceBean);
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         userId = (int) session.getAttribute("user");
+
         //System.out.println(userId);
     }
+
+
+
     @PostConstruct
     public void initialize() {
         //Load the personEntity (for now: persistent to DB!)
+
+        this.courseMenu = new DefaultMenuModel();
+
         this.person = personServiceBean.getPersonEntity(userId);
         //Load all courseEntities from DB (for now: persistent to DB!)
         this.courseEntities = new HashMap<Integer, CourseEntity>();
@@ -87,55 +103,51 @@ public class  homeScreenBean implements Serializable {
         });
         //Load all courses to which this user currently is subscribed from DB (for now: persistent to DB!)
         this.subscribedCourses = person.getSubscribedCourses();
-        //Create 2 Hashmaps which contain key value pairs of subscribed and unsubscribed courses of this user)
-        this.unSubscribedCoursesMap = new HashMap<String, Integer>();
-        this.subscribedCoursesMap = new HashMap<String, Integer>();
-        getCourseEntities().forEach((courseId, course) -> {
-            if (getSubscribedCourses().contains(course)) {
-                subscribedCoursesMap.put(course.getName(), course.getId());
-            }
-            else {
-                unSubscribedCoursesMap.put(course.getName(), course.getId());
-            }
-        });
+        this.unSubscribedCourses =courseServiceBean.getAllCourses();
+        this.unSubscribedCourses.removeAll(getSubscribedCourses());
+
         this.currentCourseProfessors = new ArrayList<String>();
+        this.currentTextComments = new ArrayList<textComment>();
+        this.currentRatingComments = new ArrayList<ratingComment>();
+        this.currentRatingTextComments = new ArrayList<ratingTextComment>();
         //Set the current course which is showing to the first course in the subscribedCourseEntities list.
         if (getSubscribedCourses().size() != 0) {
             this.currentCourse = getSubscribedCourses().get(0);
             //set the currentCourseProfessor
             setCurrentCourseProfessors();
+            setCurrentCourseComments();
         }
         //Load the Menu Model of the course menu in this homeScreenBeans field so that it can be rendered by primefaces
-        this.courseMenu = courseMenuModel.getCourseMenu();
-        courseMenuModel.buildCoursesMenuTest(getSubscribedCourses());
+        //this.courseMenu = courseMenuModel.getCourseMenu();
+        //courseMenuModel.buildCoursesMenuTest(getSubscribedCourses());
+        menuBean.setCourses(getSubscribedCourses());
         //System.out.println("subscribed courses: " + getSubscribedCoursesMap());
         //System.out.println("unsubscribed courses: " + getUnSubscribedCoursesMap());
+        courseMenuBuilder.buildCoursesMenu(getSubscribedCourses());
+        this.courseMenu = courseMenuBuilder.getCourseMenu();
     }
     //fired when you add a course in the 'add' dropwdown.
-    public void addCourse(){
-        String courseName = FacesContext.getCurrentInstance().getExternalContext().
-                getRequestParameterMap().get("j_idt9:multiple-add");
-        if (courseName != null) {
-            Integer courseId = getUnSubscribedCoursesMap().get(courseName);
-            courseServiceBean.addCourseToPerson(courseId, getPerson().getId());
-            getSubscribedCoursesMap().put(courseName, courseId);
-            getUnSubscribedCoursesMap().remove(courseName);
-            courseMenuModel.addCourse(getCourseEntities().get(courseId));
-        }
+    public void addCourses(){
+        System.out.println(addCourseSelector.getCoursesToAdd());
+        addCourseSelector.getCoursesToAdd().forEach((course) -> {
+            courseServiceBean.addCourseToPerson(course.getCourseId(), getPerson().getId());
+            getSubscribedCourses().add(course);
+            getUnSubscribedCourses().remove(course);
+        });
+        courseMenuBuilder.buildCoursesMenu(getSubscribedCourses());
+        this.courseMenu = courseMenuBuilder.getCourseMenu();
     }
+
     //fired when you remove a course in the 'remove' dropdown.
-    public void removeCourse() {
-        String courseName = FacesContext.getCurrentInstance().getExternalContext().
-                getRequestParameterMap().get("j_idt9:multiple-remove");
-        //System.out.println("clicked on course: " + courseName);
-        //System.out.println("Current Subscribed courses: " + getSubscribedCoursesMap());
-        if (courseName != null) {
-            Integer courseId = getSubscribedCoursesMap().get(courseName);
-            courseServiceBean.removeCourseFromPerson(courseId, getPerson().getId());
-            getUnSubscribedCoursesMap().put(courseName, courseId);
-            getSubscribedCoursesMap().remove(courseName);
-            courseMenuModel.removeCourse(getCourseEntities().get(courseId));
-        }
+    public void removeCourses() {
+        System.out.println(removeCourseSelector.getCoursesToRemove());
+        removeCourseSelector.getCoursesToRemove().forEach((course) -> {
+            courseServiceBean.removeCourseFromPerson(course.getCourseId(), getPerson().getId());
+            getUnSubscribedCourses().add(course);
+            getSubscribedCourses().remove(course);
+        });
+        courseMenuBuilder.buildCoursesMenu(getSubscribedCourses());
+        this.courseMenu = courseMenuBuilder.getCourseMenu();
     }
 
     //Fired when you click on a course in the course menu.
@@ -143,10 +155,9 @@ public class  homeScreenBean implements Serializable {
         System.out.println("MENU ITEM PARAMETERS: ");
         Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         System.out.println("MENU ITEM PARAMETERS: " + params);
-        Integer courseId = Integer.parseInt(params.get("courseId"));
+        Integer courseId = Integer.parseInt(params.get("course"));
         System.out.println(courseId);
-        CourseEntity currentCourse = courseServiceBean.getCourseEntity(courseId);
-        this.currentCourse = currentCourse;
+        this.currentCourse = courseServiceBean.getCourseEntity(courseId);
         setCurrentCourseProfessors();
         setCurrentCourseComments();
 
@@ -155,18 +166,24 @@ public class  homeScreenBean implements Serializable {
         //System.out.println("Setting the professors for current course: " + getCurrentCourse().getName());
         this.currentCourseProfessors.clear();
         getCurrentCourse().getGivenByProfessors().forEach((professor) -> {
-            //System.out.println("Professor: " + professor.getName() + " " + professor.getSurname());
             this.currentCourseProfessors.add(professor.getName() + " " + professor.getSurname());
         });
     }
 
     private void setCurrentCourseComments() {
+        this.currentRatingTextComments.clear();
         this.currentRatingComments.clear();
         this.currentTextComments.clear();
-        this.currentRatingTextComments.clear();
-
+        getCurrentCourse().getComments().forEach((comment) -> {
+            if (comment instanceof ratingComment) {
+                this.currentRatingComments.add((ratingComment) comment);
+            } else if (comment instanceof textComment) {
+                this.currentTextComments.add((textComment) comment);
+            } else if (comment instanceof ratingTextComment) {
+                this.currentRatingTextComments.add((ratingTextComment) comment);
+            }
+        });
     }
-
 
 
     public void addComment() {
@@ -174,8 +191,10 @@ public class  homeScreenBean implements Serializable {
     }
 
 
+
+
     //Opgeroepen van zodra op de add knop wordt gedrukt. Rating = 1_5, text is comment
-    public void printRating()  {
+  /*  public void printRating()  {
         System.out.println("Print Rating: " + inputCommentRating + ". Text1: " + inputCommentText + ". Professor: " + chosenProfessor);
         String commentType;
         Integer chosenProfId = 0;
@@ -198,7 +217,7 @@ public class  homeScreenBean implements Serializable {
 
         try {
 
-            em.createNativeQuery("INSERT INTO Professor_Comments (ProfessorEntity_id, commentsAbout_commentId) VALUES (?, (SELECT MAX(commentId) FROM Comments))")
+            em.createNativeQuery("INSERT INTO Professor_Has_Comments (ProfessorEntity_id, commentsAbout_commentId) VALUES (?, (SELECT MAX(commentId) FROM Comments))")
                     .setParameter(1, chosenProfId)
                     .executeUpdate();
 
@@ -225,7 +244,7 @@ public class  homeScreenBean implements Serializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     public void gatherProfessors() {
         professorNames = new ArrayList<String>(); //wie geeft dit vak, welke professoren zijn dit?)
@@ -373,7 +392,7 @@ public class  homeScreenBean implements Serializable {
         return currentRatingComments;
     }
 
-    public void setCurrentRatingComments(ArrayList < ratingComment > currentRatingComments) {
+    public void setCurrentRatingComments(ArrayList <ratingComment> currentRatingComments) {
         this.currentRatingComments = currentRatingComments;
     }
 
@@ -381,7 +400,7 @@ public class  homeScreenBean implements Serializable {
         return currentTextComments;
     }
 
-    public void setCurrentTextComments(ArrayList < textComment > currentTextComments) {
+    public void setCurrentTextComments(ArrayList <textComment> currentTextComments) {
         this.currentTextComments = currentTextComments;
     }
 
@@ -389,7 +408,7 @@ public class  homeScreenBean implements Serializable {
         return currentRatingTextComments;
     }
 
-    public void setCurrentRatingTextComments(ArrayList < ratingTextComment > currentRatingTextComments) {
+    public void setCurrentRatingTextComments(ArrayList <ratingTextComment> currentRatingTextComments) {
         this.currentRatingTextComments = currentRatingTextComments;
 
     }
@@ -430,6 +449,8 @@ public class  homeScreenBean implements Serializable {
     public Map<String, Integer> getSubscribedCoursesMap() {
         return subscribedCoursesMap;
     }
+
+    public List<CourseEntity> getUnSubscribedCourses() { return unSubscribedCourses; }
 
 
 

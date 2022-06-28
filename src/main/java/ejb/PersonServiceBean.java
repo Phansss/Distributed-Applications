@@ -3,13 +3,18 @@ package ejb;
 import entities.CourseEntity;
 
 import entities.PersonEntity;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Resource;
+import jakarta.ejb.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
+import java.io.Serializable;
 import java.util.List;
 
 @jakarta.ejb.Stateless(name = "PersonServiceEJB")
-public class PersonServiceBean {
+public class PersonServiceBean implements Serializable {
 
 
 
@@ -30,6 +35,11 @@ public class PersonServiceBean {
         return person.getSubscribedCourses();
     }
 
+
+    @Timeout
+    public void optionLogOut() {
+        System.out.println("Stay logged in?");
+    }
     public PersonEntity getPersonEntity(Integer userId) {
        return em.find(PersonEntity.class, userId);
     }
@@ -46,7 +56,6 @@ public class PersonServiceBean {
             person.addCourse(course);
         }) ;
     }
-
 
 
 

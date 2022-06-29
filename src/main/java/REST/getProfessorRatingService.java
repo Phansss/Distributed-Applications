@@ -15,7 +15,7 @@ public class getProfessorRatingService {
     private EntityManager em;
 
     @GET
-    @Produces("text/plain")
+    @Produces("text/xml")
     @Path("/{surname:[a-zA-Z]*}")
     public String getProfessorRating(@PathParam("surname") String surname){
         System.out.println("Print Fetching rating for professor: " + surname);

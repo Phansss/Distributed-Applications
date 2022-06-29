@@ -59,7 +59,7 @@ public class wieiswieBean implements Serializable {
 
     public String getRatingFromSurname(){
         URI uri = UriBuilder.fromUri("http://localhost:8080/DADemo_Web_exploded/api/getProfessorRating/" + professor.getSurname()).build();
-        Response response = ClientBuilder.newClient().target(uri).request(MediaType.TEXT_PLAIN).buildGet().invoke();
+        Response response = ClientBuilder.newClient().target(uri).request(MediaType.TEXT_XML).buildGet().invoke();
         return response.readEntity(String.class);
     }
 

@@ -1,8 +1,6 @@
 package backingbeans;
 
-import ejb.CourseServiceBean;
-import ejb.MenuBean;
-import ejb.PersonServiceBean;
+import ejb.*;
 import entities.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
@@ -30,7 +28,7 @@ public class HomeScreenBean implements Serializable {
     //PROFESSORS
     private List<String> professorNames;
     private List<ProfessorEntity> professorEntities;
-    private String chosenProfessor;
+    private ProfessorEntity chosenProfessor;
 
     //COURSES
     private Map<Integer, CourseEntity> courseEntities;
@@ -51,7 +49,7 @@ public class HomeScreenBean implements Serializable {
     private ArrayList<ratingComment> currentRatingComments;
     private ArrayList<textComment> currentTextComments;
     private ArrayList<ratingTextComment> currentRatingTextComments;
-    private List<String> currentCourseProfessors;
+    private List<ProfessorEntity> currentCourseProfessors;
 
 
     private MenuModel courseMenu;
@@ -73,6 +71,8 @@ public class HomeScreenBean implements Serializable {
     CourseMenuBuilder courseMenuBuilder;
     @Inject
     MenuBean menuBean;
+    @Inject
+    CommentServiceBean commentServiceBean;
     @Inject AddCourseSelector addCourseSelector;
     @Inject RemoveCourseSelector removeCourseSelector;
 
@@ -106,7 +106,7 @@ public class HomeScreenBean implements Serializable {
         this.unSubscribedCourses =courseServiceBean.getAllCourses();
         this.unSubscribedCourses.removeAll(getSubscribedCourses());
 
-        this.currentCourseProfessors = new ArrayList<String>();
+        this.currentCourseProfessors = new ArrayList<ProfessorEntity>();
         this.currentTextComments = new ArrayList<textComment>();
         this.currentRatingComments = new ArrayList<ratingComment>();
         this.currentRatingTextComments = new ArrayList<ratingTextComment>();
@@ -165,9 +165,7 @@ public class HomeScreenBean implements Serializable {
     private void setCurrentCourseProfessors() {
         //System.out.println("Setting the professors for current course: " + getCurrentCourse().getName());
         this.currentCourseProfessors.clear();
-        getCurrentCourse().getGivenByProfessors().forEach((professor) -> {
-            this.currentCourseProfessors.add(professor.getName() + " " + professor.getSurname());
-        });
+        this.currentCourseProfessors.addAll(getCurrentCourse().getGivenByProfessors());
     }
 
     private void setCurrentCourseComments() {
@@ -185,16 +183,34 @@ public class HomeScreenBean implements Serializable {
         });
     }
 
+      public void addComment() {
 
-    public void addComment() {
+        System.out.println("Adding comment: " + getInputCommentText() + ". Adding Rating: " + getInputCommentRating());
+        String text = getInputCommentText();
+        Integer rating = getInputCommentRating();
+        CommentEntity newComment = new CommentEntity();
+        if(text == null) {
+            if(rating != null) {
+                newComment = commentServiceBean.createRatingComment(rating);
+
+            }
+        }
+        else{
+            if (rating == null) {
+                newComment = commentServiceBean.createTextComment(text);
+
+            } else {
+                newComment = commentServiceBean.createRatingTextComment(rating, text);
+            }
+        }
+
+        commentServiceBean.addCommentToProfessor(newComment, getChosenProfessor());
+
 
     }
 
-
-
-
     //Opgeroepen van zodra op de add knop wordt gedrukt. Rating = 1_5, text is comment
-  /*  public void printRating()  {
+    /*public void printRating()  {
         System.out.println("Print Rating: " + inputCommentRating + ". Text1: " + inputCommentText + ". Professor: " + chosenProfessor);
         String commentType;
         Integer chosenProfId = 0;
@@ -287,9 +303,13 @@ public class HomeScreenBean implements Serializable {
     }
 
     public String gotowieiswie(int id){
+        System.out.println("WIEISWIE: " + id);
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.setAttribute("wieiswie", id);
-        return "./secured/wieiswie.xhtml";
+        System.out.println("WIEISWIE: " + id);
+        System.out.println(session.getAttributeNames());
+        System.out.println(session.getAttribute("wieiswie"));
+        return "success";
     }
 
 
@@ -380,11 +400,11 @@ public class HomeScreenBean implements Serializable {
         this.rating = 3 + ((Integer) rateEvent.getRating());
     }*/
 
-    public String getChosenProfessor () {
+    public ProfessorEntity getChosenProfessor () {
         return chosenProfessor;
     }
 
-    public void setChosenProfessor (String chosenProfessor){
+    public void setChosenProfessor (ProfessorEntity chosenProfessor){
         this.chosenProfessor = chosenProfessor;
     }
 
@@ -432,7 +452,7 @@ public class HomeScreenBean implements Serializable {
 
 
 
-    public List<String> getCurrentCourseProfessors() {
+    public List<ProfessorEntity> getCurrentCourseProfessors() {
         return this.currentCourseProfessors;
     }
 

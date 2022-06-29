@@ -10,52 +10,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dda23ae2-4c4a-446b-a7b7-3fe0f9fe5216" name="Changes" comment="Working courses menu and add course+ remove course">
-      <change afterPath="$PROJECT_DIR$/src/main/java/backingbeans/AddCourseSelector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/backingbeans/CourseMenuBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/backingbeans/RemoveCourseSelector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/backingbeans/UserWizard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ejb/MenuBean.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interceptors/Loggable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interceptors/LoggerInterceptor.java" afterDir="false" />
+    <list default="true" id="dda23ae2-4c4a-446b-a7b7-3fe0f9fe5216" name="Changes" comment="Working homescreen (almost)">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/DADemo_Web_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/DADemo_Web_exploded.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2022_21_21__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_05_2022_16_27__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_05_2022_10_17__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/META-INF/ejb-jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/META-INF/ejb-jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/1_Comment-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/1_Comment-data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/1_Course-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/1_Course-data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/2_Course_Has_Comments-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/2_Course_Has_Comments-data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/2_Person_Posted_Comments-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/2_Person_Posted_Comments-data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/2_Persons_Follow_Courses-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/2_Persons_Follow_Courses-data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/2_Professor_Has_Comments-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/2_Professor_Has_Comments-data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ddl/hellodemo-data/2_Professors_Teach_Courses-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ddl/hellodemo-data/2_Professors_Teach_Courses-data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/classes/META-INF/beans.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/classes/META-INF/beans.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/classes/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/classes/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/beans.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/beans.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/faces-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/WEB-INF/faces-config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/index.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/index.xhtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/secured/home.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_Web_exploded/secured/home.xhtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_ejb_exploded/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_ejb_exploded/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/AccountServiceBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/AccountServiceBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/CourseMenuModel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/CourseServiceBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/CourseServiceBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/Loggable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/LoggerProducerBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/LoggerProducerBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/LoggingInterceptor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/PersonServiceBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/PersonServiceBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/homeScreenBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backingbeans/HomeScreenBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/loginBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/loginBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/messagingBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/messagingBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/CommentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/CommentEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/CourseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/CourseEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/PersonEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/PersonEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interceptors/loggingInterceptor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/beans.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/beans.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/useful-documents/DB-scheme.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/useful-documents/DB-scheme.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DADemo_ejb_exploded/META-INF/ejb-jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DADemo_ejb_exploded/META-INF/ejb-jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/REST/getProfessorRatingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/REST/getProfessorRatingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/backingbeans/HomeScreenBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/backingbeans/HomeScreenBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/CommentBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/CommentServiceBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ejb/wieiswieBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ejb/wieiswieBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/WEB-INF/faces-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/WEB-INF/faces-config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/index.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.xhtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/secured/home.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/secured/home.xhtml" afterDir="false" />
     </list>
@@ -300,7 +269,7 @@
       <workItem from="1655975822887" duration="101656000" />
       <workItem from="1656363500303" duration="5771000" />
       <workItem from="1656413499382" duration="32658000" />
-      <workItem from="1656457291420" duration="327000" />
+      <workItem from="1656457291420" duration="10743000" />
     </task>
     <task id="LOCAL-00001" summary="Fix Build Error">
       <created>1654795659362</created>
@@ -340,6 +309,7 @@
     <MESSAGE value="Update gitignore" />
     <MESSAGE value="Partially cleaned Homescreenbean. Functioning Frontend courses menu with MenuBuilderBean" />
     <MESSAGE value="Working courses menu and add course+ remove course" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working courses menu and add course+ remove course" />
+    <MESSAGE value="Working homescreen (almost)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working homescreen (almost)" />
   </component>
 </project>

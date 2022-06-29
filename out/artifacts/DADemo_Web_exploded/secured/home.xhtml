@@ -104,9 +104,9 @@
             <p:repeat value="#{homeScreenBean.currentRatingTextComments}" var="comment">
              <div class="commentBox white-background">
                <br/>
-                  <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}"/>
+                  <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}" />
                   <br/><br/>
-                  <b><h:outputText value="About: "/></b><h:outputText value="prof. #{comment.professor.surname}"/>
+                  <b><h:outputText value="About: "/></b><h:commandLink value="prof. #{comment.professor.surname}" action = "#{homeScreenBean.gotowieiswie(comment.professor.id)}"/>
                   <br/><br/>
                   <b><h:outputText value="Rating: "/></b><h:outputText value="#{comment.rating}"/>
                   <br/><br/>
@@ -123,7 +123,7 @@
                   <br/>
                   <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}"/>
                   <br/><br/>
-                  <b><h:outputText value="About: "/></b><h:outputText value="prof. #{comment.professor.surname}"/>
+                  <b><h:outputText value="About: "/></b><h:commandLink value="prof. #{comment.professor.surname}" action = "#{homeScreenBean.gotowieiswie(comment.professor.id)}"/>
                   <br/><br/>
                   <h:outputText value="#{comment.text}"/>
                   <br/><br/>
@@ -138,7 +138,7 @@
                   <br/>
                   <b><h:outputText value="Sender: "/></b><h:outputText value="#{comment.person.name} #{comment.person.lastName}"/>
                   <br/><br/>
-                  <b><h:outputText value="About: "/></b><h:outputText value="prof. #{comment.professor.surname}"/>
+                  <b><h:outputText value="About: "/></b><h:commandLink value="prof. #{comment.professor.surname}" action = "#{homeScreenBean.gotowieiswie(comment.professor.id)}"/>
                   <br/><br/>
                   <b><h:outputText value="Rating: "/></b><h:outputText value="#{comment.rating}"/>
                   <br/><br/>
@@ -171,12 +171,13 @@
                   <h3>About Professor</h3>
                   <p:selectOneMenu id="professorsDropdown" value="#{homeScreenBean.chosenProfessor}">
                      <p:autoUpdate/>
-                     <f:selectItems value="#{homeScreenBean.currentCourseProfessors}"/>
+                     <f:selectItems value="#{homeScreenBean.currentCourseProfessors}" var="prof" itemLabel="m. #{prof.surname}" itemValue=
+                             "#{prof}"/>
                   </p:selectOneMenu>
 
                   <br/><br/><br/>
 
-                  <h:commandButton action = "homeScreenBean" value = "Add Comment" actionListener="#{homeScreenBean.printRating()}"/><br/>
+                  <h:commandButton action = "#{homeScreenBean.addComment}" value = "Add Comment" /><br/>
                </h:form>
             </div>
          </div>
